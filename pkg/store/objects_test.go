@@ -16,3 +16,10 @@ func TestCreateRecordEnsureARecordsAreSorted(t *testing.T) {
 
 	assert.Equal(t, ra.ips, rb.ips)
 }
+func TestCreateRecordWithCNAMEsAndARecords(t *testing.T) {
+	// dig +short www.isrctn.com
+	a := []string{"star.live.cf.public.springer.com.", "prod.springer2.map.fastlylb.net.", "151.101.0.95", "151.101.64.95", "151.101.128.95", "151.101.192.95"}
+	r := CreateRecord(a)
+	assert.Len(t, r.cnames, 2)
+	assert.Len(t, r.ips, 4)
+}
