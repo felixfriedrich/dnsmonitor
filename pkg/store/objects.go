@@ -8,8 +8,8 @@ import (
 
 // Domain is used to store a domain name and a list of IP this domain has/had (before)
 type Domain struct {
-	name         string
-	observations []Record
+	Name         string
+	Observations []Record
 }
 
 // Record is used to store the result of the  DNS query and the point in time it has been observed

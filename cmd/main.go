@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dnsmonitor/pkg/store"
 	"flag"
 	"fmt"
 	"strings"
@@ -36,6 +37,9 @@ func main() {
 	for _, a := range r.Answer {
 		answers = append(answers, strings.Fields(a.String())[4])
 	}
+
+	d := store.Domain{Name: domain, Observations: []store.Record{}}
+	d.Observations = append(d.Observations, store.CreateRecord(answers))
 
 	fmt.Println("Found", len(r.Answer), "answer(s).")
 	for _, a := range answers {
