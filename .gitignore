@@ -18,3 +18,6 @@ bin/
 # Development tools
 .idea/
 *.code-workspace
+
+# MacOS
+.DS_Store
