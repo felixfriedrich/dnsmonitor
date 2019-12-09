@@ -32,12 +32,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if len(r.Answer) > 0 {
-		fmt.Println("Found", len(r.Answer), "answer(s).")
-		for _, a := range r.Answer {
-			fmt.Println(strings.Fields(a.String())[4])
-		}
-	} else {
-		fmt.Println("Found 0 answers.")
+	answers := []string{}
+	for _, a := range r.Answer {
+		answers = append(answers, strings.Fields(a.String())[4])
+	}
+
+	fmt.Println("Found", len(r.Answer), "answer(s).")
+	for _, a := range answers {
+		fmt.Println(a)
 	}
 }
