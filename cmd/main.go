@@ -38,8 +38,12 @@ func main() {
 		answers = append(answers, strings.Fields(a.String())[4])
 	}
 
-	d := store.Domain{Name: domain, Observations: []store.Record{}}
+	d, err := store.Get(domain)
+	if err != nil {
+		log.Fatal(err)
+	}
 	d.Observations = append(d.Observations, store.CreateRecord(answers))
+	store.Save(d)
 
 	fmt.Println("Found", len(r.Answer), "answer(s).")
 	for _, a := range answers {
