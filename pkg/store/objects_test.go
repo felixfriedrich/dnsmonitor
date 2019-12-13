@@ -23,3 +23,9 @@ func TestCreateRecordWithCNAMEsAndARecords(t *testing.T) {
 	assert.Len(t, r.cnames, 2)
 	assert.Len(t, r.ips, 4)
 }
+
+func TestCreateDomain(t *testing.T) {
+	d := CreateDomain("www.google.com")
+	assert.Equal(t, "www.google.com", d.Name)
+	assert.Equal(t, 0, len(d.Observations))
+}

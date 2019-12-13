@@ -33,3 +33,8 @@ func CreateRecord(answers []string) Record {
 	sort.Strings(ips)
 	return Record{time: time.Now(), cnames: cnames, ips: ips}
 }
+
+// CreateDomain creates a domain object initialised with the correct namd and an empty list of Observations
+func CreateDomain(domain string) Domain {
+	return Domain{Name: domain, Observations: []Record{}}
+}
