@@ -10,18 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func main() {
-	var domain string
-	flag.StringVar(&domain, "domain", "", "domain")
-	var silent bool
-	flag.BoolVar(&silent, "silent", false, "silence output")
-
-	flag.Parse()
-
-	if !silent {
-		fmt.Println("Checking domain", domain)
-	}
-
+func checkDomain(domain string, silent bool) {
 	m := dns.Msg{}
 	m.SetQuestion(domain+".", dns.TypeA)
 	dnsClient := dns.Client{}
@@ -49,4 +38,19 @@ func main() {
 	for _, a := range answers {
 		fmt.Println(a)
 	}
+}
+
+func main() {
+	var domain string
+	flag.StringVar(&domain, "domain", "", "domain")
+	var silent bool
+	flag.BoolVar(&silent, "silent", false, "silence output")
+
+	flag.Parse()
+
+	if !silent {
+		fmt.Println("Checking domain", domain)
+	}
+
+	checkDomain(domain, silent)
 }
