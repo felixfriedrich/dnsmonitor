@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/miekg/dns"
 	log "github.com/sirupsen/logrus"
@@ -52,5 +53,11 @@ func main() {
 		fmt.Println("Checking domain", domain)
 	}
 
-	checkDomain(domain, silent)
+	ticker := time.NewTicker(1 * time.Second)
+	for {
+		select {
+		case <-ticker.C:
+			checkDomain(domain, silent)
+		}
+	}
 }
