@@ -46,6 +46,8 @@ func main() {
 	flag.StringVar(&domain, "domain", "", "domain")
 	var silent bool
 	flag.BoolVar(&silent, "silent", false, "silence output")
+	var interval int
+	flag.IntVar(&interval, "interval", 1, "interval in seconds")
 
 	flag.Parse()
 
@@ -53,7 +55,7 @@ func main() {
 		fmt.Println("Checking domain", domain)
 	}
 
-	ticker := time.NewTicker(1 * time.Second)
+	ticker := time.NewTicker(time.Duration(interval) * time.Second)
 	for {
 		select {
 		case <-ticker.C:
