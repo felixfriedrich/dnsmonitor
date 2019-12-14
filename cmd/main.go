@@ -8,10 +8,11 @@ import (
 	"time"
 
 	"github.com/miekg/dns"
+	"github.com/pmezard/go-difflib/difflib"
 	log "github.com/sirupsen/logrus"
 )
 
-func checkDomain(domain string, silent bool) {
+func checkDomain(domain string, silent bool) []string {
 	m := dns.Msg{}
 	m.SetQuestion(domain+".", dns.TypeA)
 	dnsClient := dns.Client{}
@@ -28,17 +29,19 @@ func checkDomain(domain string, silent bool) {
 		answers = append(answers, strings.Fields(a.String())[4])
 	}
 
-	d, err := store.Get(domain)
-	if err != nil {
-		log.Fatal(err)
-	}
-	d.Observations = append(d.Observations, store.CreateRecord(answers))
-	store.Save(d)
+	return answers
+}
 
-	fmt.Println("Found", len(r.Answer), "answer(s).")
-	for _, a := range answers {
-		fmt.Println(a)
+func getDiff(domain store.Domain, answers []string) (string, error) {
+	lo := domain.GetLastObservation()
+	diff := difflib.UnifiedDiff{
+		A:        lo.GetAnswers(),
+		B:        answers,
+		FromFile: "Last answer " + lo.Time().String(),
+		ToFile:   "Current answer " + time.Now().String(),
+		Context:  1,
 	}
+	return difflib.GetUnifiedDiffString(diff)
 }
 
 func main() {
@@ -59,7 +62,25 @@ func main() {
 	for {
 		select {
 		case <-ticker.C:
-			checkDomain(domain, silent)
+			a := checkDomain(domain, silent)
+			fmt.Println("Found", len(a), "answer(s).")
+			for _, aa := range a {
+				fmt.Println(aa)
+			}
+
+			d, err := store.Get(domain)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			diff, err := getDiff(d, a)
+			if err != nil {
+				log.Error(err)
+			}
+			fmt.Println(diff)
+
+			d.Observations = append(d.Observations, store.CreateRecord(a))
+			store.Save(d)
 		}
 	}
 }
