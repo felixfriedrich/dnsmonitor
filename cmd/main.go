@@ -1,9 +1,12 @@
 package main
 
 import (
+	"dnsmonitor/config"
 	"dnsmonitor/pkg/store"
 	"flag"
 	"fmt"
+	"net/smtp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -44,6 +47,32 @@ func getDiff(domain store.Domain, answers []string) (string, error) {
 	return difflib.GetUnifiedDiffString(diff)
 }
 
+func sendMail(diff string) error {
+	c := config.CreateMailConfigFromEnvOrDie()
+	if diff != "" {
+		// Set up authentication information.
+		auth := smtp.PlainAuth(
+			"",
+			c.Username,
+			c.Password,
+			c.Host,
+		)
+		// Connect to the server, authenticate, set the sender and recipient,
+		// and send the email all in one step.
+		err := smtp.SendMail(
+			c.Host+":"+strconv.Itoa(c.Port),
+			auth,
+			c.From,
+			[]string{c.To},
+			[]byte(diff),
+		)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func main() {
 	var domain string
 	flag.StringVar(&domain, "domain", "", "domain")
@@ -78,6 +107,10 @@ func main() {
 				log.Error(err)
 			}
 			fmt.Println(diff)
+			err = sendMail(diff)
+			if err != nil {
+				log.Error(err)
+			}
 
 			d.Observations = append(d.Observations, store.CreateRecord(a))
 			store.Save(d)
