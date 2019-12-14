@@ -19,6 +19,11 @@ type Record struct {
 	ips    []string
 }
 
+// Time returns the timestamp of Record r
+func (r Record) Time() time.Time {
+	return r.time
+}
+
 // CreateRecord creates a record with the current time as timestamp
 func CreateRecord(answers []string) Record {
 	cnames := []string{}
