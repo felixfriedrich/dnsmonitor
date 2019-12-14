@@ -43,3 +43,18 @@ func CreateRecord(answers []string) Record {
 func CreateDomain(domain string) Domain {
 	return Domain{Name: domain, Observations: []Record{}}
 }
+
+// GetAnswers return the answers like they have been observed
+func (r Record) GetAnswers() []string {
+	return append(r.cnames, r.ips...)
+}
+
+// GetLastObservation returns the last observation (Record)
+func (d Domain) GetLastObservation() Record {
+	if len(d.Observations) == 0 {
+		return Record{}
+	}
+	lastElement := len(d.Observations) - 1
+	o := d.Observations[lastElement]
+	return o
+}

@@ -29,3 +29,27 @@ func TestCreateDomain(t *testing.T) {
 	assert.Equal(t, "www.google.com", d.Name)
 	assert.Equal(t, 0, len(d.Observations))
 }
+
+func TestGetAnswers(t *testing.T) {
+	// dig +short www.isrctn.com
+	a := []string{"star.live.cf.public.springer.com.", "prod.springer2.map.fastlylb.net.", "151.101.0.95", "151.101.64.95", "151.101.128.95", "151.101.192.95"}
+	r := CreateRecord(a)
+
+	// As the order might have changed from the original input, only lengths are compared
+	assert.Len(t, r.GetAnswers(), len(a))
+}
+
+func TestGetLastObservation(t *testing.T) {
+	d := CreateDomain("example.com")
+	d.Observations = append(d.Observations, CreateRecord([]string{"93.184.216.34"}))
+	d.Observations = append(d.Observations, CreateRecord([]string{"www.example.com", "93.184.216.34"}))
+
+	o := d.GetLastObservation()
+	assert.Equal(t, o.GetAnswers(), []string{"www.example.com", "93.184.216.34"}, o)
+}
+
+func TestGetLastAnswerDoesntExist(t *testing.T) {
+	d := CreateDomain("example.com")
+	o := d.GetLastObservation()
+	assert.Len(t, o.GetAnswers(), 0)
+}
