@@ -1,10 +1,13 @@
 package store
 
 import (
+	"errors"
 	"net"
 	"sort"
 	"strconv"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 // Domain is used to store a domain name and a list of IP this domain has/had (before)
@@ -22,6 +25,12 @@ type Record struct {
 	time   time.Time
 	cnames []string
 	ips    []string
+}
+
+// Equal is needed by cmp.Equal in order to compare two Records
+// We we don't care about the time the observation has been made (Record has been created), only DNS answers are considered
+func (r Record) Equal(rr Record) bool {
+	return cmp.Equal(r.GetAnswers(), rr.GetAnswers())
 }
 
 // Time returns the timestamp of Record r
@@ -62,4 +71,21 @@ func (d *Domain) GetLastObservation() *Record {
 	lastElement := len(d.Observations) - 1
 	o := d.Observations[lastElement]
 	return &o
+}
+
+// LastChangeTime returns the time the last change in DNS answers has been observed
+func (d *Domain) LastChangeTime() (time.Time, error) {
+	if len(d.Observations) == 0 {
+		return time.Time{}, errors.New("no observations made yet")
+	}
+	r := d.Observations[len(d.Observations)-1] // Return time of first Record in case there is just one Record
+	for i := len(d.Observations) - 2; i >= 1; i-- {
+		current := d.Observations[i]
+		next := d.Observations[i-1]
+		equal := cmp.Equal(current, next)
+		if !equal {
+			return current.time, nil
+		}
+	}
+	return r.time, nil
 }
