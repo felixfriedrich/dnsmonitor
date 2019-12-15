@@ -20,6 +20,7 @@ type Monitor struct {
 	domain *store.Domain
 }
 
+// Domain returns a pointer to the Domain
 func (m *Monitor) Domain() *store.Domain {
 	return m.domain
 }
