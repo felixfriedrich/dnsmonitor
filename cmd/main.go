@@ -6,33 +6,11 @@ import (
 	"fmt"
 	"net/smtp"
 	"strconv"
-	"strings"
 	"time"
 
-	"github.com/miekg/dns"
 	"github.com/pmezard/go-difflib/difflib"
 	log "github.com/sirupsen/logrus"
 )
-
-func checkDomain(domain string, silent bool) store.Record {
-	m := dns.Msg{}
-	m.SetQuestion(domain+".", dns.TypeA)
-	dnsClient := dns.Client{}
-	r, t, err := dnsClient.Exchange(&m, "8.8.8.8:53")
-	if err != nil {
-		log.Fatal(err)
-	}
-	if !silent {
-		fmt.Println("DNS query took", t)
-	}
-
-	answers := []string{}
-	for _, a := range r.Answer {
-		answers = append(answers, strings.Fields(a.String())[4])
-	}
-
-	return store.CreateRecord(answers)
-}
 
 func getDiff(domain store.Domain, answers []string) (string, error) {
 	lo := domain.GetLastObservation()
@@ -83,18 +61,17 @@ func main() {
 	for {
 		select {
 		case <-ticker.C:
+			d, err := store.Get(flags.Domain)
+			if err != nil {
+				log.Fatal(err)
+			}
 
-			r := checkDomain(flags.Domain, flags.Silent)
+			r := d.Observe()
 			if !flags.Silent {
 				fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
 				for _, aa := range r.GetAnswers() {
 					fmt.Println(aa)
 				}
-			}
-
-			d, err := store.Get(flags.Domain)
-			if err != nil {
-				log.Fatal(err)
 			}
 
 			diff, err := getDiff(d, r.GetAnswers())
@@ -111,7 +88,6 @@ func main() {
 				}
 			}
 
-			d.Observations = append(d.Observations, r)
 			err = store.Save(d)
 			if err != nil {
 				log.Fatal(err)
