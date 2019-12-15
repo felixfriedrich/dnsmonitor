@@ -8,6 +8,9 @@ release:
 	env GOOS=linux GOARCH=amd64 go build -o bin/dnsmonitor-linux-amd64 cmd/main.go
 	env GOOS=darwin GOARCH=amd64 go build -o bin/dnsmonitor-darwin-amd64 cmd/main.go
 
+update:
+	go get -u ./...
+
 test:
 	go test ./...
 
