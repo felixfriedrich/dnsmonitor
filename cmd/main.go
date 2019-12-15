@@ -5,6 +5,7 @@ import (
 	"dnsmonitor/pkg/store"
 	"fmt"
 	"net/smtp"
+	"os"
 	"strconv"
 	"time"
 
@@ -52,6 +53,11 @@ func sendMail(diff string) error {
 
 func main() {
 	flags := config.ParseFlags()
+
+	if flags.Version {
+		fmt.Println("dnsmonitor v0.1")
+		os.Exit(0)
+	}
 
 	if !flags.Silent {
 		fmt.Println("Checking domain", flags.Domain)

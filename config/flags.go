@@ -8,6 +8,7 @@ type Flags struct {
 	Silent   bool
 	Interval int
 	Mail     bool
+	Version  bool
 }
 
 // ParseFlags parses all command line flags and returns an object containing the values
@@ -17,6 +18,7 @@ func ParseFlags() Flags {
 	flag.BoolVar(&f.Silent, "silent", false, "silence output")
 	flag.IntVar(&f.Interval, "interval", 1, "interval in seconds")
 	flag.BoolVar(&f.Mail, "mail", false, "send mail if DNS record changes")
+	flag.BoolVar(&f.Version, "version", false, "print version")
 	flag.Parse()
 	return f
 }
