@@ -94,9 +94,11 @@ func main() {
 		select {
 		case <-ticker.C:
 			a := checkDomain(domain, silent)
-			fmt.Println("Found", len(a), "answer(s).")
-			for _, aa := range a {
-				fmt.Println(aa)
+			if !silent {
+				fmt.Println("Found", len(a), "answer(s).")
+				for _, aa := range a {
+					fmt.Println(aa)
+				}
 			}
 
 			d, err := store.Get(domain)
@@ -108,7 +110,9 @@ func main() {
 			if err != nil {
 				log.Error(err)
 			}
-			fmt.Println(diff)
+			if !silent {
+				fmt.Println(diff)
+			}
 			if mail {
 				err = sendMail(diff)
 				if err != nil {
