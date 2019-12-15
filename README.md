@@ -24,3 +24,20 @@ DNSMONITOR_MAIL_TO          String                  true
 ```
 $ ./bin/dnsmonitor -domain www.google.com
 ```
+
+* Command line flags
+```
+Usage of ./bin/dnsmonitor:
+  -DNS string
+    	DNS server (default "8.8.8.8")
+  -domain value
+    	domain to check. Can be used multiple times.
+  -interval int
+    	interval in seconds (default 1)
+  -mail
+    	send mail if DNS record changes
+  -silent
+    	silence output
+  -version
+    	print version
+```
