@@ -17,10 +17,10 @@ import (
 // Monitor holds all flags and a domain object from the store
 type Monitor struct {
 	flags  config.Flags
-	domain store.Domain
+	domain *store.Domain
 }
 
-func (m Monitor) Domain() store.Domain {
+func (m *Monitor) Domain() *store.Domain {
 	return m.domain
 }
 
@@ -35,7 +35,7 @@ func CreateMonitor(domain string, flags config.Flags) (Monitor, error) {
 }
 
 // Check does a DNS query to find all answers until hitting A records and saves them in the store
-func (m Monitor) Check() {
+func (m *Monitor) Check() {
 	r := m.Observe()
 	if !m.flags.Silent {
 		fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
@@ -64,7 +64,7 @@ func (m Monitor) Check() {
 	}
 }
 
-func (m Monitor) sendMail(diff string) error {
+func (m *Monitor) sendMail(diff string) error {
 	c := config.CreateMailConfigFromEnvOrDie()
 	if diff != "" {
 		// Set up authentication information.
@@ -90,7 +90,7 @@ func (m Monitor) sendMail(diff string) error {
 	return nil
 }
 
-func (m Monitor) getDiff(answers []string) (string, error) {
+func (m *Monitor) getDiff(answers []string) (string, error) {
 	lo := m.domain.GetLastObservation()
 	diff := difflib.UnifiedDiff{
 		A:        lo.GetAnswers(),
@@ -103,7 +103,7 @@ func (m Monitor) getDiff(answers []string) (string, error) {
 }
 
 // Observe queries DNS and creates a Record of observed answers
-func (m Monitor) Observe() store.Record {
+func (m *Monitor) Observe() store.Record {
 	msg := dns.Msg{}
 	msg.SetQuestion(m.domain.Name+".", dns.TypeA)
 	dnsClient := dns.Client{}
@@ -118,6 +118,6 @@ func (m Monitor) Observe() store.Record {
 	}
 
 	record := store.CreateRecord(answers)
-	m.domain.Observations = append(m.domain.Observations, record)
-	return record
+	m.domain.Observations = append(m.domain.Observations, *record)
+	return *record
 }

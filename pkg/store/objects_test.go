@@ -41,8 +41,8 @@ func TestGetAnswers(t *testing.T) {
 
 func TestGetLastObservation(t *testing.T) {
 	d := CreateDomain("example.com")
-	d.Observations = append(d.Observations, CreateRecord([]string{"93.184.216.34"}))
-	d.Observations = append(d.Observations, CreateRecord([]string{"www.example.com", "93.184.216.34"}))
+	d.Observations = append(d.Observations, *CreateRecord([]string{"93.184.216.34"}))
+	d.Observations = append(d.Observations, *CreateRecord([]string{"www.example.com", "93.184.216.34"}))
 
 	o := d.GetLastObservation()
 	assert.Equal(t, o.GetAnswers(), []string{"www.example.com", "93.184.216.34"}, o)

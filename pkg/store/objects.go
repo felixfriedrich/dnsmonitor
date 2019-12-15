@@ -3,6 +3,7 @@ package store
 import (
 	"net"
 	"sort"
+	"strconv"
 	"time"
 )
 
@@ -12,9 +13,8 @@ type Domain struct {
 	Observations []Record
 }
 
-func (d Domain) String() string {
-	return d.Name
-	// return d.Name+" ["+strconv.Itoa(len(d.Observations))+" observations]"
+func (d *Domain) String() string {
+	return d.Name+" ["+strconv.Itoa(len(d.Observations))+" observations]"
 }
 
 // Record is used to store the result of the  DNS query and the point in time it has been observed
@@ -25,12 +25,12 @@ type Record struct {
 }
 
 // Time returns the timestamp of Record r
-func (r Record) Time() time.Time {
+func (r *Record) Time() time.Time {
 	return r.time
 }
 
 // CreateRecord creates a record with the current time as timestamp
-func CreateRecord(answers []string) Record {
+func CreateRecord(answers []string) *Record {
 	cnames := []string{}
 	ips := []string{}
 	for _, a := range answers {
@@ -41,25 +41,25 @@ func CreateRecord(answers []string) Record {
 		}
 	}
 	sort.Strings(ips)
-	return Record{time: time.Now(), cnames: cnames, ips: ips}
+	return &Record{time: time.Now(), cnames: cnames, ips: ips}
 }
 
-// CreateDomain creates a domain object initialised with the correct namd and an empty list of Observations
-func CreateDomain(domain string) Domain {
-	return Domain{Name: domain, Observations: []Record{}}
+// CreateDomain creates a domain object initialised with the correct name and an empty list of Observations
+func CreateDomain(domain string) *Domain {
+	return &Domain{Name: domain, Observations: []Record{}}
 }
 
 // GetAnswers return the answers like they have been observed
-func (r Record) GetAnswers() []string {
+func (r *Record) GetAnswers() []string {
 	return append(r.cnames, r.ips...)
 }
 
 // GetLastObservation returns the last observation (Record)
-func (d Domain) GetLastObservation() Record {
+func (d *Domain) GetLastObservation() *Record {
 	if len(d.Observations) == 0 {
-		return Record{}
+		return &Record{}
 	}
 	lastElement := len(d.Observations) - 1
 	o := d.Observations[lastElement]
-	return o
+	return &o
 }

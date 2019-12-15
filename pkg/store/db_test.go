@@ -28,7 +28,7 @@ func TestGetNewDomain(t *testing.T) {
 
 func TestGetExisting(t *testing.T) {
 	d := CreateDomain("example.com")
-	d.Observations = append(d.Observations, CreateRecord([]string{"93.184.216.34"}))
+	d.Observations = append(d.Observations, *CreateRecord([]string{"93.184.216.34"}))
 	Save(d)
 
 	g, err := Get("example.com")
