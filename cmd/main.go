@@ -121,7 +121,10 @@ func main() {
 			}
 
 			d.Observations = append(d.Observations, store.CreateRecord(a))
-			store.Save(d)
+			err = store.Save(d)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 }
