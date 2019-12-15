@@ -1,4 +1,4 @@
-all: build test
+all: fmt lint build test
 	:
 
 build:
