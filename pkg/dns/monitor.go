@@ -103,7 +103,7 @@ func (m Monitor) Observe() store.Record {
 	msg := dns.Msg{}
 	msg.SetQuestion(m.domain.Name+".", dns.TypeA)
 	dnsClient := dns.Client{}
-	r, _, err := dnsClient.Exchange(&msg, "8.8.4.4:53")
+	r, _, err := dnsClient.Exchange(&msg, m.flags.DNS+":53")
 	if err != nil {
 		log.Fatal(err)
 	}
