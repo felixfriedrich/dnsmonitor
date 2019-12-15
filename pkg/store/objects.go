@@ -12,6 +12,11 @@ type Domain struct {
 	Observations []Record
 }
 
+func (d Domain) String() string {
+	return d.Name
+	// return d.Name+" ["+strconv.Itoa(len(d.Observations))+" observations]"
+}
+
 // Record is used to store the result of the  DNS query and the point in time it has been observed
 type Record struct {
 	time   time.Time

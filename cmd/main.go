@@ -18,19 +18,25 @@ func main() {
 		os.Exit(0)
 	}
 
-	if !flags.Silent {
-		fmt.Println("Checking domain", flags.Domain)
+	monitors := []dns.Monitor{}
+	for _, d := range flags.Domains {
+		m, err := dns.CreateMonitor(d, flags)
+		if err != nil {
+			log.Error(err)
+		}
+		monitors = append(monitors, m)
 	}
 
 	ticker := time.NewTicker(time.Duration(flags.Interval) * time.Second)
-	m, err := dns.CreateMonitor(flags)
-	if err != nil {
-		log.Error(err)
-	}
 	for {
 		select {
 		case <-ticker.C:
-			m.Check()
+			for _, m := range monitors {
+				if !flags.Silent {
+					fmt.Println("Checking domain", m.Domain())
+				}
+				m.Check()
+			}
 		}
 	}
 }

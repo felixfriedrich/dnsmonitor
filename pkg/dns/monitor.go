@@ -14,15 +14,19 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Monitor holds all flags and a Domain object from the store
+// Monitor holds all flags and a domain object from the store
 type Monitor struct {
 	flags  config.Flags
 	domain store.Domain
 }
 
-// CreateMonitor creates a Monitor fetching a Domain from the store
-func CreateMonitor(flags config.Flags) (Monitor, error) {
-	d, err := store.Get(flags.Domain)
+func (m Monitor) Domain() store.Domain {
+	return m.domain
+}
+
+// CreateMonitor creates a Monitor fetching a domain from the store
+func CreateMonitor(domain string, flags config.Flags) (Monitor, error) {
+	d, err := store.Get(domain)
 	if err != nil {
 		return Monitor{}, err
 	}

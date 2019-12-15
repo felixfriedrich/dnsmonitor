@@ -4,9 +4,27 @@ import (
 	"flag"
 )
 
+type domains []string
+
+func (d *domains) String() string {
+	r := "["
+	for i, s := range *d {
+		r = r + s
+		if i != len(*d)-1 {
+			r = r + ", "
+		}
+	}
+	return r + "]"
+}
+
+func (d *domains) Set(value string) error {
+	*d = append(*d, value)
+	return nil
+}
+
 // Flags contains values parsed from command line flags
 type Flags struct {
-	Domain   string
+	Domains  domains
 	DNS      string
 	Silent   bool
 	Interval int
@@ -17,7 +35,7 @@ type Flags struct {
 // ParseFlags parses all command line flags and returns an object containing the values
 func ParseFlags() Flags {
 	f := Flags{}
-	flag.StringVar(&f.Domain, "domain", "", "domain")
+	flag.Var(&f.Domains, "domain", "domain to check. Can be used multiple times.")
 	flag.StringVar(&f.DNS, "DNS", "8.8.8.8", "DNS server")
 	flag.BoolVar(&f.Silent, "silent", false, "silence output")
 	flag.IntVar(&f.Interval, "interval", 1, "interval in seconds")
