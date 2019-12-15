@@ -20,11 +20,11 @@ func checkDomain(domain string, silent bool) []string {
 	m.SetQuestion(domain+".", dns.TypeA)
 	dnsClient := dns.Client{}
 	r, t, err := dnsClient.Exchange(&m, "8.8.8.8:53")
-	if !silent {
-		fmt.Println("DNS query took", t)
-	}
 	if err != nil {
 		log.Fatal(err)
+	}
+	if !silent {
+		fmt.Println("DNS query took", t)
 	}
 
 	answers := []string{}
