@@ -15,7 +15,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func checkDomain(domain string, silent bool) []string {
+func checkDomain(domain string, silent bool) store.Record {
 	m := dns.Msg{}
 	m.SetQuestion(domain+".", dns.TypeA)
 	dnsClient := dns.Client{}
@@ -32,7 +32,7 @@ func checkDomain(domain string, silent bool) []string {
 		answers = append(answers, strings.Fields(a.String())[4])
 	}
 
-	return answers
+	return store.CreateRecord(answers)
 }
 
 func getDiff(domain store.Domain, answers []string) (string, error) {
@@ -93,10 +93,10 @@ func main() {
 	for {
 		select {
 		case <-ticker.C:
-			a := checkDomain(domain, silent)
+			r := checkDomain(domain, silent)
 			if !silent {
-				fmt.Println("Found", len(a), "answer(s).")
-				for _, aa := range a {
+				fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
+				for _, aa := range r.GetAnswers() {
 					fmt.Println(aa)
 				}
 			}
@@ -106,7 +106,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			diff, err := getDiff(d, a)
+			diff, err := getDiff(d, r.GetAnswers())
 			if err != nil {
 				log.Error(err)
 			}
@@ -120,7 +120,7 @@ func main() {
 				}
 			}
 
-			d.Observations = append(d.Observations, store.CreateRecord(a))
+			d.Observations = append(d.Observations, r)
 			err = store.Save(d)
 			if err != nil {
 				log.Fatal(err)
