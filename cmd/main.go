@@ -3,7 +3,6 @@ package main
 import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/store"
-	"flag"
 	"fmt"
 	"net/smtp"
 	"strconv"
@@ -74,34 +73,26 @@ func sendMail(diff string) error {
 }
 
 func main() {
-	var domain string
-	flag.StringVar(&domain, "domain", "", "domain")
-	var silent bool
-	flag.BoolVar(&silent, "silent", false, "silence output")
-	var interval int
-	flag.IntVar(&interval, "interval", 1, "interval in seconds")
-	var mail bool
-	flag.BoolVar(&mail, "mail", false, "send mail if DNS record changes")
+	flags := config.ParseFlags()
 
-	flag.Parse()
-
-	if !silent {
-		fmt.Println("Checking domain", domain)
+	if !flags.Silent {
+		fmt.Println("Checking domain", flags.Domain)
 	}
 
-	ticker := time.NewTicker(time.Duration(interval) * time.Second)
+	ticker := time.NewTicker(time.Duration(flags.Interval) * time.Second)
 	for {
 		select {
 		case <-ticker.C:
-			r := checkDomain(domain, silent)
-			if !silent {
+
+			r := checkDomain(flags.Domain, flags.Silent)
+			if !flags.Silent {
 				fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
 				for _, aa := range r.GetAnswers() {
 					fmt.Println(aa)
 				}
 			}
 
-			d, err := store.Get(domain)
+			d, err := store.Get(flags.Domain)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -110,10 +101,10 @@ func main() {
 			if err != nil {
 				log.Error(err)
 			}
-			if !silent {
+			if !flags.Silent {
 				fmt.Println(diff)
 			}
-			if mail {
+			if flags.Mail {
 				err = sendMail(diff)
 				if err != nil {
 					log.Error(err)
