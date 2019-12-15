@@ -4,7 +4,7 @@ all: build test
 build:
 	go build -o bin/dnsmonitor cmd/main.go
 
-release:
+release: fmt lint update test
 	env GOOS=linux GOARCH=amd64 go build -o bin/dnsmonitor-linux-amd64 cmd/main.go
 	env GOOS=darwin GOARCH=amd64 go build -o bin/dnsmonitor-darwin-amd64 cmd/main.go
 
