@@ -23,13 +23,13 @@ func main() {
 	}
 
 	ticker := time.NewTicker(time.Duration(flags.Interval) * time.Second)
+	m, err := dns.CreateMonitor(flags)
+	if err != nil {
+		log.Error(err)
+	}
 	for {
 		select {
 		case <-ticker.C:
-			m, err := dns.CreateMonitor(flags)
-			if err != nil {
-				log.Error(err)
-			}
 			m.Check()
 		}
 	}
