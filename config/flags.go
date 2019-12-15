@@ -1,6 +1,8 @@
 package config
 
-import "flag"
+import (
+	"flag"
+)
 
 // Flags contains values parsed from command line flags
 type Flags struct {
