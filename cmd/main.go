@@ -80,6 +80,8 @@ func main() {
 	flag.BoolVar(&silent, "silent", false, "silence output")
 	var interval int
 	flag.IntVar(&interval, "interval", 1, "interval in seconds")
+	var mail bool
+	flag.BoolVar(&mail, "mail", false, "send mail if DNS record changes")
 
 	flag.Parse()
 
@@ -107,9 +109,11 @@ func main() {
 				log.Error(err)
 			}
 			fmt.Println(diff)
-			err = sendMail(diff)
-			if err != nil {
-				log.Error(err)
+			if mail {
+				err = sendMail(diff)
+				if err != nil {
+					log.Error(err)
+				}
 			}
 
 			d.Observations = append(d.Observations, store.CreateRecord(a))
