@@ -1,11 +1,8 @@
 package store
 
 import (
-	"github.com/miekg/dns"
-	"log"
 	"net"
 	"sort"
-	"strings"
 	"time"
 )
 
@@ -60,24 +57,4 @@ func (d Domain) GetLastObservation() Record {
 	lastElement := len(d.Observations) - 1
 	o := d.Observations[lastElement]
 	return o
-}
-
-// Observe queries DNS and creates a Record of observed answers
-func (d Domain) Observe() Record {
-	m := dns.Msg{}
-	m.SetQuestion(d.Name+".", dns.TypeA)
-	dnsClient := dns.Client{}
-	r, _, err := dnsClient.Exchange(&m, "8.8.8.8:53")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	answers := []string{}
-	for _, a := range r.Answer {
-		answers = append(answers, strings.Fields(a.String())[4])
-	}
-
-	record := CreateRecord(answers)
-	d.Observations = append(d.Observations, record)
-	return record
 }

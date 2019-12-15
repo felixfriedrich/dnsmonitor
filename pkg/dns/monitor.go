@@ -4,9 +4,11 @@ import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/store"
 	"fmt"
+	"github.com/miekg/dns"
 	"github.com/pmezard/go-difflib/difflib"
 	"net/smtp"
 	"strconv"
+	"strings"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -30,7 +32,7 @@ func CreateMonitor(flags config.Flags) (Monitor, error) {
 
 // Check does a DNS query to find all answers until hitting A records and saves them in the store
 func (m Monitor) Check() {
-	r := m.domain.Observe()
+	r := m.Observe()
 	if !m.flags.Silent {
 		fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
 		for _, aa := range r.GetAnswers() {
@@ -94,4 +96,24 @@ func (m Monitor) getDiff(answers []string) (string, error) {
 		Context:  1,
 	}
 	return difflib.GetUnifiedDiffString(diff)
+}
+
+// Observe queries DNS and creates a Record of observed answers
+func (m Monitor) Observe() store.Record {
+	msg := dns.Msg{}
+	msg.SetQuestion(m.domain.Name+".", dns.TypeA)
+	dnsClient := dns.Client{}
+	r, _, err := dnsClient.Exchange(&msg, "8.8.4.4:53")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	answers := []string{}
+	for _, a := range r.Answer {
+		answers = append(answers, strings.Fields(a.String())[4])
+	}
+
+	record := store.CreateRecord(answers)
+	m.domain.Observations = append(m.domain.Observations, record)
+	return record
 }
