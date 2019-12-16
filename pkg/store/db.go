@@ -1,11 +1,13 @@
 package store
 
+import "dnsmonitor/pkg/model"
+
 var (
-	data map[string]*Domain
+	data map[string]*model.Domain
 )
 
 func init() {
-	data = map[string]*Domain{}
+	data = map[string]*model.Domain{}
 }
 
 // CleanUp would clean files from disk in the future
@@ -14,15 +16,15 @@ func CleanUp() error {
 }
 
 // Get fetches an object for that domain or returns a new entry in case there isn't any yet
-func Get(domain string) (*Domain, error) {
+func Get(domain string) (*model.Domain, error) {
 	if d, ok := data[domain]; ok {
 		return d, nil
 	}
-	return CreateDomain(domain), nil
+	return model.CreateDomain(domain), nil
 }
 
 // Save saves a domain object
-func Save(domain *Domain) error {
+func Save(domain *model.Domain) error {
 	data[domain.Name] = domain
 	return nil
 }

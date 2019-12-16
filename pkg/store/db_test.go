@@ -1,6 +1,7 @@
 package store
 
 import (
+	"dnsmonitor/pkg/model"
 	"os"
 	"testing"
 
@@ -14,7 +15,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestSave(t *testing.T) {
-	d := CreateDomain("example.com")
+	d := model.CreateDomain("example.com")
 	err := Save(d)
 	assert.NoError(t, err)
 }
@@ -27,8 +28,8 @@ func TestGetNewDomain(t *testing.T) {
 }
 
 func TestGetExisting(t *testing.T) {
-	d := CreateDomain("example.com")
-	d.Observations = append(d.Observations, *CreateRecord([]string{"93.184.216.34"}))
+	d := model.CreateDomain("example.com")
+	d.Observations = append(d.Observations, *model.CreateRecord([]string{"93.184.216.34"}))
 	Save(d)
 
 	g, err := Get("example.com")

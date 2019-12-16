@@ -2,6 +2,7 @@ package dns
 
 import (
 	"dnsmonitor/config"
+	"dnsmonitor/pkg/model"
 	"dnsmonitor/pkg/store"
 	"net/smtp"
 	"strconv"
@@ -14,20 +15,20 @@ import (
 // Monitor is an interface, which is used to enforce the use of CreateMonitor as the struct monitor can not be created
 // differently, because it's private
 type Monitor interface {
-	Domain() *store.Domain
+	Domain() *model.Domain
 	Config() config.Config
-	Observe() store.Record
-	Check() store.Record
+	Observe() model.Record
+	Check() model.Record
 }
 
 // Monitor holds a Config and a Domain object from the store
 type monitor struct {
-	domain *store.Domain
+	domain *model.Domain
 	config config.Config
 }
 
 // Domain returns a pointer to the Domain
-func (m monitor) Domain() *store.Domain {
+func (m monitor) Domain() *model.Domain {
 	return m.domain
 }
 
@@ -46,7 +47,7 @@ func CreateMonitor(domain string, config config.Config) (Monitor, error) {
 }
 
 // Check does a DNS query to find all answers until hitting A records and saves them in the store
-func (m monitor) Check() store.Record {
+func (m monitor) Check() model.Record {
 	record := m.Observe()
 
 	if m.config.Mail {
@@ -91,7 +92,7 @@ func (m monitor) sendMail(diff string) error {
 }
 
 // Observe queries DNS and creates a Record of observed answers
-func (m monitor) Observe() store.Record {
+func (m monitor) Observe() model.Record {
 	msg := dns.Msg{}
 	msg.SetQuestion(m.domain.Name+".", dns.TypeA)
 	dnsClient := dns.Client{}
@@ -105,7 +106,7 @@ func (m monitor) Observe() store.Record {
 		answers = append(answers, strings.Fields(a.String())[4])
 	}
 
-	record := store.CreateRecord(answers)
+	record := model.CreateRecord(answers)
 	m.domain.Observations = append(m.domain.Observations, *record)
 	return *record
 }
