@@ -43,7 +43,7 @@ func main() {
 						fmt.Println(aa)
 					}
 
-					diff, _ := m.Domain().GetDiff(r)
+					diff, _ := m.Domain().GetDiff()
 					fmt.Println(diff)
 				}
 			}

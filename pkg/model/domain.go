@@ -26,14 +26,14 @@ func CreateDomain(domain string) *Domain {
 }
 
 // GetDiff returns the difference between a Record r and the last observation of that domain
-func (d *Domain) GetDiff(r Record) (string, error) {
+func (d *Domain) GetDiff() (string, error) {
 	lo, err := d.LastChangeRecord()
 	if err != nil {
 		return err.Error(), nil // using error message as diff for now :-)
 	}
 	diff := difflib.UnifiedDiff{
 		A:        lo.GetAnswers(),
-		B:        r.GetAnswers(),
+		B:        d.GetLastObservation().GetAnswers(),
 		FromFile: "Last answer " + lo.Time().String(),
 		ToFile:   "Current answer " + time.Now().String(),
 		Context:  1,

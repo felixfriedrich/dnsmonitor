@@ -51,7 +51,7 @@ func (m monitor) Check() model.Record {
 	record := m.Observe()
 
 	if m.config.Mail {
-		diff, _ := m.Domain().GetDiff(record)
+		diff, _ := m.Domain().GetDiff()
 		err := m.sendMail(diff)
 		if err != nil {
 			log.Error(err)
