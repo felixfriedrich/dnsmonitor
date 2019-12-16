@@ -20,7 +20,7 @@ func main() {
 
 	monitors := []dns.Monitor{}
 	for _, d := range flags.Domains {
-		m, err := dns.CreateMonitor(d, flags)
+		m, err := dns.CreateMonitor(d, config.CreateConfigFromFlags(flags))
 		if err != nil {
 			log.Error(err)
 		}

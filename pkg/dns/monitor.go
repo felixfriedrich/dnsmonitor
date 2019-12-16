@@ -14,31 +14,44 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Monitor holds all flags and a domain object from the store
-type Monitor struct {
-	flags  config.Flags
+// Monitor is an interface, which is used to enforce the use of CreateMonitor as the struct monitor can not be created
+// differently, because it's private
+type Monitor interface {
+	Domain() *store.Domain
+	Config() config.Config
+	Observe() store.Record
+	Check()
+}
+
+// Monitor holds a Config and a Domain object from the store
+type monitor struct {
 	domain *store.Domain
+	config config.Config
 }
 
 // Domain returns a pointer to the Domain
-func (m *Monitor) Domain() *store.Domain {
+func (m monitor) Domain() *store.Domain {
 	return m.domain
 }
 
+func (m monitor) Config() config.Config {
+	return m.config
+}
+
 // CreateMonitor creates a Monitor fetching a domain from the store
-func CreateMonitor(domain string, flags config.Flags) (Monitor, error) {
+func CreateMonitor(domain string, config config.Config) (Monitor, error) {
 	d, err := store.Get(domain)
 	if err != nil {
-		return Monitor{}, err
+		return monitor{}, err
 	}
-	m := Monitor{flags: flags, domain: d}
+	m := monitor{domain: d, config: config}
 	return m, nil
 }
 
 // Check does a DNS query to find all answers until hitting A records and saves them in the store
-func (m *Monitor) Check() {
+func (m monitor) Check() {
 	r := m.Observe()
-	if !m.flags.Silent {
+	if !m.config.Silent {
 		fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
 		for _, aa := range r.GetAnswers() {
 			fmt.Println(aa)
@@ -49,10 +62,10 @@ func (m *Monitor) Check() {
 	if err != nil {
 		log.Error(err)
 	}
-	if !m.flags.Silent {
+	if !m.config.Silent {
 		fmt.Println(diff)
 	}
-	if m.flags.Mail {
+	if m.config.Mail {
 		err = m.sendMail(diff)
 		if err != nil {
 			log.Error(err)
@@ -65,7 +78,7 @@ func (m *Monitor) Check() {
 	}
 }
 
-func (m *Monitor) sendMail(diff string) error {
+func (m monitor) sendMail(diff string) error {
 	c := config.CreateMailConfigFromEnvOrDie()
 	if diff != "" {
 		// Set up authentication information.
@@ -91,7 +104,7 @@ func (m *Monitor) sendMail(diff string) error {
 	return nil
 }
 
-func (m *Monitor) getDiff(answers []string) (string, error) {
+func (m monitor) getDiff(answers []string) (string, error) {
 	lo := m.domain.GetLastObservation()
 	diff := difflib.UnifiedDiff{
 		A:        lo.GetAnswers(),
@@ -104,11 +117,11 @@ func (m *Monitor) getDiff(answers []string) (string, error) {
 }
 
 // Observe queries DNS and creates a Record of observed answers
-func (m *Monitor) Observe() store.Record {
+func (m monitor) Observe() store.Record {
 	msg := dns.Msg{}
 	msg.SetQuestion(m.domain.Name+".", dns.TypeA)
 	dnsClient := dns.Client{}
-	r, _, err := dnsClient.Exchange(&msg, m.flags.DNS+":53")
+	r, _, err := dnsClient.Exchange(&msg, m.config.DNS+":53")
 	if err != nil {
 		log.Fatal(err)
 	}
