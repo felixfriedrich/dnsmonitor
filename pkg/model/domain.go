@@ -56,7 +56,10 @@ func (d *Domain) LastChangeRecord() (Record, error) {
 	if len(d.Observations) == 0 {
 		return Record{}, errors.New("no observations made yet")
 	}
-	r := d.Observations[len(d.Observations)-1] // Return time of first Record in case there is just one Record
+	if len(d.Observations) == 1 {
+		return d.Observations[len(d.Observations)-1], nil
+	}
+
 	for i := len(d.Observations) - 2; i >= 1; i-- {
 		current := d.Observations[i]
 		next := d.Observations[i-1]
@@ -65,5 +68,7 @@ func (d *Domain) LastChangeRecord() (Record, error) {
 			return current, nil
 		}
 	}
-	return r, nil
+
+	// In case the loop doesn't find any change, it must be the first change. So the first record is returned.
+	return d.Observations[0], nil
 }

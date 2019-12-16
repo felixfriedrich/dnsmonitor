@@ -36,7 +36,7 @@ func TestDomain_LastChangeRecordFirstEntry(t *testing.T) {
 	assert.Equal(t, r1, lastChange)
 }
 
-// If this is the fist change to be observed we want the time of the last Observation to be returned
+// If this is the fist change to be observed we want first Observation to be returned
 func TestDomain_LastChangeRecordFirstChange(t *testing.T) {
 	d := CreateDomain("example.com")
 	r1 := *CreateRecord([]string{"93.184.216.33"})
@@ -46,7 +46,7 @@ func TestDomain_LastChangeRecordFirstChange(t *testing.T) {
 	d.Observations = append(d.Observations, r1, r2, r3, r4)
 	lastChange, err := d.LastChangeRecord()
 	assert.NoError(t, err)
-	assert.Equal(t, r4, lastChange)
+	assert.Equal(t, r1, lastChange)
 }
 
 func TestDomain_LastChangeRecordOnlyChanges(t *testing.T) {
