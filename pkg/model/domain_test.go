@@ -67,17 +67,17 @@ func TestDomain_LastChangeRecordNoObservation(t *testing.T) {
 	assert.Error(t, err)
 }
 
-func TestDomain_GetLastObservation(t *testing.T) {
+func TestDomain_LastObservation(t *testing.T) {
 	d := CreateDomain("example.com")
 	d.Observations = append(d.Observations, *CreateRecord([]string{"93.184.216.34"}))
 	d.Observations = append(d.Observations, *CreateRecord([]string{"www.example.com", "93.184.216.34"}))
 
-	o := d.GetLastObservation()
+	o := d.LastObservation()
 	assert.Equal(t, o.GetAnswers(), []string{"www.example.com", "93.184.216.34"}, o)
 }
 
-func TestDomain_GetLastObservationNoRecords(t *testing.T) {
+func TestDomain_LastObservationNoRecords(t *testing.T) {
 	d := CreateDomain("example.com")
-	o := d.GetLastObservation()
+	o := d.LastObservation()
 	assert.Len(t, o.GetAnswers(), 0)
 }

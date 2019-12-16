@@ -33,7 +33,7 @@ func (d *Domain) GetDiff() (string, error) {
 	}
 	diff := difflib.UnifiedDiff{
 		A:        lo.GetAnswers(),
-		B:        d.GetLastObservation().GetAnswers(),
+		B:        d.LastObservation().GetAnswers(),
 		FromFile: "Last answer " + lo.Time().String(),
 		ToFile:   "Current answer " + time.Now().String(),
 		Context:  1,
@@ -41,8 +41,8 @@ func (d *Domain) GetDiff() (string, error) {
 	return difflib.GetUnifiedDiffString(diff)
 }
 
-// GetLastObservation returns the last observation (Record)
-func (d *Domain) GetLastObservation() *Record {
+// LastObservation returns the last observation (Record)
+func (d *Domain) LastObservation() *Record {
 	if len(d.Observations) == 0 {
 		return &Record{}
 	}
