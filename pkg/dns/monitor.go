@@ -3,14 +3,11 @@ package dns
 import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/store"
-	"fmt"
-	"github.com/miekg/dns"
-	"github.com/pmezard/go-difflib/difflib"
 	"net/smtp"
 	"strconv"
 	"strings"
-	"time"
 
+	"github.com/miekg/dns"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -20,7 +17,7 @@ type Monitor interface {
 	Domain() *store.Domain
 	Config() config.Config
 	Observe() store.Record
-	Check()
+	Check() store.Record
 }
 
 // Monitor holds a Config and a Domain object from the store
@@ -49,33 +46,22 @@ func CreateMonitor(domain string, config config.Config) (Monitor, error) {
 }
 
 // Check does a DNS query to find all answers until hitting A records and saves them in the store
-func (m monitor) Check() {
-	r := m.Observe()
-	if !m.config.Silent {
-		fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
-		for _, aa := range r.GetAnswers() {
-			fmt.Println(aa)
-		}
-	}
+func (m monitor) Check() store.Record {
+	record := m.Observe()
 
-	diff, err := m.getDiff(r.GetAnswers())
-	if err != nil {
-		log.Error(err)
-	}
-	if !m.config.Silent {
-		fmt.Println(diff)
-	}
 	if m.config.Mail {
-		err = m.sendMail(diff)
+		diff, _ := m.Domain().GetDiff(record)
+		err := m.sendMail(diff)
 		if err != nil {
 			log.Error(err)
 		}
 	}
 
-	err = store.Save(m.domain)
+	err := store.Save(m.domain)
 	if err != nil {
 		log.Fatal(err)
 	}
+	return record
 }
 
 func (m monitor) sendMail(diff string) error {
@@ -102,18 +88,6 @@ func (m monitor) sendMail(diff string) error {
 		}
 	}
 	return nil
-}
-
-func (m monitor) getDiff(answers []string) (string, error) {
-	lo := m.domain.GetLastObservation()
-	diff := difflib.UnifiedDiff{
-		A:        lo.GetAnswers(),
-		B:        answers,
-		FromFile: "Last answer " + lo.Time().String(),
-		ToFile:   "Current answer " + time.Now().String(),
-		Context:  1,
-	}
-	return difflib.GetUnifiedDiffString(diff)
 }
 
 // Observe queries DNS and creates a Record of observed answers

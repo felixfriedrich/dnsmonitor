@@ -35,7 +35,17 @@ func main() {
 				if !flags.Silent {
 					fmt.Println("Checking domain", m.Domain())
 				}
-				m.Check()
+				r := m.Check()
+
+				if !flags.Silent {
+					fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
+					for _, aa := range r.GetAnswers() {
+						fmt.Println(aa)
+					}
+
+					diff, _ := m.Domain().GetDiff(r)
+					fmt.Println(diff)
+				}
 			}
 		}
 	}

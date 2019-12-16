@@ -2,6 +2,7 @@ package store
 
 import (
 	"errors"
+	"github.com/pmezard/go-difflib/difflib"
 	"net"
 	"sort"
 	"strconv"
@@ -61,6 +62,19 @@ func CreateDomain(domain string) *Domain {
 // GetAnswers return the answers like they have been observed
 func (r *Record) GetAnswers() []string {
 	return append(r.cnames, r.ips...)
+}
+
+// GetDiff returns the difference between a Record r and the last observation of that domain
+func (d *Domain) GetDiff(r Record) (string, error) {
+	lo := d.GetLastObservation()
+	diff := difflib.UnifiedDiff{
+		A:        lo.GetAnswers(),
+		B:        r.GetAnswers(),
+		FromFile: "Last answer " + lo.Time().String(),
+		ToFile:   "Current answer " + time.Now().String(),
+		Context:  1,
+	}
+	return difflib.GetUnifiedDiffString(diff)
 }
 
 // GetLastObservation returns the last observation (Record)
