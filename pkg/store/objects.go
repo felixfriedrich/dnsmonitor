@@ -87,10 +87,10 @@ func (d *Domain) GetLastObservation() *Record {
 	return &o
 }
 
-// LastChangeTime returns the time the last change in DNS answers has been observed
-func (d *Domain) LastChangeTime() (time.Time, error) {
+// LastChangeRecord returns the time the last change in DNS answers has been observed
+func (d *Domain) LastChangeRecord() (Record, error) {
 	if len(d.Observations) == 0 {
-		return time.Time{}, errors.New("no observations made yet")
+		return Record{}, errors.New("no observations made yet")
 	}
 	r := d.Observations[len(d.Observations)-1] // Return time of first Record in case there is just one Record
 	for i := len(d.Observations) - 2; i >= 1; i-- {
@@ -98,8 +98,8 @@ func (d *Domain) LastChangeTime() (time.Time, error) {
 		next := d.Observations[i-1]
 		equal := cmp.Equal(current, next)
 		if !equal {
-			return current.time, nil
+			return current, nil
 		}
 	}
-	return r.time, nil
+	return r, nil
 }
