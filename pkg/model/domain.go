@@ -3,9 +3,6 @@ package model
 import (
 	"errors"
 	"strconv"
-	"time"
-
-	"github.com/pmezard/go-difflib/difflib"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -25,20 +22,14 @@ func CreateDomain(domain string) *Domain {
 	return &Domain{Name: domain, Observations: []Record{}}
 }
 
-// GetDiff returns the difference between a Record r and the last observation of that domain
+// GetDiff returns the difference between the last observation of that domain and the last record that changed
 func (d *Domain) GetDiff() (string, error) {
 	lo, err := d.LastChangeRecord()
 	if err != nil {
 		return err.Error(), nil // using error message as diff for now :-)
 	}
-	diff := difflib.UnifiedDiff{
-		A:        lo.GetAnswers(),
-		B:        d.LastObservation().GetAnswers(),
-		FromFile: "Last answer " + lo.Time().String(),
-		ToFile:   "Current answer " + time.Now().String(),
-		Context:  1,
-	}
-	return difflib.GetUnifiedDiffString(diff)
+	diff := cmp.Diff(lo.GetAnswers(), d.LastObservation().GetAnswers())
+	return diff, nil
 }
 
 // LastObservation returns the last observation (Record)
