@@ -1,4 +1,4 @@
-name: Update Dependencies
+name: Check commit
 
 on:
   push:
