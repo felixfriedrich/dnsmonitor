@@ -1,0 +1,20 @@
+name: Update Dependencies
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: make build
+    - name: Run tests
+      run: make test
+    - name: Check formatting
+      run: test -z $(go fmt ./...)
+    - name: Run linter
+      run: make lint
