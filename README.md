@@ -28,7 +28,7 @@ $ ./bin/dnsmonitor -domain www.google.com
 * Command line flags
 ```
 Usage of ./bin/dnsmonitor:
-  -DNS string
+  -dns string
     	DNS server (default "8.8.8.8")
   -domain value
     	domain to check. Can be used multiple times.
