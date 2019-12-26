@@ -2,10 +2,9 @@ package dns
 
 import (
 	"dnsmonitor/config"
+	"dnsmonitor/pkg/alerting"
 	"dnsmonitor/pkg/model"
 	"dnsmonitor/pkg/store"
-	"net/smtp"
-	"strconv"
 	"strings"
 
 	"github.com/miekg/dns"
@@ -52,7 +51,7 @@ func (m monitor) Check() model.Record {
 
 	if m.config.Mail {
 		diff, _ := m.Domain().GetDiff()
-		err := m.sendMail(diff)
+		err := alerting.SendMail(diff)
 		if err != nil {
 			log.Error(err)
 		}
@@ -63,32 +62,6 @@ func (m monitor) Check() model.Record {
 		log.Fatal(err)
 	}
 	return record
-}
-
-func (m monitor) sendMail(diff string) error {
-	c := config.CreateMailConfigFromEnvOrDie()
-	if diff != "" {
-		// Set up authentication information.
-		auth := smtp.PlainAuth(
-			"",
-			c.Username,
-			c.Password,
-			c.Host,
-		)
-		// Connect to the server, authenticate, set the sender and recipient,
-		// and send the email all in one step.
-		err := smtp.SendMail(
-			c.Host+":"+strconv.Itoa(c.Port),
-			auth,
-			c.From,
-			[]string{c.To},
-			[]byte(diff),
-		)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Observe queries DNS and creates a Record of observed answers
