@@ -1,6 +1,5 @@
 # dnsmonitor
 
-* [![Build Status](https://travis-ci.org/felixfriedrich/dnsmonitor.svg?branch=master)](https://travis-ci.org/felixfriedrich/dnsmonitor)
 * [![Build Status](https://github.com/felixfriedrich/dnsmonitor/workflows/check-commit/badge.svg)](https://github.com/felixfriedrich/dnsmonitor/actions)
 * [![Go Report Card](https://goreportcard.com/badge/github.com/felixfriedrich/dnsmonitor)](https://goreportcard.com/report/github.com/felixfriedrich/dnsmonitor)
 * https://github.com/golang-standards/project-layout
