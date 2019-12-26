@@ -1,4 +1,4 @@
-name: Check commit
+name: check-commit
 
 on:
   push:

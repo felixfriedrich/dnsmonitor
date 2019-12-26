@@ -1,4 +1,4 @@
-name: Update Dependencies
+name: update-dependencies
 
 on:
   push:
