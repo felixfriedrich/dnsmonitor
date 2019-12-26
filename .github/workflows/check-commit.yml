@@ -8,8 +8,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: [ '1.13', '1.13.x', '1.x' ]
     steps:
-    - uses: actions/checkout@v1
+    - name: Set up Go
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+    - name: Clone repository
+      uses: actions/checkout@v1
     - name: Build
       run: make build
     - name: Run tests
