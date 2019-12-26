@@ -7,6 +7,7 @@ type Config struct {
 	Silent   bool
 	Interval int
 	Mail     bool
+	SMS      bool
 }
 
 // CreateConfigFromFlags takes command line flags and converts them into a generic Config object
@@ -17,5 +18,6 @@ func CreateConfigFromFlags(flags Flags) Config {
 		Silent:   flags.Silent,
 		Interval: flags.Interval,
 		Mail:     flags.Mail,
+		SMS:      flags.SMS,
 	}
 }

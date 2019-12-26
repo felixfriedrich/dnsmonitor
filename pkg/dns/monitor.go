@@ -49,12 +49,21 @@ func CreateMonitor(domain string, config config.Config) (Monitor, error) {
 func (m monitor) Check() model.Record {
 	record := m.Observe()
 
+	diff, _ := m.Domain().GetDiff()
+
 	if m.config.Mail {
-		diff, _ := m.Domain().GetDiff()
 		err := alerting.SendMail(diff)
 		if err != nil {
 			log.Error(err)
 		}
+	}
+
+	if m.config.SMS {
+		sms, err := alerting.MessageBird()
+		if err != nil {
+			log.Error(err)
+		}
+		sms.Send(diff)
 	}
 
 	err := store.Save(m.domain)

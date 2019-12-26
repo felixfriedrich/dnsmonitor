@@ -29,6 +29,7 @@ type Flags struct {
 	Silent   bool
 	Interval int
 	Mail     bool
+	SMS      bool
 	Version  bool
 }
 
@@ -40,6 +41,7 @@ func ParseFlags() Flags {
 	flag.BoolVar(&f.Silent, "silent", false, "silence output")
 	flag.IntVar(&f.Interval, "interval", 1, "interval in seconds")
 	flag.BoolVar(&f.Mail, "mail", false, "send mail if DNS record changes")
+	flag.BoolVar(&f.SMS, "sms", false, "send SMS if DNS record changes")
 	flag.BoolVar(&f.Version, "version", false, "print version")
 	flag.Parse()
 	return f

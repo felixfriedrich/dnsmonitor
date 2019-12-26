@@ -15,6 +15,7 @@ var (
 
 type messageBird struct {
 	Client *messagebird.Client
+	Config MessageBirdConfig
 }
 
 // MessageBird provides SMS sending via MessageBird (https://developers.messagebird.com)
@@ -26,11 +27,11 @@ func MessageBird() (SMS, error) {
 	}
 
 	client := messagebird.New(c.AccessKey)
-	return &messageBird{Client: client}, nil
+	return &messageBird{Client: client, Config: c}, nil
 }
 
 func (m messageBird) Send(message string) (interface{}, error) {
-	msg, err := sms.Create(m.Client, "", []string{""}, message, nil)
+	msg, err := sms.Create(m.Client, m.Config.Sender, m.Config.Recipients, message, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -39,5 +40,7 @@ func (m messageBird) Send(message string) (interface{}, error) {
 
 // MessageBirdConfig defines environment variables to configure the MessageBird service
 type MessageBirdConfig struct {
-	AccessKey string `required:"true"`
+	AccessKey  string   `required:"true"`
+	Sender     string   `required:"true"`
+	Recipients []string `required:"true"`
 }
