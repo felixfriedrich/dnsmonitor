@@ -16,6 +16,8 @@ jobs:
       uses: actions/setup-go@v1
       with:
         go-version: ${{ matrix.go }}
+    - name: Print Go version
+      run: go version
     - name: Clone repository
       uses: actions/checkout@v1
     - name: Build
