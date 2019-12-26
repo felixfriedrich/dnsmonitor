@@ -14,7 +14,7 @@ func main() {
 	flags := config.ParseFlags()
 
 	if flags.Version {
-		fmt.Println("dnsmonitor v0.1")
+		fmt.Println("dnsmonitor v0.2")
 		os.Exit(0)
 	}
 
