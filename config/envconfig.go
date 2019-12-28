@@ -8,10 +8,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// CreateEnvConfigFromEnv returns a valid config or returns an error
-func CreateEnvConfigFromEnv(prefix string, config interface{}) error {
-	err := envconfig.Process(prefix, config)
-
+// HandleEnvConfigError handles errors returned by the envconfig package
+func HandleEnvConfigError(err error, config interface{}) {
 	if err != nil {
 		envconfig.Usage(prefix, config)
 		buffer := bytes.NewBufferString("")
@@ -19,8 +17,6 @@ func CreateEnvConfigFromEnv(prefix string, config interface{}) error {
 		log.Error("failed to create config from env")
 		log.Error("found config ", config)
 		log.Error(buffer.String())
-		return errors.Wrap(err, buffer.String())
+		log.Fatal(errors.Wrap(err, buffer.String()))
 	}
-
-	return nil
 }

@@ -1,4 +1,4 @@
-all: build test
+all: build generate test
 	:
 
 build:
@@ -10,6 +10,9 @@ release: fmt lint update test
 
 update:
 	go get -u -t ./...
+
+generate:
+	go generate ./...
 
 test:
 	go test ./...

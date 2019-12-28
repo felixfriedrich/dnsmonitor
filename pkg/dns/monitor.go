@@ -3,10 +3,12 @@ package dns
 import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting"
+	"dnsmonitor/pkg/alerting/messagebird"
 	"dnsmonitor/pkg/model"
 	"dnsmonitor/pkg/store"
 	"strings"
 
+	"github.com/kelseyhightower/envconfig"
 	"github.com/miekg/dns"
 	log "github.com/sirupsen/logrus"
 )
@@ -59,11 +61,11 @@ func (m monitor) Check() model.Record {
 	}
 
 	if m.config.SMS {
-		sms, err := alerting.MessageBird()
-		if err != nil {
-			log.Error(err)
-		}
-		sms.Send(diff)
+		c := messagebird.Config{}
+		err := envconfig.Process("dnsmonitor_messagebird", &c)
+		config.HandleEnvConfigError(err, c)
+		mb := messagebird.New(c)
+		mb.SendSMS(diff)
 	}
 
 	err := store.Save(m.domain)
