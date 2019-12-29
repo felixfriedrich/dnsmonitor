@@ -42,7 +42,7 @@ func CreateMonitor(domain string, config config.Config, alerting alerting.API) (
 	if err != nil {
 		return monitor{}, err
 	}
-	m := monitor{domain: d, config: config}
+	m := monitor{domain: d, config: config, alerting: alerting}
 	return m, nil
 }
 
