@@ -1,4 +1,4 @@
-all: build clean generate test tidy update
+all: clean build generate test tidy update
 	:
 
 build:
