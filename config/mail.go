@@ -1,10 +1,7 @@
 package config
 
 import (
-	"os"
-
 	"github.com/kelseyhightower/envconfig"
-	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -24,15 +21,7 @@ type MailConfig struct {
 // CreateMailConfigFromEnvOrDie returns a valid config or panics
 func CreateMailConfigFromEnvOrDie() MailConfig {
 	config := MailConfig{}
-
 	err := envconfig.Process(prefix, &config)
-
-	if err != nil {
-		envconfig.Usage(prefix, &config)
-		log.Error("failed to create mail config from env")
-		log.Error("Found config ", config)
-		os.Exit(1)
-	}
-
+	HandleEnvConfigError(err, config)
 	return config
 }
