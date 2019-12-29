@@ -4,7 +4,7 @@ import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting"
 	"dnsmonitor/pkg/alerting/messagebird"
-	"dnsmonitor/pkg/dns"
+	"dnsmonitor/pkg/monitor"
 	"fmt"
 	"os"
 	"time"
@@ -21,7 +21,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	monitors := []dns.Monitor{}
+	monitors := []monitor.Monitor{}
 	for _, d := range flags.Domains {
 		configuration := config.CreateConfigFromFlags(flags)
 
@@ -34,7 +34,7 @@ func main() {
 			alertingAPI = messagebird.New(c)
 		}
 
-		m, err := dns.CreateMonitor(d, configuration, alertingAPI)
+		m, err := monitor.CreateMonitor(d, configuration, alertingAPI)
 		if err != nil {
 			log.Error(err)
 		}
