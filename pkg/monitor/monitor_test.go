@@ -11,11 +11,7 @@ import (
 
 func TestCheck(t *testing.T) {
 	c := config.Config{
-		Domains:  []string{"google.com", "www.google.com"},
-		DNS:      "8.8.8.8",
-		Silent:   false,
-		Interval: 300,
-		Mail:     false,
+		Domains: []string{"google.com", "www.google.com"},
 	}
 	dns := &dnsfakes.FakeInterface{}
 	dns.QueryReturnsOnCall(0, []string{"1.2.3.4"}, nil)
@@ -33,12 +29,8 @@ func TestCheck(t *testing.T) {
 
 func TestCreateMonitorWithAlerting(t *testing.T) {
 	c := config.Config{
-		Domains:  []string{"google.com", "www.google.com"},
-		DNS:      "8.8.8.8",
-		Silent:   false,
-		Interval: 300,
-		Mail:     true,
-		SMS:      true,
+		Mail: true,
+		SMS:  true,
 	}
 	dns := &dnsfakes.FakeInterface{}
 	dns.QueryReturnsOnCall(0, []string{"1.2.3.4"}, nil)
