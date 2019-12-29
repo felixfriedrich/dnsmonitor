@@ -3,11 +3,12 @@ package monitor
 import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting"
+	"dnsmonitor/pkg/dns"
 	"dnsmonitor/pkg/model"
 	"dnsmonitor/pkg/store"
 	"strings"
 
-	"github.com/miekg/dns"
+	dnslib "github.com/miekg/dns"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -25,6 +26,7 @@ type monitor struct {
 	domain   *model.Domain
 	config   config.Config
 	alerting alerting.API
+	dns      dns.Interface
 }
 
 // Domain returns a pointer to the Domain
@@ -37,12 +39,12 @@ func (m monitor) Config() config.Config {
 }
 
 // CreateMonitor creates a Monitor fetching a domain from the store
-func CreateMonitor(domain string, config config.Config, alerting alerting.API) (Monitor, error) {
+func CreateMonitor(domain string, config config.Config, alerting alerting.API, dns dns.Interface) (Monitor, error) {
 	d, err := store.Get(domain)
 	if err != nil {
 		return monitor{}, err
 	}
-	m := monitor{domain: d, config: config, alerting: alerting}
+	m := monitor{domain: d, config: config, alerting: alerting, dns: dns}
 	return m, nil
 }
 
@@ -72,12 +74,15 @@ func (m monitor) Check() model.Record {
 
 // Observe queries DNS and creates a Record of observed answers
 func (m monitor) Observe() model.Record {
-	msg := dns.Msg{}
-	msg.SetQuestion(m.domain.Name+".", dns.TypeA)
-	dnsClient := dns.Client{}
-	r, _, err := dnsClient.Exchange(&msg, m.config.DNS+":53")
+	msg := dnslib.Msg{}
+	msg.SetQuestion(m.domain.Name+".", dnslib.TypeA)
+
+	r, _, err := m.dns.Exchange(&msg, m.config.DNS+":53")
 	if err != nil {
 		log.Fatal(err)
+	}
+	if r == nil {
+		log.Fatal("dns Exchange return nil value")
 	}
 
 	answers := []string{}
