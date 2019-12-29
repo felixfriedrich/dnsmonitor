@@ -1,4 +1,4 @@
-all: build generate test tidy update
+all: build clean generate test tidy update
 	:
 
 build:
@@ -15,6 +15,9 @@ tidy:
 	go mod tidy && go generate ./...
 	# go mod tidy removes couterfeiter from dependencies
 	# go generate adds it again
+
+clean:
+	find . -name "*fakes" -exec rm -rf -- {} + # delete all generated mocks
 
 generate:
 	go generate ./...
