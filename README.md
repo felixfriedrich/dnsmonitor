@@ -2,7 +2,6 @@
 
 * [![Build Status](https://github.com/felixfriedrich/dnsmonitor/workflows/check-commit/badge.svg)](https://github.com/felixfriedrich/dnsmonitor/actions)
 * [![Go Report Card](https://goreportcard.com/badge/github.com/felixfriedrich/dnsmonitor)](https://goreportcard.com/report/github.com/felixfriedrich/dnsmonitor)
-* https://github.com/golang-standards/project-layout
 
 ## Usage
 
@@ -41,3 +40,8 @@ Usage of ./bin/dnsmonitor:
   -version
     	print version
 ```
+
+
+## Links
+* For generating mocks: https://github.com/maxbrunsfeld/counterfeiter
+* Repo layout: https://github.com/golang-standards/project-layout
