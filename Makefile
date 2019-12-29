@@ -18,12 +18,17 @@ tidy:
 
 clean:
 	find . -name "*fakes" -exec rm -rf -- {} + # delete all generated mocks
+	rm test.out
 
 generate:
 	go generate ./...
 
 test:
 	go test -cover ./...
+
+test-report:
+	go test ./... -coverprofile=test.out
+	go tool cover -html=test.out
 
 help: build
 	./bin/dnsmonitor -h
