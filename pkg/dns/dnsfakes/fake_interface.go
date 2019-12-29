@@ -4,104 +4,96 @@ package dnsfakes
 import (
 	"dnsmonitor/pkg/dns"
 	"sync"
-	"time"
-
-	dnsa "github.com/miekg/dns"
 )
 
 type FakeInterface struct {
-	ExchangeStub        func(*dnsa.Msg, string) (*dnsa.Msg, time.Duration, error)
-	exchangeMutex       sync.RWMutex
-	exchangeArgsForCall []struct {
-		arg1 *dnsa.Msg
+	QueryStub        func(string, string) ([]string, error)
+	queryMutex       sync.RWMutex
+	queryArgsForCall []struct {
+		arg1 string
 		arg2 string
 	}
-	exchangeReturns struct {
-		result1 *dnsa.Msg
-		result2 time.Duration
-		result3 error
+	queryReturns struct {
+		result1 []string
+		result2 error
 	}
-	exchangeReturnsOnCall map[int]struct {
-		result1 *dnsa.Msg
-		result2 time.Duration
-		result3 error
+	queryReturnsOnCall map[int]struct {
+		result1 []string
+		result2 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeInterface) Exchange(arg1 *dnsa.Msg, arg2 string) (*dnsa.Msg, time.Duration, error) {
-	fake.exchangeMutex.Lock()
-	ret, specificReturn := fake.exchangeReturnsOnCall[len(fake.exchangeArgsForCall)]
-	fake.exchangeArgsForCall = append(fake.exchangeArgsForCall, struct {
-		arg1 *dnsa.Msg
+func (fake *FakeInterface) Query(arg1 string, arg2 string) ([]string, error) {
+	fake.queryMutex.Lock()
+	ret, specificReturn := fake.queryReturnsOnCall[len(fake.queryArgsForCall)]
+	fake.queryArgsForCall = append(fake.queryArgsForCall, struct {
+		arg1 string
 		arg2 string
 	}{arg1, arg2})
-	fake.recordInvocation("Exchange", []interface{}{arg1, arg2})
-	fake.exchangeMutex.Unlock()
-	if fake.ExchangeStub != nil {
-		return fake.ExchangeStub(arg1, arg2)
+	fake.recordInvocation("Query", []interface{}{arg1, arg2})
+	fake.queryMutex.Unlock()
+	if fake.QueryStub != nil {
+		return fake.QueryStub(arg1, arg2)
 	}
 	if specificReturn {
-		return ret.result1, ret.result2, ret.result3
+		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.exchangeReturns
-	return fakeReturns.result1, fakeReturns.result2, fakeReturns.result3
+	fakeReturns := fake.queryReturns
+	return fakeReturns.result1, fakeReturns.result2
 }
 
-func (fake *FakeInterface) ExchangeCallCount() int {
-	fake.exchangeMutex.RLock()
-	defer fake.exchangeMutex.RUnlock()
-	return len(fake.exchangeArgsForCall)
+func (fake *FakeInterface) QueryCallCount() int {
+	fake.queryMutex.RLock()
+	defer fake.queryMutex.RUnlock()
+	return len(fake.queryArgsForCall)
 }
 
-func (fake *FakeInterface) ExchangeCalls(stub func(*dnsa.Msg, string) (*dnsa.Msg, time.Duration, error)) {
-	fake.exchangeMutex.Lock()
-	defer fake.exchangeMutex.Unlock()
-	fake.ExchangeStub = stub
+func (fake *FakeInterface) QueryCalls(stub func(string, string) ([]string, error)) {
+	fake.queryMutex.Lock()
+	defer fake.queryMutex.Unlock()
+	fake.QueryStub = stub
 }
 
-func (fake *FakeInterface) ExchangeArgsForCall(i int) (*dnsa.Msg, string) {
-	fake.exchangeMutex.RLock()
-	defer fake.exchangeMutex.RUnlock()
-	argsForCall := fake.exchangeArgsForCall[i]
+func (fake *FakeInterface) QueryArgsForCall(i int) (string, string) {
+	fake.queryMutex.RLock()
+	defer fake.queryMutex.RUnlock()
+	argsForCall := fake.queryArgsForCall[i]
 	return argsForCall.arg1, argsForCall.arg2
 }
 
-func (fake *FakeInterface) ExchangeReturns(result1 *dnsa.Msg, result2 time.Duration, result3 error) {
-	fake.exchangeMutex.Lock()
-	defer fake.exchangeMutex.Unlock()
-	fake.ExchangeStub = nil
-	fake.exchangeReturns = struct {
-		result1 *dnsa.Msg
-		result2 time.Duration
-		result3 error
-	}{result1, result2, result3}
+func (fake *FakeInterface) QueryReturns(result1 []string, result2 error) {
+	fake.queryMutex.Lock()
+	defer fake.queryMutex.Unlock()
+	fake.QueryStub = nil
+	fake.queryReturns = struct {
+		result1 []string
+		result2 error
+	}{result1, result2}
 }
 
-func (fake *FakeInterface) ExchangeReturnsOnCall(i int, result1 *dnsa.Msg, result2 time.Duration, result3 error) {
-	fake.exchangeMutex.Lock()
-	defer fake.exchangeMutex.Unlock()
-	fake.ExchangeStub = nil
-	if fake.exchangeReturnsOnCall == nil {
-		fake.exchangeReturnsOnCall = make(map[int]struct {
-			result1 *dnsa.Msg
-			result2 time.Duration
-			result3 error
+func (fake *FakeInterface) QueryReturnsOnCall(i int, result1 []string, result2 error) {
+	fake.queryMutex.Lock()
+	defer fake.queryMutex.Unlock()
+	fake.QueryStub = nil
+	if fake.queryReturnsOnCall == nil {
+		fake.queryReturnsOnCall = make(map[int]struct {
+			result1 []string
+			result2 error
 		})
 	}
-	fake.exchangeReturnsOnCall[i] = struct {
-		result1 *dnsa.Msg
-		result2 time.Duration
-		result3 error
-	}{result1, result2, result3}
+	fake.queryReturnsOnCall[i] = struct {
+		result1 []string
+		result2 error
+	}{result1, result2}
 }
 
 func (fake *FakeInterface) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.exchangeMutex.RLock()
-	defer fake.exchangeMutex.RUnlock()
+	fake.queryMutex.RLock()
+	defer fake.queryMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

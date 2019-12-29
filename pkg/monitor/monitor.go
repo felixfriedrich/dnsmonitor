@@ -8,9 +8,7 @@ import (
 	"dnsmonitor/pkg/dns"
 	"dnsmonitor/pkg/model"
 	"dnsmonitor/pkg/store"
-	"strings"
 
-	dnslib "github.com/miekg/dns"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -77,20 +75,10 @@ func (m monitor) Check() model.Record {
 
 // Observe queries DNS and creates a Record of observed answers
 func (m monitor) Observe() model.Record {
-	msg := dnslib.Msg{}
-	msg.SetQuestion(m.domain.Name+".", dnslib.TypeA)
 
-	r, _, err := m.dns.Exchange(&msg, m.config.DNS+":53")
+	answers, err := m.dns.Query(m.domain.Name, m.config.DNS)
 	if err != nil {
-		log.Fatal(err)
-	}
-	if r == nil {
-		log.Fatal("dns Exchange return nil value")
-	}
-
-	answers := []string{}
-	for _, a := range r.Answer {
-		answers = append(answers, strings.Fields(a.String())[4])
+		log.Error(err)
 	}
 
 	record := model.CreateRecord(answers)

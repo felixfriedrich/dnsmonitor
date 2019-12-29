@@ -6,7 +6,6 @@ import (
 	"dnsmonitor/pkg/dns/dnsfakes"
 	"testing"
 
-	dnslib "github.com/miekg/dns"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,17 +18,17 @@ func TestCheck(t *testing.T) {
 		Mail:     false,
 	}
 	dns := &dnsfakes.FakeInterface{}
-	dns.ExchangeReturns(&dnslib.Msg{}, 0, nil)
+	dns.QueryReturnsOnCall(0, []string{"1.2.3.4"}, nil)
 	m, err := CreateMonitor("www.google.com", c, nil, dns)
 	assert.NoError(t, err)
 	assert.NotNil(t, m)
 	assert.NotEmpty(t, m.Domain())
 	assert.NotNil(t, m.Config().Domains)
 	m.Check()
-	assert.Equal(t, 1, dns.ExchangeCallCount())
-	msg, _ := dns.ExchangeArgsForCall(0)
+	assert.Equal(t, 1, dns.QueryCallCount())
+	domain, _ := dns.QueryArgsForCall(0)
 
-	assert.Contains(t, msg.String(), "www.google.com")
+	assert.Equal(t, domain, "www.google.com")
 }
 
 func TestCreateMonitorWithSMSAlerting(t *testing.T) {
@@ -44,7 +43,7 @@ func TestCreateMonitorWithSMSAlerting(t *testing.T) {
 
 	alertingAPI := &alertingfakes.FakeAPI{}
 	dns := &dnsfakes.FakeInterface{}
-	dns.ExchangeReturns(&dnslib.Msg{}, 0, nil)
+	dns.QueryReturns([]string{"1.2.3.4"}, nil)
 	m, err := CreateMonitor("www.google.com", c, alertingAPI, dns)
 	m.Check()
 	assert.NoError(t, err)
