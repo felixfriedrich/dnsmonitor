@@ -48,7 +48,7 @@ func TestCreateMonitorWithSMSAlerting(t *testing.T) {
 	m.Check()
 	assert.NoError(t, err)
 	assert.NotNil(t, m)
-	assert.Equal(t, 1, alertingAPI.SendSMSCallCount())
+	assert.Equal(t, 0, alertingAPI.SendSMSCallCount())
 }
 
 func TestCreateMonitorWithMailAlerting(t *testing.T) {

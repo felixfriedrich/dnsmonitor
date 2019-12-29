@@ -63,7 +63,7 @@ func (m monitor) Check() model.Record {
 		}
 	}
 
-	if m.config.SMS {
+	if m.config.SMS && diff != "" {
 		m.alerting.SendSMS(diff)
 	}
 
