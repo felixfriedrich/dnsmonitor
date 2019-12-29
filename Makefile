@@ -13,7 +13,7 @@ update:
 
 tidy:
 	go mod tidy && go generate ./...
-	# go mod tidy removes couterfeiter from dependencies
+	# go mod tidy removes counterfeiter from dependencies
 	# go generate adds it again
 
 clean:
