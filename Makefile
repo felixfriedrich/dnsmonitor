@@ -1,4 +1,4 @@
-all: build generate test
+all: build generate test tidy update
 	:
 
 build:
@@ -10,6 +10,11 @@ release: fmt lint update test
 
 update:
 	go get -u -t ./...
+
+tidy:
+	go mod tidy && go generate ./...
+	# go mod tidy removes couterfeiter from dependencies
+	# go generate adds it again
 
 generate:
 	go generate ./...
