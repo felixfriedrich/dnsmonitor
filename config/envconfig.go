@@ -9,7 +9,7 @@ import (
 )
 
 // HandleEnvConfigError handles errors returned by the envconfig package
-func HandleEnvConfigError(err error, config interface{}) {
+func HandleEnvConfigError(err error, config interface{}, prefix string) {
 	if err != nil {
 		envconfig.Usage(prefix, config)
 		buffer := bytes.NewBufferString("")

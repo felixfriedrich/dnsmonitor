@@ -30,8 +30,9 @@ func main() {
 		var alertingAPI alerting.API
 		if configuration.SMS {
 			c := messagebird.Config{}
-			err := envconfig.Process("dnsmonitor_messagebird", &c)
-			config.HandleEnvConfigError(err, c)
+			prefix := "dnsmonitor_messagebird"
+			err := envconfig.Process(prefix, &c)
+			config.HandleEnvConfigError(err, c, prefix)
 			alertingAPI = messagebird.New(c)
 		}
 

@@ -22,6 +22,6 @@ type MailConfig struct {
 func CreateMailConfigFromEnvOrDie() MailConfig {
 	config := MailConfig{}
 	err := envconfig.Process(prefix, &config)
-	HandleEnvConfigError(err, config)
+	HandleEnvConfigError(err, config, "dnsmonitor_mail")
 	return config
 }
