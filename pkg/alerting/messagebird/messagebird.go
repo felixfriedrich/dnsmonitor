@@ -1,17 +1,11 @@
 package messagebird
 
-//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
-
 import (
+	"dnsmonitor/pkg/alerting"
+
 	messagebird "github.com/messagebird/go-rest-api"
 	"github.com/messagebird/go-rest-api/sms"
 )
-
-// API abtracts the upstream library away, mainly for mocking
-//counterfeiter:generate . API
-type API interface {
-	SendSMS(text string) error
-}
 
 // MessageBird holds a client to connect to the messagebird api
 type messageBird struct {
@@ -27,7 +21,7 @@ type Config struct {
 }
 
 // New creates a messageBird struct
-func New(config Config) API {
+func New(config Config) alerting.API {
 	return &messageBird{Client: messagebird.New(config.AccessKey), Config: config}
 }
 
