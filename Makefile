@@ -17,8 +17,9 @@ tidy:
 	# go generate adds it again
 
 clean:
+	go clean -testcache
 	find . -name "*fakes" -exec rm -rf -- {} + # delete all generated mocks
-	rm test.out
+	rm -f test.out
 
 generate:
 	go generate ./...
