@@ -1,5 +1,7 @@
 package monitor
 
+//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
+
 import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting"
@@ -13,7 +15,8 @@ import (
 )
 
 // Monitor is an interface, which is used to enforce the use of CreateMonitor as the struct monitor can not be created
-// differently, because it's private
+// differently, because it's private. It's also used to generate mocks.
+//counterfeiter:generate . Monitor
 type Monitor interface {
 	Domain() *model.Domain
 	Config() config.Config
