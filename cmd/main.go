@@ -25,7 +25,7 @@ func main() {
 	for _, d := range flags.Domains {
 		configuration := config.CreateConfigFromFlags(flags)
 
-		// This section will be improved as soon as there are more alerting vendors
+		// TODO: Improve this section as soon as there are more alerting vendors
 		var alertingAPI alerting.API
 		if configuration.SMS {
 			c := messagebird.Config{}
