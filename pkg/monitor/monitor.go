@@ -28,6 +28,7 @@ type monitor struct {
 	config   config.Config
 	alerting alerting.API
 	dns      dns.Interface
+	mail     alerting.Mail
 }
 
 // Domain returns a pointer to the Domain
@@ -40,12 +41,12 @@ func (m monitor) Config() config.Config {
 }
 
 // CreateMonitor creates a Monitor fetching a domain from the store
-func CreateMonitor(domain string, config config.Config, alerting alerting.API, dns dns.Interface) (Monitor, error) {
+func CreateMonitor(domain string, config config.Config, mail alerting.Mail, alerting alerting.API, dns dns.Interface) (Monitor, error) {
 	d, err := store.Get(domain)
 	if err != nil {
 		return monitor{}, err
 	}
-	m := monitor{domain: d, config: config, alerting: alerting, dns: dns}
+	m := monitor{domain: d, config: config, alerting: alerting, dns: dns, mail: mail}
 	return m, nil
 }
 
@@ -55,8 +56,8 @@ func (m monitor) Check() model.Record {
 
 	diff, _ := m.Domain().GetDiff()
 
-	if m.config.Mail {
-		err := alerting.SendMail(diff)
+	if m.config.Mail && diff != "" {
+		err := m.mail.Send(diff)
 		if err != nil {
 			log.Error(err)
 		}

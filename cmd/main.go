@@ -36,7 +36,16 @@ func main() {
 			alertingAPI = messagebird.New(c)
 		}
 
-		m, err := monitor.CreateMonitor(d, configuration, alertingAPI, dns.New())
+		var mail alerting.Mail
+		if configuration.Mail {
+			c := alerting.MailConfig{}
+			prefix := "dnsmonitor_mail"
+			err := envconfig.Process(prefix, &c)
+			config.HandleEnvConfigError(err, c, prefix)
+			mail = alerting.CreateMail(c)
+		}
+
+		m, err := monitor.CreateMonitor(d, configuration, mail, alertingAPI, dns.New())
 		if err != nil {
 			log.Error(err)
 		}
