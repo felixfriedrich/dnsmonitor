@@ -3,12 +3,10 @@ package dns
 import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting"
-	"dnsmonitor/pkg/alerting/messagebird"
 	"dnsmonitor/pkg/model"
 	"dnsmonitor/pkg/store"
 	"strings"
 
-	"github.com/kelseyhightower/envconfig"
 	"github.com/miekg/dns"
 	log "github.com/sirupsen/logrus"
 )
@@ -24,8 +22,9 @@ type Monitor interface {
 
 // Monitor holds a Config and a Domain object from the store
 type monitor struct {
-	domain *model.Domain
-	config config.Config
+	domain   *model.Domain
+	config   config.Config
+	alerting alerting.API
 }
 
 // Domain returns a pointer to the Domain
@@ -38,7 +37,7 @@ func (m monitor) Config() config.Config {
 }
 
 // CreateMonitor creates a Monitor fetching a domain from the store
-func CreateMonitor(domain string, config config.Config) (Monitor, error) {
+func CreateMonitor(domain string, config config.Config, alerting alerting.API) (Monitor, error) {
 	d, err := store.Get(domain)
 	if err != nil {
 		return monitor{}, err
@@ -61,11 +60,7 @@ func (m monitor) Check() model.Record {
 	}
 
 	if m.config.SMS {
-		c := messagebird.Config{}
-		err := envconfig.Process("dnsmonitor_messagebird", &c)
-		config.HandleEnvConfigError(err, c)
-		mb := messagebird.New(c)
-		mb.SendSMS(diff)
+		m.alerting.SendSMS(diff)
 	}
 
 	err := store.Save(m.domain)

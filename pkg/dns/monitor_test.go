@@ -2,8 +2,9 @@ package dns
 
 import (
 	"dnsmonitor/config"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateMonitor(t *testing.T) {
@@ -14,7 +15,7 @@ func TestCreateMonitor(t *testing.T) {
 		Interval: 300,
 		Mail:     false,
 	}
-	m, err := CreateMonitor("www.google.com", c)
+	m, err := CreateMonitor("www.google.com", c, nil)
 	assert.NoError(t, err)
 	assert.NotNil(t, m)
 	assert.NotEmpty(t, m.Domain())

@@ -2,11 +2,14 @@ package main
 
 import (
 	"dnsmonitor/config"
+	"dnsmonitor/pkg/alerting"
+	"dnsmonitor/pkg/alerting/messagebird"
 	"dnsmonitor/pkg/dns"
 	"fmt"
 	"os"
 	"time"
 
+	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -20,7 +23,18 @@ func main() {
 
 	monitors := []dns.Monitor{}
 	for _, d := range flags.Domains {
-		m, err := dns.CreateMonitor(d, config.CreateConfigFromFlags(flags))
+		configuration := config.CreateConfigFromFlags(flags)
+
+		// This section will be improved as soon as there are more alerting vendors
+		var alertingAPI alerting.API
+		if configuration.SMS {
+			c := messagebird.Config{}
+			err := envconfig.Process("dnsmonitor_messagebird", &c)
+			config.HandleEnvConfigError(err, c)
+			alertingAPI = messagebird.New(c)
+		}
+
+		m, err := dns.CreateMonitor(d, configuration, alertingAPI)
 		if err != nil {
 			log.Error(err)
 		}
