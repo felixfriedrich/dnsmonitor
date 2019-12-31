@@ -3,7 +3,6 @@ package main
 import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting"
-	"dnsmonitor/pkg/alerting/messagebird"
 	"dnsmonitor/pkg/dns"
 	"dnsmonitor/pkg/monitor"
 	"fmt"
@@ -26,14 +25,9 @@ func main() {
 	for _, d := range flags.Domains {
 		configuration := config.CreateConfigFromFlags(flags)
 
-		// TODO: Improve this section as soon as there are more alerting vendors
 		var alertingAPI alerting.API
 		if configuration.SMS {
-			c := messagebird.Config{}
-			prefix := "dnsmonitor_messagebird"
-			err := envconfig.Process(prefix, &c)
-			config.HandleEnvConfigError(err, c, prefix)
-			alertingAPI = messagebird.New(c)
+			alertingAPI = alerting.New(alerting.MessageBird, alerting.SMS)
 		}
 
 		var mail alerting.Mail

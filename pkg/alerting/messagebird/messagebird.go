@@ -1,8 +1,6 @@
 package messagebird
 
 import (
-	"dnsmonitor/pkg/alerting"
-
 	messagebird "github.com/messagebird/go-rest-api"
 	"github.com/messagebird/go-rest-api/sms"
 )
@@ -21,7 +19,7 @@ type Config struct {
 }
 
 // New creates a messageBird struct
-func New(config Config) alerting.API {
+func New(config Config) *messageBird {
 	return &messageBird{Client: messagebird.New(config.AccessKey), Config: config}
 }
 
