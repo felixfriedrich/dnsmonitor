@@ -1,4 +1,4 @@
-package main
+package dnsmonitor
 
 import (
 	"dnsmonitor/config"

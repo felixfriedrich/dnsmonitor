@@ -2,11 +2,11 @@ all: clean build generate test tidy update
 	:
 
 build:
-	go build -o bin/dnsmonitor cmd/main.go
+	go build -o bin/dnsmonitor cmd/dnsmonitor/main.go
 
 release: fmt lint update test
-	env GOOS=linux GOARCH=amd64 go build -o bin/dnsmonitor-linux-amd64 cmd/main.go
-	env GOOS=darwin GOARCH=amd64 go build -o bin/dnsmonitor-darwin-amd64 cmd/main.go
+	env GOOS=linux GOARCH=amd64 go build -o bin/dnsmonitor-linux-amd64 cmd/dnsmonitor/main.go
+	env GOOS=darwin GOARCH=amd64 go build -o bin/dnsmonitor-darwin-amd64 cmd/dnsmonitor/main.go
 
 update:
 	go get -u -t ./...
@@ -20,6 +20,8 @@ clean:
 	go clean -testcache
 	find . -name "*fakes" -exec rm -rf -- {} + # delete all generated mocks
 	rm -f test.out
+	rm -f ./bin/*
+
 
 generate:
 	go generate ./...
