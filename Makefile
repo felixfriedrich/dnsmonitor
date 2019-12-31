@@ -18,13 +18,12 @@ tidy:
 
 clean:
 	go clean -testcache
-	find . -name "*fakes" -exec rm -rf -- {} + # delete all generated mocks
 	rm -f test.out
 	rm -f ./bin/*
 
 
 generate:
-	go generate ./...
+	find . -name "*fakes" -exec rm -rf -- {} + && go generate ./...
 
 test:
 	go test -cover ./...
