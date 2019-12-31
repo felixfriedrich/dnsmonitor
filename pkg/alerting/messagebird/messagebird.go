@@ -6,7 +6,9 @@ import (
 )
 
 // MessageBird holds a client to connect to the messagebird api
-type messageBird struct {
+// This struct could be private as its never used directly, only via the interface alerting.API
+// Yet, the linter isn't happy with it being private :-/
+type MessageBird struct {
 	Client *messagebird.Client
 	Config Config
 }
@@ -19,11 +21,12 @@ type Config struct {
 }
 
 // New creates a messageBird struct
-func New(config Config) *messageBird {
-	return &messageBird{Client: messagebird.New(config.AccessKey), Config: config}
+func New(config Config) *MessageBird {
+	return &MessageBird{Client: messagebird.New(config.AccessKey), Config: config}
 }
 
-func (mb *messageBird) SendSMS(text string) error {
+// SendSMS satisfies the interface alerting.API
+func (mb *MessageBird) SendSMS(text string) error {
 	_, err := sms.Create(mb.Client, mb.Config.Sender, mb.Config.Receipients, text, nil)
 	if err != nil {
 		return err
