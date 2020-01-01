@@ -3,8 +3,6 @@ package alerting
 import (
 	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting/messagebird"
-
-	"github.com/kelseyhightower/envconfig"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
@@ -37,8 +35,7 @@ func New(vendor Vendor, t Type) API {
 	if vendor == MessageBird && t == SMS {
 		c := messagebird.Config{}
 		prefix := "dnsmonitor_messagebird"
-		err := envconfig.Process(prefix, &c)
-		config.HandleEnvConfigError(err, c, prefix)
+		config.ReadEnvConfig(prefix, &c)
 		alertingAPI = messagebird.New(c)
 	}
 	return alertingAPI

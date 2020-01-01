@@ -2,21 +2,21 @@ package config
 
 import (
 	"bytes"
+	"fmt"
+	"os"
 
 	"github.com/kelseyhightower/envconfig"
-	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 )
 
-// HandleEnvConfigError handles errors returned by the envconfig package
-func HandleEnvConfigError(err error, config interface{}, prefix string) {
+// ReadEnvConfig reads environment variables with the help of the enconfig package
+func ReadEnvConfig(prefix string, config interface{}) {
+	err := envconfig.Process(prefix, config)
 	if err != nil {
-		envconfig.Usage(prefix, config)
-		buffer := bytes.NewBufferString("")
-		envconfig.Usagef(prefix, config, buffer, envconfig.DefaultTableFormat)
-		log.Error("failed to create config from env")
-		log.Error("found config ", config)
-		log.Error(buffer.String())
-		log.Fatal(errors.Wrap(err, buffer.String()))
+		usage := bytes.NewBufferString("")
+		envconfig.Usagef(prefix, config, usage, envconfig.DefaultTableFormat)
+		fmt.Println(usage)
+
+		fmt.Println("Found config: ", config)
+		os.Exit(1)
 	}
 }

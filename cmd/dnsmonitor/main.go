@@ -9,7 +9,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -34,8 +33,7 @@ func main() {
 		if configuration.Mail {
 			c := alerting.MailConfig{}
 			prefix := "dnsmonitor_mail"
-			err := envconfig.Process(prefix, &c)
-			config.HandleEnvConfigError(err, c, prefix)
+			config.ReadEnvConfig(prefix, &c)
 			mail = alerting.CreateMail(c)
 		}
 
