@@ -1,6 +1,8 @@
 package config
 
 import (
+	"dnsmonitor/pkg/alerting"
+	"errors"
 	"flag"
 )
 
@@ -45,4 +47,32 @@ func ParseFlags() Flags {
 	flag.BoolVar(&f.Version, "version", false, "print version")
 	flag.Parse()
 	return f
+}
+
+// VendorFlag contains a validated vendor
+type VendorFlag struct {
+	Vendor alerting.Vendor
+}
+
+func (vf VendorFlag) String() string {
+	if vf.Vendor == alerting.None {
+		return "none"
+	}
+	if vf.Vendor == alerting.MessageBird {
+		return "messagebird"
+	}
+	panic("")
+}
+
+// Set satisfies flag.Value
+func (vf VendorFlag) Set(f string) error {
+	if f == "none" {
+		vf.Vendor = alerting.None
+		return nil
+	}
+	if f == "messagebird" {
+		vf.Vendor = alerting.MessageBird
+		return nil
+	}
+	return errors.New("vendor flag unknown")
 }

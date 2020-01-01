@@ -17,8 +17,10 @@ type API interface {
 type Vendor uint8
 
 const (
+	// None is used as default by the 'flags' package
+	None Vendor = 0
 	// MessageBird https://www.messagebird.com/en/
-	MessageBird Vendor = 0
+	MessageBird Vendor = 1
 )
 
 // Type of message to send
