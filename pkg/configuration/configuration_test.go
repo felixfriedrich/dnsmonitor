@@ -1,4 +1,4 @@
-package config
+package configuration
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -15,7 +15,7 @@ func TestCreateConfigFromFlags(t *testing.T) {
 		Mail:     false,
 		Version:  false,
 	}
-	config := CreateConfigFromFlags(flags)
+	config := FromFlags(flags)
 	assert.Equal(t, flags.Domains, config.Domains)
 	assert.Equal(t, flags.DNS, config.DNS)
 	assert.Equal(t, flags.Silent, config.Silent)

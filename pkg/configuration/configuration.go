@@ -1,4 +1,4 @@
-package config
+package configuration
 
 // Config holds configuration. It could potentiall come from different sources. Right now there is only command line flags
 type Config struct {
@@ -10,8 +10,8 @@ type Config struct {
 	SMS      bool
 }
 
-// CreateConfigFromFlags takes command line flags and converts them into a generic Config object
-func CreateConfigFromFlags(flags Flags) Config {
+// FromFlags takes command line flags and converts them into a generic Config object
+func FromFlags(flags Flags) Config {
 	return Config{
 		Domains:  flags.Domains,
 		DNS:      flags.DNS,

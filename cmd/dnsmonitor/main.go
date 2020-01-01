@@ -1,9 +1,9 @@
 package main
 
 import (
-	"dnsmonitor/config"
-	"dnsmonitor/config/envconfig"
 	"dnsmonitor/pkg/alerting"
+	"dnsmonitor/pkg/configuration"
+	"dnsmonitor/pkg/configuration/envconfig"
 	"dnsmonitor/pkg/dns"
 	"dnsmonitor/pkg/monitor"
 	"fmt"
@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	flags := config.ParseFlags()
+	flags := configuration.ParseFlags()
 
 	if flags.Version {
 		fmt.Println("dnsmonitor v0.2")
@@ -23,22 +23,22 @@ func main() {
 
 	monitors := []monitor.Monitor{}
 	for _, d := range flags.Domains {
-		configuration := config.CreateConfigFromFlags(flags)
+		config := configuration.FromFlags(flags)
 
 		var alertingAPI alerting.API
-		if configuration.SMS {
+		if config.SMS {
 			alertingAPI = alerting.New(alerting.MessageBird, alerting.SMS)
 		}
 
 		var mail alerting.Mail
-		if configuration.Mail {
+		if config.Mail {
 			c := alerting.MailConfig{}
 			prefix := "dnsmonitor_mail"
 			envconfig.Read(prefix, &c)
 			mail = alerting.CreateMail(c)
 		}
 
-		m, err := monitor.CreateMonitor(d, configuration, mail, alertingAPI, dns.New())
+		m, err := monitor.CreateMonitor(d, config, mail, alertingAPI, dns.New())
 		if err != nil {
 			log.Error(err)
 		}

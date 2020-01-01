@@ -1,8 +1,8 @@
 package monitor
 
 import (
-	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting/alertingfakes"
+	"dnsmonitor/pkg/configuration"
 	"dnsmonitor/pkg/dns/dnsfakes"
 	"errors"
 	"testing"
@@ -11,7 +11,7 @@ import (
 )
 
 func TestCheck(t *testing.T) {
-	c := config.Config{
+	c := configuration.Config{
 		Domains: []string{"google.com", "www.google.com"},
 	}
 	dns := &dnsfakes.FakeInterface{}
@@ -29,7 +29,7 @@ func TestCheck(t *testing.T) {
 }
 
 func TestCreateMonitorWithAlerting(t *testing.T) {
-	c := config.Config{
+	c := configuration.Config{
 		Mail: true,
 		SMS:  true,
 	}
@@ -50,7 +50,7 @@ func TestCreateMonitorWithAlerting(t *testing.T) {
 }
 
 func TestSendingMailFails(t *testing.T) {
-	c := config.Config{
+	c := configuration.Config{
 		Mail: true,
 		SMS:  false,
 	}

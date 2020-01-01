@@ -1,14 +1,14 @@
 package main
 
 import (
-	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting"
+	"dnsmonitor/pkg/configuration"
 	"flag"
 	"fmt"
 )
 
 type flags struct {
-	VendorFlag config.VendorFlag
+	VendorFlag configuration.VendorFlag
 }
 
 func main() {

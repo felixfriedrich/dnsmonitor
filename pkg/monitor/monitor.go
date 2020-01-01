@@ -3,8 +3,8 @@ package monitor
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
 
 import (
-	"dnsmonitor/config"
 	"dnsmonitor/pkg/alerting"
+	"dnsmonitor/pkg/configuration"
 	"dnsmonitor/pkg/dns"
 	"dnsmonitor/pkg/model"
 	"dnsmonitor/pkg/store"
@@ -17,7 +17,7 @@ import (
 //counterfeiter:generate . Monitor
 type Monitor interface {
 	Domain() *model.Domain
-	Config() config.Config
+	Config() configuration.Config
 	Observe() model.Record
 	Check() model.Record
 }
@@ -25,7 +25,7 @@ type Monitor interface {
 // Monitor holds a Config and a Domain object from the store
 type monitor struct {
 	domain   *model.Domain
-	config   config.Config
+	config   configuration.Config
 	alerting alerting.API
 	dns      dns.Interface
 	mail     alerting.Mail
@@ -36,12 +36,12 @@ func (m monitor) Domain() *model.Domain {
 	return m.domain
 }
 
-func (m monitor) Config() config.Config {
+func (m monitor) Config() configuration.Config {
 	return m.config
 }
 
 // CreateMonitor creates a Monitor fetching a domain from the store
-func CreateMonitor(domain string, config config.Config, mail alerting.Mail, alerting alerting.API, dns dns.Interface) (Monitor, error) {
+func CreateMonitor(domain string, config configuration.Config, mail alerting.Mail, alerting alerting.API, dns dns.Interface) (Monitor, error) {
 	d, err := store.Get(domain)
 	if err != nil {
 		return monitor{}, err

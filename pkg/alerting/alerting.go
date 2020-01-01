@@ -1,8 +1,8 @@
 package alerting
 
 import (
-	"dnsmonitor/config/envconfig"
 	"dnsmonitor/pkg/alerting/messagebird"
+	"dnsmonitor/pkg/configuration/envconfig"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
