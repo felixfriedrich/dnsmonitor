@@ -7,7 +7,7 @@ import (
 )
 
 func TestDomainStringConversation(t *testing.T) {
-	d := domains{"a", "b", "c"}
+	d := DomainFlag{"a", "b", "c"}
 	s := d.String()
 	assert.Equal(t, "[a, b, c]", s)
 }

@@ -8,7 +8,7 @@ import (
 
 // Flags contains values parsed from command line flags
 type Flags struct {
-	Domains  domains
+	Domains  DomainFlag
 	DNS      string
 	Silent   bool
 	Interval int
@@ -31,9 +31,10 @@ func ParseFlags() Flags {
 	return f
 }
 
-type domains []string
+// DomainFlag is a list of domain specified via command line
+type DomainFlag []string
 
-func (d *domains) String() string {
+func (d *DomainFlag) String() string {
 	r := "["
 	for i, s := range *d {
 		r = r + s
@@ -44,7 +45,8 @@ func (d *domains) String() string {
 	return r + "]"
 }
 
-func (d *domains) Set(value string) error {
+// Set satisfies flag.Value
+func (d *DomainFlag) Set(value string) error {
 	*d = append(*d, value)
 	return nil
 }

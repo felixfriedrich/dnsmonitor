@@ -2,7 +2,7 @@ package configuration
 
 // Config holds configuration. It could potentiall come from different sources. Right now there is only command line flags
 type Config struct {
-	Domains  domains
+	Domains  DomainFlag
 	DNS      string
 	Silent   bool
 	Interval int
