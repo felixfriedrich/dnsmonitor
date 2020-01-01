@@ -6,24 +6,6 @@ import (
 	"flag"
 )
 
-type domains []string
-
-func (d *domains) String() string {
-	r := "["
-	for i, s := range *d {
-		r = r + s
-		if i != len(*d)-1 {
-			r = r + ", "
-		}
-	}
-	return r + "]"
-}
-
-func (d *domains) Set(value string) error {
-	*d = append(*d, value)
-	return nil
-}
-
 // Flags contains values parsed from command line flags
 type Flags struct {
 	Domains  domains
@@ -47,6 +29,24 @@ func ParseFlags() Flags {
 	flag.BoolVar(&f.Version, "version", false, "print version")
 	flag.Parse()
 	return f
+}
+
+type domains []string
+
+func (d *domains) String() string {
+	r := "["
+	for i, s := range *d {
+		r = r + s
+		if i != len(*d)-1 {
+			r = r + ", "
+		}
+	}
+	return r + "]"
+}
+
+func (d *domains) Set(value string) error {
+	*d = append(*d, value)
+	return nil
 }
 
 // VendorFlag contains a validated vendor
