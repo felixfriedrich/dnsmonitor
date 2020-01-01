@@ -1,5 +1,5 @@
 all: clean build generate test tidy update
-	:
+	go build -o /dev/null cmd/integration_test/main.go
 
 build:
 	go build -o bin/dnsmonitor cmd/dnsmonitor/main.go
