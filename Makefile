@@ -4,6 +4,9 @@ all: clean build generate test tidy update
 build:
 	go build -o bin/dnsmonitor cmd/dnsmonitor/main.go
 
+run-integration-test:
+	go run cmd/integration_test/main.go
+
 release: all
 	env GOOS=linux GOARCH=amd64 go build -o bin/dnsmonitor-linux-amd64 cmd/dnsmonitor/main.go
 	env GOOS=darwin GOARCH=amd64 go build -o bin/dnsmonitor-darwin-amd64 cmd/dnsmonitor/main.go
