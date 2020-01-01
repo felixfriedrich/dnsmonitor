@@ -1,4 +1,4 @@
-package config
+package envconfig
 
 import (
 	"bytes"
@@ -8,8 +8,8 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-// ReadEnvConfig reads environment variables with the help of the enconfig package
-func ReadEnvConfig(prefix string, config interface{}) {
+// Read reads environment variables with the help of the enconfig package
+func Read(prefix string, config interface{}) {
 	err := envconfig.Process(prefix, config)
 	if err != nil {
 		usage := bytes.NewBufferString("")

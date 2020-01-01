@@ -1,7 +1,7 @@
 package alerting
 
 import (
-	"dnsmonitor/config"
+	"dnsmonitor/config/envconfig"
 	"dnsmonitor/pkg/alerting/messagebird"
 )
 
@@ -35,7 +35,7 @@ func New(vendor Vendor, t Type) API {
 	if vendor == MessageBird && t == SMS {
 		c := messagebird.Config{}
 		prefix := "dnsmonitor_messagebird"
-		config.ReadEnvConfig(prefix, &c)
+		envconfig.Read(prefix, &c)
 		alertingAPI = messagebird.New(c)
 	}
 	return alertingAPI

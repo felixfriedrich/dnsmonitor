@@ -2,6 +2,7 @@ package main
 
 import (
 	"dnsmonitor/config"
+	"dnsmonitor/config/envconfig"
 	"dnsmonitor/pkg/alerting"
 	"dnsmonitor/pkg/dns"
 	"dnsmonitor/pkg/monitor"
@@ -33,7 +34,7 @@ func main() {
 		if configuration.Mail {
 			c := alerting.MailConfig{}
 			prefix := "dnsmonitor_mail"
-			config.ReadEnvConfig(prefix, &c)
+			envconfig.Read(prefix, &c)
 			mail = alerting.CreateMail(c)
 		}
 
