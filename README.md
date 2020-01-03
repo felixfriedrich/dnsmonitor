@@ -7,26 +7,12 @@ This application monitors domain(s) for changing DNS records and is able to aler
 
 ## Usage
 
-* Configure mail client
-```
-This application is configured via the environment. The following environment
-variables can be used:
-
-KEY                         TYPE       DEFAULT      REQUIRED    DESCRIPTION
-DNSMONITOR_MAIL_HOST        String     127.0.0.1
-DNSMONITOR_MAIL_PORT        Integer    25
-DNSMONITOR_MAIL_USERNAME    String                  true
-DNSMONITOR_MAIL_PASSWORD    String                  true
-DNSMONITOR_MAIL_FROM        String                  true
-DNSMONITOR_MAIL_TO          String                  true
-```
-
-* Run application
+Run application:
 ```
 $ make build && ./bin/dnsmonitor -domain www.google.com
 ```
 
-* Command line flags
+Command line flags:
 ```
 Usage of ./bin/dnsmonitor:
   -dns string
@@ -43,6 +29,7 @@ Usage of ./bin/dnsmonitor:
     	print version
 ```
 
+[Alerting](../../wiki/Alerting) options.
 
 ## Links
 * For generating mocks: https://github.com/maxbrunsfeld/counterfeiter
