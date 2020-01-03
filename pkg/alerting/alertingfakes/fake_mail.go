@@ -7,6 +7,16 @@ import (
 )
 
 type FakeMail struct {
+	ConfigStub        func() alerting.MailConfig
+	configMutex       sync.RWMutex
+	configArgsForCall []struct {
+	}
+	configReturns struct {
+		result1 alerting.MailConfig
+	}
+	configReturnsOnCall map[int]struct {
+		result1 alerting.MailConfig
+	}
 	SendStub        func(string) error
 	sendMutex       sync.RWMutex
 	sendArgsForCall []struct {
@@ -20,6 +30,58 @@ type FakeMail struct {
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
+}
+
+func (fake *FakeMail) Config() alerting.MailConfig {
+	fake.configMutex.Lock()
+	ret, specificReturn := fake.configReturnsOnCall[len(fake.configArgsForCall)]
+	fake.configArgsForCall = append(fake.configArgsForCall, struct {
+	}{})
+	fake.recordInvocation("Config", []interface{}{})
+	fake.configMutex.Unlock()
+	if fake.ConfigStub != nil {
+		return fake.ConfigStub()
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	fakeReturns := fake.configReturns
+	return fakeReturns.result1
+}
+
+func (fake *FakeMail) ConfigCallCount() int {
+	fake.configMutex.RLock()
+	defer fake.configMutex.RUnlock()
+	return len(fake.configArgsForCall)
+}
+
+func (fake *FakeMail) ConfigCalls(stub func() alerting.MailConfig) {
+	fake.configMutex.Lock()
+	defer fake.configMutex.Unlock()
+	fake.ConfigStub = stub
+}
+
+func (fake *FakeMail) ConfigReturns(result1 alerting.MailConfig) {
+	fake.configMutex.Lock()
+	defer fake.configMutex.Unlock()
+	fake.ConfigStub = nil
+	fake.configReturns = struct {
+		result1 alerting.MailConfig
+	}{result1}
+}
+
+func (fake *FakeMail) ConfigReturnsOnCall(i int, result1 alerting.MailConfig) {
+	fake.configMutex.Lock()
+	defer fake.configMutex.Unlock()
+	fake.ConfigStub = nil
+	if fake.configReturnsOnCall == nil {
+		fake.configReturnsOnCall = make(map[int]struct {
+			result1 alerting.MailConfig
+		})
+	}
+	fake.configReturnsOnCall[i] = struct {
+		result1 alerting.MailConfig
+	}{result1}
 }
 
 func (fake *FakeMail) Send(arg1 string) error {
@@ -85,6 +147,8 @@ func (fake *FakeMail) SendReturnsOnCall(i int, result1 error) {
 func (fake *FakeMail) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
+	fake.configMutex.RLock()
+	defer fake.configMutex.RUnlock()
 	fake.sendMutex.RLock()
 	defer fake.sendMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}

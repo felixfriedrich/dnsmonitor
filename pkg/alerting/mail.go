@@ -12,14 +12,15 @@ import (
 //counterfeiter:generate . Mail
 type Mail interface {
 	Send(diff string) error
+	Config() MailConfig
 }
 
 type mail struct {
-	Config MailConfig
+	config MailConfig
 }
 
 func newMailFromConfig(config MailConfig) Mail {
-	return &mail{Config: config}
+	return &mail{config: config}
 }
 
 // NewMail returns a mail implementation satisfying the interface alerting.Mail
@@ -30,22 +31,26 @@ func NewMail() Mail {
 	return newMailFromConfig(c)
 }
 
+func (m *mail) Config() MailConfig {
+	return m.config
+}
+
 // Send sends e-mails
 func (m *mail) Send(diff string) error {
 	// Set up authentication information.
 	auth := smtp.PlainAuth(
 		"",
-		m.Config.Username,
-		m.Config.Password,
-		m.Config.Host,
+		m.config.Username,
+		m.config.Password,
+		m.config.Host,
 	)
 	// Connect to the server, authenticate, set the sender and recipient,
 	// and send the email all in one step.
 	err := smtp.SendMail(
-		m.Config.Host+":"+strconv.Itoa(m.Config.Port),
+		m.config.Host+":"+strconv.Itoa(m.config.Port),
 		auth,
-		m.Config.From,
-		[]string{m.Config.To},
+		m.config.From,
+		[]string{m.config.To},
 		[]byte(diff),
 	)
 	if err != nil {
