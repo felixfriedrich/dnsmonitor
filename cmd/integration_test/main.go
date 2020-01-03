@@ -16,7 +16,7 @@ func main() {
 	flag.Var(&f.VendorFlag, "vendor", "alerting vendor, e.g. 'messagebird'.")
 	flag.Parse()
 
-	fmt.Println("Using vendor:", f.VendorFlag)
+	fmt.Println("Using vendor:", f.VendorFlag.String())
 
 	if f.VendorFlag.Vendor == alerting.MessageBird {
 		alertingAPI := alerting.New(alerting.MessageBird, alerting.SMS)
