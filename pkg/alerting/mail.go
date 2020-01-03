@@ -3,6 +3,7 @@ package alerting
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
 
 import (
+	"dnsmonitor/pkg/configuration/envconfig"
 	"net/smtp"
 	"strconv"
 )
@@ -17,9 +18,16 @@ type mail struct {
 	Config MailConfig
 }
 
-// CreateMail creates new Mail
-func CreateMail(config MailConfig) Mail {
+func newMailFromConfig(config MailConfig) Mail {
 	return &mail{Config: config}
+}
+
+// NewMail returns a mail implementation satisfying the interface alerting.Mail
+func NewMail() Mail {
+	c := MailConfig{}
+	prefix := "dnsmonitor_mail"
+	envconfig.Read(prefix, &c)
+	return newMailFromConfig(c)
 }
 
 // Send sends e-mails
