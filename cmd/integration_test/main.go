@@ -18,9 +18,9 @@ func main() {
 	flag.BoolVar(&f.Mail, "mail", false, "Test mail alerting")
 	flag.Parse()
 
-	fmt.Println("Using vendor:", f.VendorFlag.String())
 
 	if f.VendorFlag.Vendor == alerting.MessageBird {
+		fmt.Println("Using SMS vendor:", f.VendorFlag.String())
 		alertingAPI := alerting.New(alerting.MessageBird, alerting.SMS)
 		err := alertingAPI.SendSMS("Test")
 		if err != nil {
