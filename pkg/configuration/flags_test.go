@@ -7,10 +7,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDomainStringConversation(t *testing.T) {
+func TestDomainFlag(t *testing.T) {
 	d := DomainFlag{"a", "b", "c"}
-	s := d.String()
-	assert.Equal(t, "[a, b, c]", s)
+	assert.Equal(t, DomainFlag{"a", "b", "c"}, d)
+	assert.Equal(t, "[a, b, c]", d.String())
 }
 
 func TestVendorFlag_Set(t *testing.T) {
