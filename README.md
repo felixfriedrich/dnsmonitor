@@ -29,7 +29,9 @@ Usage of ./bin/dnsmonitor:
     	print version
 ```
 
-[Alerting](../../wiki/Alerting) options.
+### More information
+* [Alerting](../../wiki/Alerting)
+* [IntegrationTests](../../wiki/IntegrationTests)
 
 ## Links
 * For generating mocks: https://github.com/maxbrunsfeld/counterfeiter
