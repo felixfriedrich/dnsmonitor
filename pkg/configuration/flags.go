@@ -56,7 +56,7 @@ type VendorFlag struct {
 	Vendor alerting.Vendor
 }
 
-func (vf VendorFlag) String() string {
+func (vf *VendorFlag) String() string {
 	if vf.Vendor == alerting.None {
 		return "none"
 	}
@@ -67,7 +67,7 @@ func (vf VendorFlag) String() string {
 }
 
 // Set satisfies flag.Value
-func (vf VendorFlag) Set(f string) error {
+func (vf *VendorFlag) Set(f string) error {
 	if f == "none" {
 		vf.Vendor = alerting.None
 		return nil
