@@ -21,7 +21,7 @@ DNSMONITOR_MAIL_TO          String                  true
 
 * Run application
 ```
-$ ./bin/dnsmonitor -domain www.google.com
+$ make build && ./bin/dnsmonitor -domain www.google.com
 ```
 
 * Command line flags
