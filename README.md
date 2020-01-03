@@ -1,5 +1,7 @@
 # dnsmonitor
 
+This application monitors domain(s) for changing DNS records and is able to alert on changes via [E-Mail and SMS](../../wiki/Alerting).
+
 * [![Build Status](https://github.com/felixfriedrich/dnsmonitor/workflows/check-commit/badge.svg)](https://github.com/felixfriedrich/dnsmonitor/actions)
 * [![Go Report Card](https://goreportcard.com/badge/github.com/felixfriedrich/dnsmonitor)](https://goreportcard.com/report/github.com/felixfriedrich/dnsmonitor)
 
