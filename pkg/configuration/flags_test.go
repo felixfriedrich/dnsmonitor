@@ -13,8 +13,9 @@ func TestDomainFlag(t *testing.T) {
 	assert.Equal(t, "[a, b, c]", d.String())
 }
 
-func TestVendorFlag_Set(t *testing.T) {
+func TestVendorFlag(t *testing.T) {
 	vf := VendorFlag{}
 	vf.Set("messagebird")
 	assert.Equal(t, alerting.MessageBird, vf.Vendor)
+	assert.Equal(t, "messagebird", vf.String())
 }
