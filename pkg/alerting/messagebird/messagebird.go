@@ -15,9 +15,9 @@ type MessageBird struct {
 
 // Config for envconfig
 type Config struct {
-	AccessKey   string   `required:"true"`
-	Sender      string   `required:"true"`
-	Receipients []string `required:"true"`
+	AccessKey  string   `required:"true"`
+	Sender     string   `required:"true"`
+	Recipients []string `required:"true"`
 }
 
 // New creates a messageBird struct
@@ -27,7 +27,7 @@ func New(config Config) *MessageBird {
 
 // SendSMS satisfies the interface alerting.API
 func (mb *MessageBird) SendSMS(text string) error {
-	_, err := sms.Create(mb.Client, mb.Config.Sender, mb.Config.Receipients, text, nil)
+	_, err := sms.Create(mb.Client, mb.Config.Sender, mb.Config.Recipients, text, nil)
 	if err != nil {
 		return err
 	}
