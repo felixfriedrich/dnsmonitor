@@ -1,5 +1,7 @@
 package sms77
 
+//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
+
 import (
 	"encoding/json"
 	"errors"
@@ -13,8 +15,19 @@ import (
 
 // SMS77 holds an HTTP client and some config information
 type SMS77 struct {
-	Client *http.Client
+	Client HTTPClient
 	Config Config
+}
+
+// Override sets a new http.Client into the SMS77 struct (used for testing)
+func (s *SMS77) Override(httpClient HTTPClient) {
+	s.Client = httpClient
+}
+
+// HTTPClient encapsulates the http library for testing/mocking
+//counterfeiter:generate . HTTPClient
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
 }
 
 // New created a SMS77 object from a config
