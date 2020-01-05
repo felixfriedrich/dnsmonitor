@@ -46,18 +46,7 @@ type Config struct {
 // SendSMS satifies the alerting.API interface
 // https://www.sms77.io/en/docs/gateway/http-api/sms-disptach/
 func (s *SMS77) SendSMS(text string) error {
-	payload := url.Values{}
-	payload.Set("to", s.Config.Recipient)
-	payload.Set("type", "direct")
-	payload.Set("text", text)
-	payload.Set("from", s.Config.Sender)
-	payload.Set("json", "1")
-
-	if s.Config.Debug {
-		payload.Set("debug", "1")
-	}
-
-	url := fmt.Sprintf("https://gateway.sms77.io/api/sms?%s", payload.Encode())
+	url := fmt.Sprintf("https://gateway.sms77.io/api/sms?%s", createURLValues(s, text).Encode())
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		panic(err)
@@ -77,10 +66,7 @@ func (s *SMS77) SendSMS(text string) error {
 		return errors.New("sms77 returned non-200 status code")
 	}
 
-	requestHeaders, err := httputil.DumpRequestOut(request, false)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	requestHeaders := requestHeaders(request)
 	log.Debug(string(requestHeaders))
 
 	body, err := ioutil.ReadAll(response.Body)
@@ -90,11 +76,7 @@ func (s *SMS77) SendSMS(text string) error {
 	}
 	log.Debug("Response body", string(body))
 
-	var result Response
-	err = json.Unmarshal([]byte(body), &result)
-	if err != nil {
-		panic(err)
-	}
+	result := parseResponseBody(body)
 	log.Debug(result)
 
 	// Checking SMS77 status code
@@ -105,6 +87,45 @@ func (s *SMS77) SendSMS(text string) error {
 
 	log.Error("sms77 returned status code ", result.Success)
 	return errors.New("sms77 returned unsuccessfully")
+}
+
+func parseResponseBody(body []byte) Response {
+	var result Response
+	err := json.Unmarshal([]byte(body), &result)
+	if err != nil {
+		panic(err)
+	}
+	return result
+}
+
+func requestHeaders(request *http.Request) string {
+	requestHeaders, err := httputil.DumpRequestOut(request, false)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return string(requestHeaders)
+}
+
+func responseHeaders(response *http.Response) string {
+	responseHeaders, err := httputil.DumpResponse(response, false)
+	if err != nil {
+		panic(err)
+	}
+	return string(responseHeaders)
+}
+
+func createURLValues(s *SMS77, text string) url.Values {
+	payload := url.Values{}
+	payload.Set("to", s.Config.Recipient)
+	payload.Set("type", "direct")
+	payload.Set("text", text)
+	payload.Set("from", s.Config.Sender)
+	payload.Set("json", "1")
+
+	if s.Config.Debug {
+		payload.Set("debug", "1")
+	}
+	return payload
 }
 
 // Response is used to parse the JSON response from SMS77
@@ -119,7 +140,6 @@ type Response struct {
 // Message is used to parse the JSON response from SMS77
 type Message struct {
 	Success bool `json:"success"`
-	// [map[encoding:gsm error:<nil> error_text:<nil> id:<nil> parts:1 price:0 recipient:491627062392 sender:491627062392 text:Test]]
 }
 
 func (r Response) String() string {
