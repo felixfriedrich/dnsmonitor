@@ -9,19 +9,24 @@ import (
 
 type flags struct {
 	VendorFlag configuration.VendorFlag
+	SMS        bool
 	Mail       bool
 }
 
 func main() {
 	f := flags{}
 	flag.Var(&f.VendorFlag, "vendor", "alerting vendor, e.g. 'messagebird'.")
+	flag.BoolVar(&f.SMS, "sms", false, "test SMS alerting")
 	flag.BoolVar(&f.Mail, "mail", false, "Test mail alerting")
 	flag.Parse()
 
-	if f.VendorFlag.Vendor == alerting.MessageBird {
+	if f.SMS {
 		fmt.Println("Using SMS vendor:", f.VendorFlag.String())
-		alertingAPI := alerting.New(alerting.MessageBird, alerting.SMS)
-		err := alertingAPI.SendSMS("Test")
+		alertingAPI, err := alerting.New(f.VendorFlag.Vendor, alerting.SMS)
+		if err != nil {
+			panic(err)
+		}
+		err = alertingAPI.SendSMS("Test")
 		if err != nil {
 			panic(err)
 		}
