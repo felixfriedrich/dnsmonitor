@@ -66,8 +66,8 @@ func (s *SMS77) SendSMS(text string) error {
 		return errors.New("sms77 returned non-200 status code")
 	}
 
-	requestHeaders := requestHeaders(request)
-	log.Debug(string(requestHeaders))
+	log.Debug(requestHeaders(request))
+	log.Debug(responseHeaders(response))
 
 	body, err := ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
