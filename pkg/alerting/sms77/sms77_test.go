@@ -18,10 +18,10 @@ func TestSMS77_SendSMS(t *testing.T) {
 		Recipient: "0987654321",
 		Debug:     true,
 	})
-	fakeHttpClient := sms77fakes.FakeHttpClient{}
+	fakeHttpClient := sms77fakes.FakeHTTPClient{}
 	fakeHttpClient.DoReturnsOnCall(0, &http.Response{
-		StatusCode:       200,
-		Body:             ioutil.NopCloser(strings.NewReader("{}")),
+		StatusCode: 200,
+		Body:       ioutil.NopCloser(strings.NewReader("{}")),
 	}, nil)
 	api.Override(&fakeHttpClient)
 	api.SendSMS("Test")
@@ -48,4 +48,30 @@ func TestSMS77_SendSMS(t *testing.T) {
 	assert.Contains(t, request.URL.RawQuery, params.Encode())
 
 	assert.Equal(t, request.URL.Path, "/api/sms")
+}
+
+func TestSMS77_SendSMS_Non200Response(t *testing.T) {
+	api := sms77.New(sms77.Config{})
+	fakeHttpClient := sms77fakes.FakeHTTPClient{}
+	fakeHttpClient.DoReturnsOnCall(0, &http.Response{
+		StatusCode: 404,
+		Body:       ioutil.NopCloser(strings.NewReader("{}")),
+	}, nil)
+	api.Override(&fakeHttpClient)
+	err := api.SendSMS("Test")
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "sms77 returned non-200 status code")
+}
+
+func TestSMS77_SendSMS_SendFailed(t *testing.T) {
+	api := sms77.New(sms77.Config{})
+	fakeHttpClient := sms77fakes.FakeHTTPClient{}
+	fakeHttpClient.DoReturnsOnCall(0, &http.Response{
+		StatusCode: 200,
+		Body:       ioutil.NopCloser(strings.NewReader("{\"Success\": \"101\"}")),
+	}, nil)
+	api.Override(&fakeHttpClient)
+	err := api.SendSMS("Test")
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "sms77 returned unsuccessfully")
 }
