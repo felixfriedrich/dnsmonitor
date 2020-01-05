@@ -56,12 +56,16 @@ type VendorFlag struct {
 	Vendor alerting.Vendor
 }
 
+// TODO: What map ca be used to lookup keys and values? Use it for Set() and String()
 func (vf *VendorFlag) String() string {
 	if vf.Vendor == alerting.None {
 		return "none"
 	}
 	if vf.Vendor == alerting.MessageBird {
 		return "messagebird"
+	}
+	if vf.Vendor == alerting.SMS77 {
+		return "sms77"
 	}
 	panic("")
 }
@@ -74,6 +78,10 @@ func (vf *VendorFlag) Set(f string) error {
 	}
 	if f == "messagebird" {
 		vf.Vendor = alerting.MessageBird
+		return nil
+	}
+	if f == "sms77" || f == "SMS77" {
+		vf.Vendor = alerting.SMS77
 		return nil
 	}
 	return errors.New("vendor flag unknown")

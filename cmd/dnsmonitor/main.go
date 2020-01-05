@@ -25,8 +25,12 @@ func main() {
 		config := configuration.FromFlags(flags)
 
 		var alertingAPI alerting.API
+		var err error
 		if config.SMS {
-			alertingAPI = alerting.New(alerting.MessageBird, alerting.SMS)
+			alertingAPI, err = alerting.New(alerting.MessageBird, alerting.SMS)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		var mail alerting.Mail

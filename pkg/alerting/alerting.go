@@ -2,7 +2,9 @@ package alerting
 
 import (
 	"dnsmonitor/pkg/alerting/messagebird"
+	"dnsmonitor/pkg/alerting/sms77"
 	"dnsmonitor/pkg/configuration/envconfig"
+	"errors"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
@@ -21,6 +23,8 @@ const (
 	None Vendor = 0
 	// MessageBird https://www.messagebird.com/en/
 	MessageBird Vendor = 1
+	// SMS77 https://app.sms77.io
+	SMS77 Vendor = 2
 )
 
 // Type of message to send
@@ -32,13 +36,19 @@ const (
 )
 
 // New returns a new alerting API using a specific implementation
-func New(vendor Vendor, t Type) API {
+func New(vendor Vendor, t Type) (API, error) {
 	var alertingAPI API
 	if vendor == MessageBird && t == SMS {
 		c := messagebird.Config{}
 		prefix := "dnsmonitor_messagebird"
 		envconfig.Read(prefix, &c)
-		alertingAPI = messagebird.New(c)
+		return messagebird.New(c), nil
 	}
-	return alertingAPI
+	if vendor == SMS77 && t == SMS {
+		c := sms77.Config{}
+		prefix := "dnsmonitor_sms77"
+		envconfig.Read(prefix, &c)
+		return sms77.New(c), nil
+	}
+	return alertingAPI, errors.New("vendor/type combination isn't supported")
 }
