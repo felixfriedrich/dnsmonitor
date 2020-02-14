@@ -1,0 +1,15 @@
+---
+checks:
+  google:
+    names:
+    - google.com
+    - www.google.com
+  amazon:
+    names:
+    - www.amazon.com
+    - aws.amazon.com
+  misc:
+    names:
+      - hallo.de
+      - hallo.com
+      - howareyou.com
