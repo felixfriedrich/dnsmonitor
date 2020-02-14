@@ -21,8 +21,9 @@ func main() {
 	}
 
 	monitors := []monitor.Monitor{}
-	for _, d := range flags.Domains {
-		config := configuration.FromFlags(flags)
+	config := configuration.FromFlags(flags)
+
+	for _, d := range config.Domains {
 
 		var alertingAPI alerting.API
 		var err error
@@ -45,17 +46,17 @@ func main() {
 		monitors = append(monitors, m)
 	}
 
-	ticker := time.NewTicker(time.Duration(flags.Interval) * time.Second)
+	ticker := time.NewTicker(time.Duration(config.Interval) * time.Second)
 	for {
 		select {
 		case <-ticker.C:
 			for _, m := range monitors {
-				if !flags.Silent {
+				if !config.Silent {
 					fmt.Println("Checking domain", m.Domain())
 				}
 				r := m.Check()
 
-				if !flags.Silent {
+				if !config.Silent {
 					fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
 					for _, aa := range r.GetAnswers() {
 						fmt.Println(aa)
