@@ -21,7 +21,7 @@ func main() {
 	}
 
 	monitors := []monitor.Monitor{}
-	config := configuration.FromFlags(flags)
+	config := configuration.Create(flags)
 
 	for _, d := range config.Domains {
 

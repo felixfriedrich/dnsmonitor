@@ -15,7 +15,7 @@ func TestCreateConfigFromFlags(t *testing.T) {
 		Mail:     false,
 		Version:  false,
 	}
-	config := FromFlags(flags)
+	config := Create(flags)
 	assert.Equal(t, flags.Domains, config.Domains)
 	assert.Equal(t, flags.DNS, config.DNS)
 	assert.Equal(t, flags.Silent, config.Silent)

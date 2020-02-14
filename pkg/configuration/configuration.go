@@ -10,8 +10,8 @@ type Config struct {
 	SMS      bool
 }
 
-// FromFlags takes command line flags and converts them into a generic Config object
-func FromFlags(flags Flags) Config {
+// Create takes command line flags and converts them into a generic Config object
+func Create(flags Flags) Config {
 	return Config{
 		Domains:  flags.Domains,
 		DNS:      flags.DNS,
