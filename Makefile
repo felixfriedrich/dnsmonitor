@@ -1,4 +1,4 @@
-all: clean build generate test tidy update fmt lint
+all: clean build generate tests tidy update fmt lint
 	go build -o /dev/null cmd/integration_test/main.go
 
 build:
@@ -28,7 +28,7 @@ clean:
 generate:
 	find . -name "*fakes" -exec rm -rf -- {} + && go generate ./...
 
-test:
+tests:
 	go test -cover ./...
 
 test-report:
