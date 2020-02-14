@@ -15,8 +15,8 @@ type flags struct {
 
 func main() {
 	f := flags{}
-	flag.Var(&f.VendorFlag, "vendor", "alerting vendor, e.g. 'messagebird'.")
-	flag.BoolVar(&f.SMS, "sms", false, "test SMS alerting")
+	flag.Var(&f.VendorFlag, "vendor", "Alerting vendor, e.g. 'messagebird'.")
+	flag.BoolVar(&f.SMS, "sms", false, "Test SMS alerting")
 	flag.BoolVar(&f.Mail, "mail", false, "Test mail alerting")
 	flag.Parse()
 
