@@ -8,8 +8,8 @@ import (
 )
 
 func TestDomainFlag(t *testing.T) {
-	d := DomainFlag{"a", "b", "c"}
-	assert.Equal(t, DomainFlag{"a", "b", "c"}, d)
+	d := Domains{"a", "b", "c"}
+	assert.Equal(t, Domains{"a", "b", "c"}, d)
 	assert.Equal(t, "[a, b, c]", d.String())
 }
 

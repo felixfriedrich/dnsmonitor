@@ -8,7 +8,7 @@ import (
 
 // Flags contains values parsed from command line flags
 type Flags struct {
-	Domains  DomainFlag
+	Domains  Domains
 	DNS      string
 	Silent   bool
 	Interval int
@@ -31,10 +31,11 @@ func ParseFlags() Flags {
 	return f
 }
 
-// DomainFlag is a list of domain specified via command line
-type DomainFlag []string
+// Domains is a list of domains specified via command line or config file
+type Domains []string
 
-func (d *DomainFlag) String() string {
+// String satisfies flag.Value (needed for flag parsing). See: https://golang.org/pkg/flag/#Value
+func (d *Domains) String() string {
 	r := "["
 	for i, s := range *d {
 		r = r + s
@@ -45,8 +46,8 @@ func (d *DomainFlag) String() string {
 	return r + "]"
 }
 
-// Set satisfies flag.Value
-func (d *DomainFlag) Set(value string) error {
+// Set satisfies flag.Value (needed for flag parsing). See: https://golang.org/pkg/flag/#Value
+func (d *Domains) Set(value string) error {
 	*d = append(*d, value)
 	return nil
 }

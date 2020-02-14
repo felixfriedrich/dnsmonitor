@@ -1,8 +1,8 @@
 package configuration
 
-// Config holds configuration. It could potentially come from different sources. Right now there is only command line flags
+// Config holds configuration.
 type Config struct {
-	Domains  DomainFlag
+	Domains  Domains
 	DNS      string
 	Silent   bool
 	Interval int
