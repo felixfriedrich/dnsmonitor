@@ -9,15 +9,9 @@ import (
 )
 
 type FakeMonitor struct {
-	CheckStub        func() model.Record
+	CheckStub        func()
 	checkMutex       sync.RWMutex
 	checkArgsForCall []struct {
-	}
-	checkReturns struct {
-		result1 model.Record
-	}
-	checkReturnsOnCall map[int]struct {
-		result1 model.Record
 	}
 	ConfigStub        func() configuration.Config
 	configMutex       sync.RWMutex
@@ -29,45 +23,33 @@ type FakeMonitor struct {
 	configReturnsOnCall map[int]struct {
 		result1 configuration.Config
 	}
-	DomainStub        func() *model.Domain
-	domainMutex       sync.RWMutex
-	domainArgsForCall []struct {
+	DomainsStub        func() []*model.Domain
+	domainsMutex       sync.RWMutex
+	domainsArgsForCall []struct {
 	}
-	domainReturns struct {
-		result1 *model.Domain
+	domainsReturns struct {
+		result1 []*model.Domain
 	}
-	domainReturnsOnCall map[int]struct {
-		result1 *model.Domain
+	domainsReturnsOnCall map[int]struct {
+		result1 []*model.Domain
 	}
-	ObserveStub        func() model.Record
+	ObserveStub        func()
 	observeMutex       sync.RWMutex
 	observeArgsForCall []struct {
-	}
-	observeReturns struct {
-		result1 model.Record
-	}
-	observeReturnsOnCall map[int]struct {
-		result1 model.Record
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeMonitor) Check() model.Record {
+func (fake *FakeMonitor) Check() {
 	fake.checkMutex.Lock()
-	ret, specificReturn := fake.checkReturnsOnCall[len(fake.checkArgsForCall)]
 	fake.checkArgsForCall = append(fake.checkArgsForCall, struct {
 	}{})
 	fake.recordInvocation("Check", []interface{}{})
 	fake.checkMutex.Unlock()
 	if fake.CheckStub != nil {
-		return fake.CheckStub()
+		fake.CheckStub()
 	}
-	if specificReturn {
-		return ret.result1
-	}
-	fakeReturns := fake.checkReturns
-	return fakeReturns.result1
 }
 
 func (fake *FakeMonitor) CheckCallCount() int {
@@ -76,33 +58,10 @@ func (fake *FakeMonitor) CheckCallCount() int {
 	return len(fake.checkArgsForCall)
 }
 
-func (fake *FakeMonitor) CheckCalls(stub func() model.Record) {
+func (fake *FakeMonitor) CheckCalls(stub func()) {
 	fake.checkMutex.Lock()
 	defer fake.checkMutex.Unlock()
 	fake.CheckStub = stub
-}
-
-func (fake *FakeMonitor) CheckReturns(result1 model.Record) {
-	fake.checkMutex.Lock()
-	defer fake.checkMutex.Unlock()
-	fake.CheckStub = nil
-	fake.checkReturns = struct {
-		result1 model.Record
-	}{result1}
-}
-
-func (fake *FakeMonitor) CheckReturnsOnCall(i int, result1 model.Record) {
-	fake.checkMutex.Lock()
-	defer fake.checkMutex.Unlock()
-	fake.CheckStub = nil
-	if fake.checkReturnsOnCall == nil {
-		fake.checkReturnsOnCall = make(map[int]struct {
-			result1 model.Record
-		})
-	}
-	fake.checkReturnsOnCall[i] = struct {
-		result1 model.Record
-	}{result1}
 }
 
 func (fake *FakeMonitor) Config() configuration.Config {
@@ -157,73 +116,67 @@ func (fake *FakeMonitor) ConfigReturnsOnCall(i int, result1 configuration.Config
 	}{result1}
 }
 
-func (fake *FakeMonitor) Domain() *model.Domain {
-	fake.domainMutex.Lock()
-	ret, specificReturn := fake.domainReturnsOnCall[len(fake.domainArgsForCall)]
-	fake.domainArgsForCall = append(fake.domainArgsForCall, struct {
+func (fake *FakeMonitor) Domains() []*model.Domain {
+	fake.domainsMutex.Lock()
+	ret, specificReturn := fake.domainsReturnsOnCall[len(fake.domainsArgsForCall)]
+	fake.domainsArgsForCall = append(fake.domainsArgsForCall, struct {
 	}{})
-	fake.recordInvocation("Domain", []interface{}{})
-	fake.domainMutex.Unlock()
-	if fake.DomainStub != nil {
-		return fake.DomainStub()
+	fake.recordInvocation("Domains", []interface{}{})
+	fake.domainsMutex.Unlock()
+	if fake.DomainsStub != nil {
+		return fake.DomainsStub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.domainReturns
+	fakeReturns := fake.domainsReturns
 	return fakeReturns.result1
 }
 
-func (fake *FakeMonitor) DomainCallCount() int {
-	fake.domainMutex.RLock()
-	defer fake.domainMutex.RUnlock()
-	return len(fake.domainArgsForCall)
+func (fake *FakeMonitor) DomainsCallCount() int {
+	fake.domainsMutex.RLock()
+	defer fake.domainsMutex.RUnlock()
+	return len(fake.domainsArgsForCall)
 }
 
-func (fake *FakeMonitor) DomainCalls(stub func() *model.Domain) {
-	fake.domainMutex.Lock()
-	defer fake.domainMutex.Unlock()
-	fake.DomainStub = stub
+func (fake *FakeMonitor) DomainsCalls(stub func() []*model.Domain) {
+	fake.domainsMutex.Lock()
+	defer fake.domainsMutex.Unlock()
+	fake.DomainsStub = stub
 }
 
-func (fake *FakeMonitor) DomainReturns(result1 *model.Domain) {
-	fake.domainMutex.Lock()
-	defer fake.domainMutex.Unlock()
-	fake.DomainStub = nil
-	fake.domainReturns = struct {
-		result1 *model.Domain
+func (fake *FakeMonitor) DomainsReturns(result1 []*model.Domain) {
+	fake.domainsMutex.Lock()
+	defer fake.domainsMutex.Unlock()
+	fake.DomainsStub = nil
+	fake.domainsReturns = struct {
+		result1 []*model.Domain
 	}{result1}
 }
 
-func (fake *FakeMonitor) DomainReturnsOnCall(i int, result1 *model.Domain) {
-	fake.domainMutex.Lock()
-	defer fake.domainMutex.Unlock()
-	fake.DomainStub = nil
-	if fake.domainReturnsOnCall == nil {
-		fake.domainReturnsOnCall = make(map[int]struct {
-			result1 *model.Domain
+func (fake *FakeMonitor) DomainsReturnsOnCall(i int, result1 []*model.Domain) {
+	fake.domainsMutex.Lock()
+	defer fake.domainsMutex.Unlock()
+	fake.DomainsStub = nil
+	if fake.domainsReturnsOnCall == nil {
+		fake.domainsReturnsOnCall = make(map[int]struct {
+			result1 []*model.Domain
 		})
 	}
-	fake.domainReturnsOnCall[i] = struct {
-		result1 *model.Domain
+	fake.domainsReturnsOnCall[i] = struct {
+		result1 []*model.Domain
 	}{result1}
 }
 
-func (fake *FakeMonitor) Observe() model.Record {
+func (fake *FakeMonitor) Observe() {
 	fake.observeMutex.Lock()
-	ret, specificReturn := fake.observeReturnsOnCall[len(fake.observeArgsForCall)]
 	fake.observeArgsForCall = append(fake.observeArgsForCall, struct {
 	}{})
 	fake.recordInvocation("Observe", []interface{}{})
 	fake.observeMutex.Unlock()
 	if fake.ObserveStub != nil {
-		return fake.ObserveStub()
+		fake.ObserveStub()
 	}
-	if specificReturn {
-		return ret.result1
-	}
-	fakeReturns := fake.observeReturns
-	return fakeReturns.result1
 }
 
 func (fake *FakeMonitor) ObserveCallCount() int {
@@ -232,33 +185,10 @@ func (fake *FakeMonitor) ObserveCallCount() int {
 	return len(fake.observeArgsForCall)
 }
 
-func (fake *FakeMonitor) ObserveCalls(stub func() model.Record) {
+func (fake *FakeMonitor) ObserveCalls(stub func()) {
 	fake.observeMutex.Lock()
 	defer fake.observeMutex.Unlock()
 	fake.ObserveStub = stub
-}
-
-func (fake *FakeMonitor) ObserveReturns(result1 model.Record) {
-	fake.observeMutex.Lock()
-	defer fake.observeMutex.Unlock()
-	fake.ObserveStub = nil
-	fake.observeReturns = struct {
-		result1 model.Record
-	}{result1}
-}
-
-func (fake *FakeMonitor) ObserveReturnsOnCall(i int, result1 model.Record) {
-	fake.observeMutex.Lock()
-	defer fake.observeMutex.Unlock()
-	fake.ObserveStub = nil
-	if fake.observeReturnsOnCall == nil {
-		fake.observeReturnsOnCall = make(map[int]struct {
-			result1 model.Record
-		})
-	}
-	fake.observeReturnsOnCall[i] = struct {
-		result1 model.Record
-	}{result1}
 }
 
 func (fake *FakeMonitor) Invocations() map[string][][]interface{} {
@@ -268,8 +198,8 @@ func (fake *FakeMonitor) Invocations() map[string][][]interface{} {
 	defer fake.checkMutex.RUnlock()
 	fake.configMutex.RLock()
 	defer fake.configMutex.RUnlock()
-	fake.domainMutex.RLock()
-	defer fake.domainMutex.RUnlock()
+	fake.domainsMutex.RLock()
+	defer fake.domainsMutex.RUnlock()
 	fake.observeMutex.RLock()
 	defer fake.observeMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}

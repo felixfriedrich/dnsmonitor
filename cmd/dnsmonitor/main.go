@@ -23,48 +23,45 @@ func main() {
 	monitors := []monitor.Monitor{}
 	config := configuration.Create(flags)
 
-	for _, d := range config.Domains {
-
-		var alertingAPI alerting.API
-		var err error
-		if config.SMS {
-			alertingAPI, err = alerting.New(alerting.MessageBird, alerting.SMS)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		var mail alerting.Mail
-		if config.Mail {
-			mail = alerting.NewMail()
-		}
-
-		m, err := monitor.CreateMonitor(d, config, mail, alertingAPI, dns.New())
+	var alertingAPI alerting.API
+	var err error
+	if config.SMS {
+		alertingAPI, err = alerting.New(alerting.MessageBird, alerting.SMS)
 		if err != nil {
-			log.Error(err)
+			log.Fatal(err)
 		}
-		monitors = append(monitors, m)
 	}
+
+	var mail alerting.Mail
+	if config.Mail {
+		mail = alerting.NewMail()
+	}
+
+	m, err := monitor.CreateMonitor(config, mail, alertingAPI, dns.New())
+	if err != nil {
+		log.Error(err)
+	}
+	monitors = append(monitors, m)
 
 	ticker := time.NewTicker(time.Duration(config.Interval) * time.Second)
 	for {
 		select {
 		case <-ticker.C:
-			for _, m := range monitors {
-				if !config.Silent {
-					fmt.Println("Checking domain", m.Domain())
-				}
-				r := m.Check()
 
-				if !config.Silent {
-					fmt.Println("Found", len(r.GetAnswers()), "answer(s).")
-					for _, aa := range r.GetAnswers() {
-						fmt.Println(aa)
-					}
+			m.Check()
 
-					diff, _ := m.Domain().GetDiff()
-					fmt.Println(diff)
+			for _, d := range m.Domains() {
+				if !config.Silent {
+					fmt.Println("Checking domain", d.Name)
 				}
+
+				fmt.Println("Found", len(d.LastObservation().GetAnswers()), "answer(s).")
+				for _, aa := range d.LastObservation().GetAnswers() {
+					fmt.Println(aa)
+				}
+
+				diff, _ := d.GetDiff()
+				fmt.Println(diff)
 			}
 		}
 	}
