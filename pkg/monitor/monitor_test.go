@@ -56,7 +56,7 @@ func TestSendingMailFails(t *testing.T) {
 	}
 	dns := &dnsfakes.FakeInterface{}
 	dns.QueryReturnsOnCall(0, []string{"1.2.3.4"}, nil)
-	dns.QueryReturnsOnCall(0, []string{"4.3.2.1"}, nil)
+	dns.QueryReturnsOnCall(1, []string{"4.3.2.1"}, nil)
 	mail := &alertingfakes.FakeMail{}
 	mail.SendReturns(errors.New("Nah"))
 	m, err := CreateMonitor("www.google.com", c, mail, nil, dns)
