@@ -10,9 +10,9 @@ require (
 	github.com/messagebird/go-rest-api v5.3.0+incompatible
 	github.com/miekg/dns v1.1.27
 	github.com/sirupsen/logrus v1.4.2
-	github.com/stretchr/testify v1.5.0
-	golang.org/x/crypto v0.0.0-20200214034016-1d94cc7ab1c6 // indirect
-	golang.org/x/net v0.0.0-20200202094626-16171245cfb2 // indirect
-	golang.org/x/sys v0.0.0-20200212091648-12a6c2dcc1e4 // indirect
+	github.com/stretchr/testify v1.5.1
+	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975 // indirect
+	golang.org/x/net v0.0.0-20200219183655-46282727080f // indirect
+	golang.org/x/sys v0.0.0-20200219091948-cb0a6d8edb6c // indirect
 	gopkg.in/yaml.v2 v2.2.8
 )
