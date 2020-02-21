@@ -43,7 +43,7 @@ type Config struct {
 	Debug     bool   `required:"false" default:"false"`
 }
 
-// SendSMS satifies the alerting.API interface
+// SendSMS satisfies the alerting.API interface
 // https://www.sms77.io/en/docs/gateway/http-api/sms-disptach/
 func (s *SMS77) SendSMS(text string) error {
 	url := fmt.Sprintf("https://gateway.sms77.io/api/sms?%s", createURLValues(s, text).Encode())
