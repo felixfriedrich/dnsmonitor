@@ -1,4 +1,4 @@
-all: clean build generate tests tidy update fmt lint
+all: clean build generate tests test-commandline tidy update fmt lint
 	go build -o /dev/null cmd/integration_test/main.go
 
 build:
@@ -44,7 +44,7 @@ fmt:
 	go fmt ./...
 
 run: build
-	./bin/dnsmonitor -domain www.google.com 
+	./bin/dnsmonitor -domain www.google.com
 
 lint:
 	golint -set_exit_status ./...
