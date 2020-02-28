@@ -46,5 +46,8 @@ fmt:
 run: build
 	./bin/dnsmonitor -domain www.google.com
 
+run-config-file: build
+	./bin/dnsmonitor -configfile configs/default.yml
+
 lint:
 	golint -set_exit_status ./...

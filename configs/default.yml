@@ -1,0 +1,7 @@
+---
+checks:
+  default:
+    names:
+    - google.com
+    - www.google.com
+
