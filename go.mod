@@ -11,8 +11,8 @@ require (
 	github.com/miekg/dns v1.1.27
 	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.5.1
-	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975 // indirect
-	golang.org/x/net v0.0.0-20200219183655-46282727080f // indirect
-	golang.org/x/sys v0.0.0-20200219091948-cb0a6d8edb6c // indirect
+	golang.org/x/crypto v0.0.0-20200221231518-2aa609cf4a9d // indirect
+	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b // indirect
+	golang.org/x/sys v0.0.0-20200223170610-d5e6a3e2c0ae // indirect
 	gopkg.in/yaml.v2 v2.2.8
 )
