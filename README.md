@@ -15,6 +15,8 @@ $ make build && ./bin/dnsmonitor -domain www.google.com
 Command line flags:
 ```
 Usage of ./bin/dnsmonitor:
+  -configfile string
+    	config file
   -dns string
     	DNS server (default "8.8.8.8")
   -domain value
@@ -25,6 +27,8 @@ Usage of ./bin/dnsmonitor:
     	send mail if DNS record changes
   -silent
     	silence output
+  -sms
+    	send SMS if DNS record changes
   -version
     	print version
 ```
