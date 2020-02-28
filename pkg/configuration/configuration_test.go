@@ -25,12 +25,12 @@ func TestCreateConfigFromFlags(t *testing.T) {
 
 func TestCreateConfig_DomainsFromFileOverridesFlags(t *testing.T) {
 	flags := Flags{
-		Domains:  []string{"example.com"},
-		DNS:      "8.8.8.8",
-		Silent:   false,
-		Interval: 300,
-		Mail:     false,
-		Version:  false,
+		Domains:    []string{"example.com"},
+		DNS:        "8.8.8.8",
+		Silent:     false,
+		Interval:   300,
+		Mail:       false,
+		Version:    false,
 		ConfigFile: "../../test/config.yml",
 	}
 	config := Create(flags)
