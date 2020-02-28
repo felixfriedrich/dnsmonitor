@@ -33,7 +33,6 @@ func main() {
 		os.Exit(2)
 	}
 
-	monitors := []monitor.Monitor{}
 	config := configuration.Create(flags)
 
 	var alertingAPI alerting.API
@@ -54,7 +53,6 @@ func main() {
 	if err != nil {
 		log.Error(err)
 	}
-	monitors = append(monitors, m)
 
 	ticker := time.NewTicker(time.Duration(config.Interval) * time.Second)
 	for {
