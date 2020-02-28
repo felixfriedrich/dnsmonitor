@@ -37,6 +37,12 @@ type FakeMonitor struct {
 	observeMutex       sync.RWMutex
 	observeArgsForCall []struct {
 	}
+	RunStub        func(int, bool)
+	runMutex       sync.RWMutex
+	runArgsForCall []struct {
+		arg1 int
+		arg2 bool
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -191,6 +197,38 @@ func (fake *FakeMonitor) ObserveCalls(stub func()) {
 	fake.ObserveStub = stub
 }
 
+func (fake *FakeMonitor) Run(arg1 int, arg2 bool) {
+	fake.runMutex.Lock()
+	fake.runArgsForCall = append(fake.runArgsForCall, struct {
+		arg1 int
+		arg2 bool
+	}{arg1, arg2})
+	fake.recordInvocation("Run", []interface{}{arg1, arg2})
+	fake.runMutex.Unlock()
+	if fake.RunStub != nil {
+		fake.RunStub(arg1, arg2)
+	}
+}
+
+func (fake *FakeMonitor) RunCallCount() int {
+	fake.runMutex.RLock()
+	defer fake.runMutex.RUnlock()
+	return len(fake.runArgsForCall)
+}
+
+func (fake *FakeMonitor) RunCalls(stub func(int, bool)) {
+	fake.runMutex.Lock()
+	defer fake.runMutex.Unlock()
+	fake.RunStub = stub
+}
+
+func (fake *FakeMonitor) RunArgsForCall(i int) (int, bool) {
+	fake.runMutex.RLock()
+	defer fake.runMutex.RUnlock()
+	argsForCall := fake.runArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
+}
+
 func (fake *FakeMonitor) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -202,6 +240,8 @@ func (fake *FakeMonitor) Invocations() map[string][][]interface{} {
 	defer fake.domainsMutex.RUnlock()
 	fake.observeMutex.RLock()
 	defer fake.observeMutex.RUnlock()
+	fake.runMutex.RLock()
+	defer fake.runMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

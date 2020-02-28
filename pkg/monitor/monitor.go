@@ -8,8 +8,10 @@ import (
 	"dnsmonitor/pkg/dns"
 	"dnsmonitor/pkg/model"
 	"dnsmonitor/pkg/store"
-	log "github.com/sirupsen/logrus"
+	"fmt"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // Monitor is an interface, which is used to enforce the use of CreateMonitor as the struct monitor can not be created
@@ -20,6 +22,7 @@ type Monitor interface {
 	Config() configuration.Config
 	Observe()
 	Check()
+	Run(interval int, silent bool)
 }
 
 // Monitor holds a Config and a Domain object from the store
@@ -90,5 +93,30 @@ func (m monitor) Observe() {
 		}
 		record := model.CreateRecord(answers)
 		d.Observations = append(d.Observations, *record)
+	}
+}
+
+func (m monitor) Run(interval int, silent bool) {
+	ticker := time.NewTicker(time.Duration(interval) * time.Second)
+	for {
+		select {
+		case <-ticker.C:
+
+			m.Check()
+
+			for _, d := range m.Domains() {
+				if !silent {
+					fmt.Println("Checking domain", d.Name)
+				}
+
+				fmt.Println("Found", len(d.LastObservation().GetAnswers()), "answer(s).")
+				for _, aa := range d.LastObservation().GetAnswers() {
+					fmt.Println(aa)
+				}
+
+				diff, _ := d.GetDiff()
+				fmt.Println(diff)
+			}
+		}
 	}
 }

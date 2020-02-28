@@ -6,10 +6,8 @@ import (
 	"dnsmonitor/pkg/dns"
 	"dnsmonitor/pkg/monitor"
 	"fmt"
-	"os"
-	"time"
-
 	log "github.com/sirupsen/logrus"
+	"os"
 )
 
 func main() {
@@ -33,47 +31,28 @@ func main() {
 		os.Exit(2)
 	}
 
-	config := configuration.Create(flags)
-
-	var alertingAPI alerting.API
-	var err error
-	if config.SMS {
-		alertingAPI, err = alerting.New(alerting.MessageBird, alerting.SMS)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	var mail alerting.Mail
-	if config.Mail {
-		mail = alerting.NewMail()
-	}
-
-	m, err := monitor.CreateMonitor(config, mail, alertingAPI, dns.New())
-	if err != nil {
-		log.Error(err)
-	}
-
-	ticker := time.NewTicker(time.Duration(config.Interval) * time.Second)
-	for {
-		select {
-		case <-ticker.C:
-
-			m.Check()
-
-			for _, d := range m.Domains() {
-				if !config.Silent {
-					fmt.Println("Checking domain", d.Name)
-				}
-
-				fmt.Println("Found", len(d.LastObservation().GetAnswers()), "answer(s).")
-				for _, aa := range d.LastObservation().GetAnswers() {
-					fmt.Println(aa)
-				}
-
-				diff, _ := d.GetDiff()
-				fmt.Println(diff)
+	for _, config := range configuration.Create(flags) {
+		var alertingAPI alerting.API
+		var err error
+		if config.SMS {
+			alertingAPI, err = alerting.New(alerting.MessageBird, alerting.SMS)
+			if err != nil {
+				log.Fatal(err)
 			}
 		}
+
+		var mail alerting.Mail
+		if config.Mail {
+			mail = alerting.NewMail()
+		}
+
+		m, err := monitor.CreateMonitor(config, mail, alertingAPI, dns.New())
+		if err != nil {
+			log.Error(err)
+		}
+
+		go m.Run(config.Interval, config.Silent)
 	}
+
+	select {} // Make this program not terminate in order to keep the go routines running
 }
