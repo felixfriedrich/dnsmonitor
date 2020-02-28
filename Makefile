@@ -10,6 +10,7 @@ run-integration-test:
 release: all
 	env GOOS=linux GOARCH=amd64 go build -o bin/dnsmonitor-linux-amd64 cmd/dnsmonitor/main.go
 	env GOOS=darwin GOARCH=amd64 go build -o bin/dnsmonitor-darwin-amd64 cmd/dnsmonitor/main.go
+	cd bin && sha256sum dnsmonitor-* > ../SHA256SUM.txt
 
 update:
 	go get -u -t ./...
