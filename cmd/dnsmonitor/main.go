@@ -20,6 +20,19 @@ func main() {
 		os.Exit(0)
 	}
 
+	if flags.ConfigFile != "" {
+		_, err := os.Stat(flags.ConfigFile)
+		if os.IsNotExist(err) {
+			fmt.Println("config file", flags.ConfigFile, "doesn't exist")
+			os.Exit(1)
+		}
+	}
+
+	if flags.ConfigFile != "" && len(flags.Domains) > 0 {
+		fmt.Println("Provide either -configfile OR -domain")
+		os.Exit(2)
+	}
+
 	monitors := []monitor.Monitor{}
 	config := configuration.Create(flags)
 

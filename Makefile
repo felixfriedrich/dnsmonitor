@@ -24,12 +24,14 @@ clean:
 	rm -f test.out
 	rm -f ./bin/*
 
-
 generate:
 	find . -name "*fakes" -exec rm -rf -- {} + && go generate ./...
 
 tests:
 	go test -cover ./...
+
+test-commandline: build
+	./scripts/test-command-line-options.sh
 
 test-report:
 	go test ./... -coverprofile=test.out
