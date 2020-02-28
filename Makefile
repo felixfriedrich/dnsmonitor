@@ -1,4 +1,4 @@
-all: clean build generate tests test-commandline tidy update fmt lint
+all: clean build generate tests test-commandline tidy update fmt lint code-check
 	go build -o /dev/null cmd/integration_test/main.go
 
 build:
@@ -52,3 +52,6 @@ run-config-file: build
 
 lint:
 	golint -set_exit_status ./...
+
+code-check:
+	ineffassign .
