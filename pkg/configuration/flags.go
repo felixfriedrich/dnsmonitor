@@ -8,13 +8,14 @@ import (
 
 // Flags contains values parsed from command line flags
 type Flags struct {
-	Domains  Domains
-	DNS      string
-	Silent   bool
-	Interval int
-	Mail     bool
-	SMS      bool
-	Version  bool
+	Domains    Domains
+	DNS        string
+	Silent     bool
+	Interval   int
+	Mail       bool
+	SMS        bool
+	Version    bool
+	ConfigFile string
 }
 
 // ParseFlags parses all command line flags and returns an object containing the values
@@ -27,6 +28,7 @@ func ParseFlags() Flags {
 	flag.BoolVar(&f.Mail, "mail", false, "send mail if DNS record changes")
 	flag.BoolVar(&f.SMS, "sms", false, "send SMS if DNS record changes")
 	flag.BoolVar(&f.Version, "version", false, "print version")
+	flag.StringVar(&f.ConfigFile, "configfile", "", "config file")
 	flag.Parse()
 	return f
 }

@@ -22,3 +22,19 @@ func TestCreateConfigFromFlags(t *testing.T) {
 	assert.Equal(t, flags.Interval, config.Interval)
 	assert.Equal(t, flags.Mail, config.Mail)
 }
+
+func TestCreateConfig_DomainsFromFileOverridesFlags(t *testing.T) {
+	flags := Flags{
+		Domains:  []string{"example.com"},
+		DNS:      "8.8.8.8",
+		Silent:   false,
+		Interval: 300,
+		Mail:     false,
+		Version:  false,
+		ConfigFile: "../../test/config.yml",
+	}
+	config := Create(flags)
+	assert.Contains(t, config.Domains, "google.com")
+	assert.Contains(t, config.Domains, "www.google.com")
+	assert.NotContains(t, config.Domains, "example.com")
+}

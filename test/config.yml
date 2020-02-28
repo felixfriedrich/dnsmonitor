@@ -1,6 +1,6 @@
 ---
 checks:
-  google:
+  default:
     names:
     - google.com
     - www.google.com
@@ -8,8 +8,3 @@ checks:
     names:
     - www.amazon.com
     - aws.amazon.com
-  misc:
-    names:
-      - hallo.de
-      - hallo.com
-      - howareyou.com
