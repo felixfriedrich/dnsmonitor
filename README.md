@@ -4,6 +4,8 @@ This application monitors domain(s) for changing DNS records and is able to aler
 
 * [![Build Status](https://github.com/felixfriedrich/dnsmonitor/workflows/check-commit/badge.svg)](https://github.com/felixfriedrich/dnsmonitor/actions)
 * [![Go Report Card](https://goreportcard.com/badge/github.com/felixfriedrich/dnsmonitor)](https://goreportcard.com/report/github.com/felixfriedrich/dnsmonitor)
+* https://trello.com/b/PGkhfOQE/dnsmonitor
+
 
 ## Usage
 
