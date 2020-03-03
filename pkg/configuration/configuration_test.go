@@ -108,3 +108,22 @@ func TestCreateConfig_MailFlag(t *testing.T) {
 	config := Create(flags)["default"]
 	assert.Equal(t, false, config.Mail)
 }
+
+func TestCreateConfig_ConfigFileOverridesSMSFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		SMS:        false,
+	}
+	config := Create(flags)["amazon"]
+	assert.Equal(t, true, config.SMS)
+}
+
+// This test assures the sms flag is properly used, if there is nothing in the config file
+func TestCreateConfig_SMSFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		SMS:        false,
+	}
+	config := Create(flags)["default"]
+	assert.Equal(t, false, config.SMS)
+}

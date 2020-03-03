@@ -11,3 +11,4 @@ checks:
     dns: 8.8.4.4
     interval: 5
     mail: True
+    sms: True
