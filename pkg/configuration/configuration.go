@@ -2,7 +2,8 @@ package configuration
 
 import (
 	"io/ioutil"
-	"log"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // Config holds configuration.
