@@ -12,3 +12,4 @@ checks:
     interval: 5
     mail: True
     sms: True
+    silent: True

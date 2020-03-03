@@ -20,6 +20,7 @@ type Entry struct {
 	Interval int      `yaml:"interval"`
 	Mail     bool     `yaml:"mail"`
 	SMS      bool     `yaml:"sms"`
+	Silent   bool     `yaml:"silent"`
 }
 
 func parseYml(data []byte) ConfigFile {
@@ -38,7 +39,7 @@ func fromConfigFile(configFile ConfigFile, flags Flags) map[string]Config {
 		configMap[name] = Config{
 			Domains:  check.Names,
 			DNS:      optional(check.DNS, flags.DNS).(string),
-			Silent:   flags.Silent,
+			Silent:   optional(check.Silent, flags.Silent).(bool),
 			Interval: optional(check.Interval, flags.Interval).(int),
 			Mail:     optional(check.Mail, flags.Mail).(bool),
 			SMS:      optional(check.SMS, flags.SMS).(bool),

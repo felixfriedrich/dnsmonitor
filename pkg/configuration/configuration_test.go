@@ -127,3 +127,22 @@ func TestCreateConfig_SMSFlag(t *testing.T) {
 	config := Create(flags)["default"]
 	assert.Equal(t, false, config.SMS)
 }
+
+func TestCreateConfig_ConfigFileOverridesSilentFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		Silent:     false,
+	}
+	config := Create(flags)["amazon"]
+	assert.Equal(t, true, config.Silent)
+}
+
+// This test assures the silent flag is properly used, if there is nothing in the config file
+func TestCreateConfig_SilentFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		SMS:        false,
+	}
+	config := Create(flags)["default"]
+	assert.Equal(t, false, config.Silent)
+}
