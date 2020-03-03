@@ -25,7 +25,7 @@ func Create(flags Flags) map[string]Config {
 		if err != nil {
 			log.Fatal(err)
 		}
-		configFile = fromYml(data)
+		configFile = parseYml(data)
 		configMap = fromConfigFile(configFile, flags)
 	} else {
 		configMap = fromFlags(flags)
