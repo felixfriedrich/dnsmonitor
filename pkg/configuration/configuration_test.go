@@ -70,3 +70,22 @@ func TestCreateConfig_DNSFlag(t *testing.T) {
 	config := Create(flags)["default"]
 	assert.Equal(t, "8.8.8.8", config.DNS)
 }
+
+func TestCreateConfig_ConfigFileOverridesIntervalFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		Interval:   300,
+	}
+	config := Create(flags)["amazon"]
+	assert.Equal(t, 5, config.Interval)
+}
+
+// This test assures the interval flag is properly used, if there is nothing in the config file
+func TestCreateConfig_IntervalFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		Interval:   300,
+	}
+	config := Create(flags)["default"]
+	assert.Equal(t, 300, config.Interval)
+}

@@ -15,8 +15,9 @@ type Checks map[string]Entry
 
 // Entry is part of the yml structure expected in a configuration file
 type Entry struct {
-	Names []string `yaml:"names"`
-	DNS   string   `yaml:"dns"`
+	Names    []string `yaml:"names"`
+	DNS      string   `yaml:"dns"`
+	Interval int      `yaml:"interval"`
 }
 
 func parseYml(data []byte) ConfigFile {
@@ -36,7 +37,7 @@ func fromConfigFile(configFile ConfigFile, flags Flags) map[string]Config {
 			Domains:  check.Names,
 			DNS:      optional(check.DNS, flags.DNS).(string),
 			Silent:   flags.Silent,
-			Interval: flags.Interval,
+			Interval: optional(check.Interval, flags.Interval).(int),
 			Mail:     flags.Mail,
 			SMS:      flags.SMS,
 		}
