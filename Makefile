@@ -55,3 +55,6 @@ lint:
 
 code-check:
 	ineffassign .
+
+imports:
+	find . -name "*.go" -exec goimports -w {} \;
