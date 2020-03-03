@@ -1,4 +1,4 @@
-all: clean build generate tests test-commandline tidy update fmt lint code-check
+all: clean fmt lint code-check imports build generate tests test-commandline tidy update
 	go build -o /dev/null cmd/integration_test/main.go
 
 build:
