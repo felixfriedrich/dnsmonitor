@@ -39,6 +39,25 @@ func TestCreateConfig_DomainsFromFileOverridesFlags(t *testing.T) {
 	assert.NotContains(t, config.Domains, "example.com")
 }
 
+func TestCreateConfig_ConfigFileOverridesDNSFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		DNS:        "8.8.8.8",
+	}
+	config := Create(flags)["amazon"]
+	assert.Equal(t, "8.8.4.4", config.DNS)
+}
+
+// This test assures the DNS flag is properly used, if there is nothing in the config file
+func TestCreateConfig_DNSFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		DNS:        "8.8.8.8",
+	}
+	config := Create(flags)["default"]
+	assert.Equal(t, "8.8.8.8", config.DNS)
+}
+
 func TestCreateConfig_AllChecksArePresent(t *testing.T) {
 	flags := Flags{
 		Domains:    []string{"example.com"},
