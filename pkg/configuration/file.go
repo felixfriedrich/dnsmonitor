@@ -34,7 +34,7 @@ func fromConfigFile(configFile ConfigFile, flags Flags) map[string]Config {
 
 		configMap[name] = Config{
 			Domains:  check.Names,
-			DNS:      optional(check.DNS, flags.DNS),
+			DNS:      optional(check.DNS, flags.DNS).(string),
 			Silent:   flags.Silent,
 			Interval: flags.Interval,
 			Mail:     flags.Mail,
@@ -44,8 +44,13 @@ func fromConfigFile(configFile ConfigFile, flags Flags) map[string]Config {
 	return configMap
 }
 
-func optional(optional string, fallback string) string {
-	if optional != "" {
+func optional(optional interface{}, fallback interface{}) interface{} {
+	s, ok := optional.(string)
+	if ok && s != "" {
+		return optional
+	}
+	i, ok := optional.(int)
+	if ok && i != 0 {
 		return optional
 	}
 	return fallback

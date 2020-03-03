@@ -18,3 +18,13 @@ func TestReadConfig(t *testing.T) {
 	assert.Contains(t, amazon.Names, "aws.amazon.com")
 	assert.Contains(t, amazon.Names, "www.amazon.com")
 }
+
+func TestOptionalWithString(t *testing.T) {
+	assert.Equal(t, "Hello", optional("Hello", "World"))
+	assert.Equal(t, "World", optional("", "World"))
+}
+
+func TestOptionalWithInt(t *testing.T) {
+	assert.Equal(t, 1, optional(0, 1))
+	assert.Equal(t, 1, optional(1, 1))
+}
