@@ -12,6 +12,7 @@ import (
 )
 
 const (
+	version                         = "0.4.1"
 	okExitCode                      = 0
 	fileDoesntExistExitCode         = 1
 	wrongCombinationOfFlagsExitCode = 2
@@ -21,7 +22,7 @@ func main() {
 	flags := configuration.ParseFlags()
 
 	if flags.Version {
-		fmt.Println("dnsmonitor v0.4.1")
+		fmt.Printf("dnsmonitor v%s\n", version)
 		os.Exit(okExitCode)
 	}
 
