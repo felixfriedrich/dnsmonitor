@@ -15,7 +15,7 @@ type Config struct {
 	SMS      bool
 }
 
-// Create takes command line flags and converts them into a generic Config object
+// Create takes command line flags and converts them into a map of config objects also reading a config file, if specified
 func Create(flags Flags) map[string]Config {
 	configMap := make(map[string]Config)
 	var configFile ConfigFile
