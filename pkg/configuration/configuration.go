@@ -17,7 +17,6 @@ type Config struct {
 
 // Create takes command line flags and converts them into a map of config objects also reading a config file, if specified
 func Create(flags Flags) map[string]Config {
-	configMap := make(map[string]Config)
 	var configFile ConfigFile
 
 	if flags.ConfigFile != "" {
@@ -26,10 +25,8 @@ func Create(flags Flags) map[string]Config {
 			log.Fatal(err)
 		}
 		configFile = parseYml(data)
-		configMap = fromConfigFile(configFile, flags)
-	} else {
-		configMap = fromFlags(flags)
+		return fromConfigFile(configFile, flags)
 	}
 
-	return configMap
+	return fromFlags(flags)
 }
