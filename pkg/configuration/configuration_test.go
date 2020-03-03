@@ -27,6 +27,20 @@ func TestCreateConfigFromFlagsOnly(t *testing.T) {
 	assert.Equal(t, flags.Mail, config.Mail)
 }
 
+func TestCreateConfig_AllChecksArePresent(t *testing.T) {
+	flags := Flags{
+		Domains:    []string{"example.com"},
+		DNS:        "8.8.8.8",
+		Silent:     false,
+		Interval:   300,
+		Mail:       false,
+		Version:    false,
+		ConfigFile: "../../test/config.yml",
+	}
+	configMap := Create(flags)
+	assert.Len(t, configMap, 2)
+}
+
 func TestCreateConfig_DomainsFromFileOverridesFlags(t *testing.T) {
 	flags := Flags{
 		Domains:    []string{"example.com"},
@@ -55,18 +69,4 @@ func TestCreateConfig_DNSFlag(t *testing.T) {
 	}
 	config := Create(flags)["default"]
 	assert.Equal(t, "8.8.8.8", config.DNS)
-}
-
-func TestCreateConfig_AllChecksArePresent(t *testing.T) {
-	flags := Flags{
-		Domains:    []string{"example.com"},
-		DNS:        "8.8.8.8",
-		Silent:     false,
-		Interval:   300,
-		Mail:       false,
-		Version:    false,
-		ConfigFile: "../../test/config.yml",
-	}
-	configMap := Create(flags)
-	assert.Len(t, configMap, 2)
 }
