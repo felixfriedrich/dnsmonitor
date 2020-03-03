@@ -6,8 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// This will not be a one to one mapping in the future, I guess.
-func TestCreateConfigFromFlags(t *testing.T) {
+func TestCreateConfigFromFlagsOnly(t *testing.T) {
 	flags := Flags{
 		Domains:  []string{"www.google.com", "google.com"},
 		DNS:      "8.8.8.8",
