@@ -54,5 +54,9 @@ func optional(optional interface{}, fallback interface{}) interface{} {
 	if ok && i != 0 {
 		return optional
 	}
+	b, ok := optional.(bool)
+	if ok && b != false {
+		return optional
+	}
 	return fallback
 }
