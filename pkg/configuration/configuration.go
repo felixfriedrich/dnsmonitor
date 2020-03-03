@@ -25,7 +25,7 @@ func Create(flags Flags) map[string]Config {
 		if err != nil {
 			log.Fatal(err)
 		}
-		configFile = readConfig(data)
+		configFile = fromYml(data)
 		for name, check := range configFile.Checks {
 
 			configMap[name] = Config{

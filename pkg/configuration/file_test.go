@@ -10,7 +10,7 @@ import (
 func TestReadConfig(t *testing.T) {
 	data, err := ioutil.ReadFile("../../test/config.yml")
 	assert.NoError(t, err)
-	c := readConfig(data)
+	c := fromYml(data)
 	assert.NotNil(t, c)
 	assert.True(t, len(c.Checks) > 1)
 	amazon := c.Checks["amazon"]

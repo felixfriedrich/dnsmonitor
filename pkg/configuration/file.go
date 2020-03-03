@@ -18,7 +18,7 @@ type Entry struct {
 	Names []string `yaml:"names"`
 }
 
-func readConfig(data []byte) ConfigFile {
+func fromYml(data []byte) ConfigFile {
 	var config ConfigFile
 	err := yaml.UnmarshalStrict(data, &config)
 	if err != nil {
