@@ -10,3 +10,4 @@ checks:
     - aws.amazon.com
     dns: 8.8.4.4
     interval: 5
+    mail: True

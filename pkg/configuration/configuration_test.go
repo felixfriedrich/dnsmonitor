@@ -89,3 +89,22 @@ func TestCreateConfig_IntervalFlag(t *testing.T) {
 	config := Create(flags)["default"]
 	assert.Equal(t, 300, config.Interval)
 }
+
+func TestCreateConfig_ConfigFileOverridesMailFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		Mail:       false,
+	}
+	config := Create(flags)["amazon"]
+	assert.Equal(t, true, config.Mail)
+}
+
+// This test assures the mail flag is properly used, if there is nothing in the config file
+func TestCreateConfig_MailFlag(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		Mail:       false,
+	}
+	config := Create(flags)["default"]
+	assert.Equal(t, false, config.Mail)
+}
