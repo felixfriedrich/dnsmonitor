@@ -33,6 +33,19 @@ func ParseFlags() Flags {
 	return f
 }
 
+func fromFlags(flags Flags) map[string]Config {
+	configMap := make(map[string]Config)
+	configMap["default"] = Config{
+		Domains:  flags.Domains,
+		DNS:      flags.DNS,
+		Silent:   flags.Silent,
+		Interval: flags.Interval,
+		Mail:     flags.Mail,
+		SMS:      flags.SMS,
+	}
+	return configMap
+}
+
 // Domains is a list of domains specified via command line or config file
 type Domains []string
 

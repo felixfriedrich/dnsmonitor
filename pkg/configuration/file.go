@@ -26,3 +26,19 @@ func fromYml(data []byte) ConfigFile {
 	}
 	return config
 }
+
+func fromConfigFile(configFile ConfigFile, flags Flags) map[string]Config {
+	configMap := make(map[string]Config)
+	for name, check := range configFile.Checks {
+
+		configMap[name] = Config{
+			Domains:  check.Names,
+			DNS:      flags.DNS,
+			Silent:   flags.Silent,
+			Interval: flags.Interval,
+			Mail:     flags.Mail,
+			SMS:      flags.SMS,
+		}
+	}
+	return configMap
+}

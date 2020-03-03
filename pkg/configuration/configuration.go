@@ -26,26 +26,9 @@ func Create(flags Flags) map[string]Config {
 			log.Fatal(err)
 		}
 		configFile = fromYml(data)
-		for name, check := range configFile.Checks {
-
-			configMap[name] = Config{
-				Domains:  check.Names,
-				DNS:      flags.DNS,
-				Silent:   flags.Silent,
-				Interval: flags.Interval,
-				Mail:     flags.Mail,
-				SMS:      flags.SMS,
-			}
-		}
+		configMap = fromConfigFile(configFile, flags)
 	} else {
-		configMap["default"] = Config{
-			Domains:  flags.Domains,
-			DNS:      flags.DNS,
-			Silent:   flags.Silent,
-			Interval: flags.Interval,
-			Mail:     flags.Mail,
-			SMS:      flags.SMS,
-		}
+		configMap = fromFlags(flags)
 	}
 
 	return configMap
