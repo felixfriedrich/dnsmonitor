@@ -1,8 +1,9 @@
 package configuration
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // This will not be a one to one mapping in the future, I guess.

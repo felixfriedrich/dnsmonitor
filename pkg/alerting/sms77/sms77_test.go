@@ -3,12 +3,13 @@ package sms77_test
 import (
 	"dnsmonitor/pkg/alerting/sms77"
 	"dnsmonitor/pkg/alerting/sms77/sms77fakes"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSMS77_SendSMS(t *testing.T) {

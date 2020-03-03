@@ -6,8 +6,9 @@ import (
 	"dnsmonitor/pkg/dns"
 	"dnsmonitor/pkg/monitor"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"os"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const (

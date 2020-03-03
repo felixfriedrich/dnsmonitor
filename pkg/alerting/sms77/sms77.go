@@ -6,11 +6,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // SMS77 holds an HTTP client and some config information
