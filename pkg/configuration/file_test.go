@@ -26,5 +26,5 @@ func TestOptionalWithString(t *testing.T) {
 
 func TestOptionalWithInt(t *testing.T) {
 	assert.Equal(t, 1, optional(0, 1))
-	assert.Equal(t, 1, optional(1, 1))
+	assert.Equal(t, 1, optional(1, 0))
 }
