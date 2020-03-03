@@ -9,7 +9,7 @@ if [ $? -ne 0 ]; then
 fi
 echo "OK"
 
-FILENAME=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+FILENAME=$(openssl rand -hex 12)
 COMMAND='./bin/dnsmonitor -configfile=/tmp/'$FILENAME
 echo $COMMAND
 eval $COMMAND
