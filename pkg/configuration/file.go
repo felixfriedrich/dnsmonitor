@@ -34,15 +34,15 @@ func parseYml(data []byte) ConfigFile {
 
 func fromConfigFile(configFile ConfigFile, flags Flags) map[string]Config {
 	configMap := make(map[string]Config)
-	for name, check := range configFile.Checks {
+	for name, config := range configFile.Checks {
 
 		configMap[name] = Config{
-			Domains:  check.Names,
-			DNS:      optional(check.DNS, flags.DNS).(string),
-			Silent:   optional(check.Silent, flags.Silent).(bool),
-			Interval: optional(check.Interval, flags.Interval).(int),
-			Mail:     optional(check.Mail, flags.Mail).(bool),
-			SMS:      optional(check.SMS, flags.SMS).(bool),
+			Domains:  config.Names,
+			DNS:      optional(config.DNS, flags.DNS).(string),
+			Silent:   optional(config.Silent, flags.Silent).(bool),
+			Interval: optional(config.Interval, flags.Interval).(int),
+			Mail:     optional(config.Mail, flags.Mail).(bool),
+			SMS:      optional(config.SMS, flags.SMS).(bool),
 		}
 	}
 	return configMap
