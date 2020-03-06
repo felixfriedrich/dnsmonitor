@@ -103,20 +103,23 @@ func (m monitor) Run(interval int, silent bool) {
 		case <-ticker.C:
 
 			m.Check()
-
-			for _, d := range m.Domains() {
-				if !silent {
-					fmt.Println("Checking domain", d.Name)
-				}
-
-				fmt.Println("Found", len(d.LastObservation().GetAnswers()), "answer(s).")
-				for _, aa := range d.LastObservation().GetAnswers() {
-					fmt.Println(aa)
-				}
-
-				diff, _ := d.GetDiff()
-				fmt.Println(diff)
-			}
+			m.printOutput(silent)
 		}
+	}
+}
+
+func (m monitor) printOutput(silent bool) {
+	for _, d := range m.Domains() {
+		if !silent {
+			fmt.Println("Checking domain", d.Name)
+		}
+
+		fmt.Println("Found", len(d.LastObservation().GetAnswers()), "answer(s).")
+		for _, answers := range d.LastObservation().GetAnswers() {
+			fmt.Println(answers)
+		}
+
+		diff, _ := d.GetDiff()
+		fmt.Println(diff)
 	}
 }
