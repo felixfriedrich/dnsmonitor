@@ -28,4 +28,3 @@ func TestReadAlertingMailConfig(t *testing.T) {
 	amazon := c.Monitors["amazon"]
 	assert.NotNil(t, amazon.Alerting.Mail)
 }
-
