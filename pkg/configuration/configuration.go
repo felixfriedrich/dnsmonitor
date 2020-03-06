@@ -29,5 +29,5 @@ func Create(flags Flags) map[string]Config {
 		return mergeFlags(configFile, flags)
 	}
 
-	return fromFlags(flags)
+	return createConfigFromFlags(flags)
 }
