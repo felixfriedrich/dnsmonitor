@@ -14,9 +14,9 @@ func TestReadConfig(t *testing.T) {
 	assert.NotNil(t, c)
 	assert.True(t, len(c.Checks) > 1)
 	amazon := c.Checks["amazon"]
-	assert.Len(t, amazon.Names, 2)
-	assert.Contains(t, amazon.Names, "aws.amazon.com")
-	assert.Contains(t, amazon.Names, "www.amazon.com")
+	assert.Len(t, amazon.Domains, 2)
+	assert.Contains(t, amazon.Domains, "aws.amazon.com")
+	assert.Contains(t, amazon.Domains, "www.amazon.com")
 }
 
 func TestOptionalWithString(t *testing.T) {

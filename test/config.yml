@@ -1,11 +1,11 @@
 ---
 checks:
   default:
-    names:
+    domains:
     - google.com
     - www.google.com
   amazon:
-    names:
+    domains:
     - www.amazon.com
     - aws.amazon.com
     dns: 8.8.4.4

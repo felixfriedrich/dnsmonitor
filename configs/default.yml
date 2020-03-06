@@ -1,7 +1,7 @@
 ---
 checks:
   default:
-    names:
+    domains:
     - google.com
     - www.google.com
 

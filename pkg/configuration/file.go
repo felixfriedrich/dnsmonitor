@@ -15,7 +15,7 @@ type Checks map[string]Entry
 
 // Entry is part of the yml structure expected in a configuration file
 type Entry struct {
-	Names    []string `yaml:"names"`
+	Domains  []string `yaml:"domains"`
 	DNS      string   `yaml:"dns"`
 	Interval int      `yaml:"interval"`
 	Mail     bool     `yaml:"mail"`
@@ -37,7 +37,7 @@ func mergeFlags(configFile ConfigFile, flags Flags) Config {
 	for name, ymlFile := range configFile.Checks {
 
 		config[name] = Check{
-			Domains:  ymlFile.Names,
+			Domains:  ymlFile.Domains,
 			DNS:      optional(ymlFile.DNS, flags.DNS).(string),
 			Silent:   optional(ymlFile.Silent, flags.Silent).(bool),
 			Interval: optional(ymlFile.Interval, flags.Interval).(int),
