@@ -6,6 +6,9 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Config represents a configuration (independent from flags or environment variables)
+type Config map[string]Check
+
 // Check holds information needed for one check performed on n domains.
 type Check struct {
 	Domains  Domains
@@ -17,7 +20,7 @@ type Check struct {
 }
 
 // Create takes command line flags and converts them into a map of config objects also reading a config file, if specified
-func Create(flags Flags) map[string]Check {
+func Create(flags Flags) Config {
 	var configFile ConfigFile
 
 	if flags.ConfigFile != "" {

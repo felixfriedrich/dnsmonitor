@@ -32,8 +32,8 @@ func parseYml(data []byte) ConfigFile {
 	return config
 }
 
-func mergeFlags(configFile ConfigFile, flags Flags) map[string]Check {
-	configMap := make(map[string]Check)
+func mergeFlags(configFile ConfigFile, flags Flags) Config {
+	configMap := make(Config)
 	for name, config := range configFile.Checks {
 
 		configMap[name] = Check{
