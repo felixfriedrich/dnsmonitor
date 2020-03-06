@@ -9,12 +9,20 @@ This application monitors domain(s) for changing DNS records and is able to aler
 
 ## Usage
 
-Run application:
+### Config file
+
+```
+$ make build && ./bin/dnsmonitor -configfile configs/default.yml
+```
+
+See [ConfigFile](../../wiki/ConfigFile) more information on config files.
+
+
+### Command line flags
 ```
 $ make build && ./bin/dnsmonitor -domain www.google.com
 ```
 
-Command line flags:
 ```
 Usage of ./bin/dnsmonitor:
   -configfile string
