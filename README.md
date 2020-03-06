@@ -43,7 +43,7 @@ Usage of ./bin/dnsmonitor:
     	print version
 ```
 
-### More information
+## More information
 * [Alerting](../../wiki/Alerting)
 * [IntegrationTests](../../wiki/IntegrationTests)
 
