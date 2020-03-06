@@ -8,7 +8,7 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-// Read reads environment variables with the help of the enconfig package
+// Read reads environment variables with the help of the envconfig package
 func Read(prefix string, config interface{}) {
 	err := envconfig.Process(prefix, config)
 	if err != nil {
