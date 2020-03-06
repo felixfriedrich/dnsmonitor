@@ -47,9 +47,6 @@ func createConfigFromFlags(flags Flags) Config {
 	return config
 }
 
-// Domains is a list of domains specified via command line or config file
-type Domains []string
-
 // String satisfies flag.Value (needed for flag parsing). See: https://golang.org/pkg/flag/#Value
 func (d *Domains) String() string {
 	r := "["

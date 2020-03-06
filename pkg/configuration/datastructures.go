@@ -24,6 +24,9 @@ type Monitor struct {
 	Alerting Alerting `yaml:"alerting"`
 }
 
+// Domains is a list of domains specified via command line or config file
+type Domains []string
+
 // Alerting hold information for alerting
 type Alerting struct {
 	Mail MailAlerting `yaml:"mail"`
