@@ -33,19 +33,19 @@ func parseYml(data []byte) ConfigFile {
 }
 
 func mergeFlags(configFile ConfigFile, flags Flags) Config {
-	configMap := make(Config)
-	for name, config := range configFile.Checks {
+	config := make(Config)
+	for name, ymlFile := range configFile.Checks {
 
-		configMap[name] = Check{
-			Domains:  config.Names,
-			DNS:      optional(config.DNS, flags.DNS).(string),
-			Silent:   optional(config.Silent, flags.Silent).(bool),
-			Interval: optional(config.Interval, flags.Interval).(int),
-			Mail:     optional(config.Mail, flags.Mail).(bool),
-			SMS:      optional(config.SMS, flags.SMS).(bool),
+		config[name] = Check{
+			Domains:  ymlFile.Names,
+			DNS:      optional(ymlFile.DNS, flags.DNS).(string),
+			Silent:   optional(ymlFile.Silent, flags.Silent).(bool),
+			Interval: optional(ymlFile.Interval, flags.Interval).(int),
+			Mail:     optional(ymlFile.Mail, flags.Mail).(bool),
+			SMS:      optional(ymlFile.SMS, flags.SMS).(bool),
 		}
 	}
-	return configMap
+	return config
 }
 
 func optional(optional interface{}, fallback interface{}) interface{} {
