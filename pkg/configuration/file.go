@@ -32,7 +32,7 @@ func parseYml(data []byte) ConfigFile {
 	return config
 }
 
-func fromConfigFile(configFile ConfigFile, flags Flags) map[string]Config {
+func mergeFlags(configFile ConfigFile, flags Flags) map[string]Config {
 	configMap := make(map[string]Config)
 	for name, config := range configFile.Checks {
 

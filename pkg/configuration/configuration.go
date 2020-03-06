@@ -26,7 +26,7 @@ func Create(flags Flags) map[string]Config {
 			log.Fatal(err)
 		}
 		configFile = parseYml(data)
-		return fromConfigFile(configFile, flags)
+		return mergeFlags(configFile, flags)
 	}
 
 	return fromFlags(flags)
