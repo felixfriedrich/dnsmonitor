@@ -39,7 +39,7 @@ func main() {
 		os.Exit(wrongCombinationOfFlagsExitCode)
 	}
 
-	for _, config := range configuration.Create(flags) {
+	for _, config := range configuration.CreateConfig(flags) {
 		var alertingAPI alerting.API
 		var err error
 		if config.SMS {

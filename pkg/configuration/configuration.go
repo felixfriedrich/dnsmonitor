@@ -19,8 +19,8 @@ type Check struct {
 	SMS      bool
 }
 
-// Create takes command line flags and converts them into a map of config objects also reading a config file, if specified
-func Create(flags Flags) Config {
+// CreateConfig takes command line flags and converts them into a map of config objects also reading a config file, if specified
+func CreateConfig(flags Flags) Config {
 	var configFile ConfigFile
 
 	if flags.ConfigFile != "" {
