@@ -34,5 +34,3 @@ func merge(value interface{}, defaultValue interface{}) interface{} {
 	}
 	return defaultValue
 }
-
-
