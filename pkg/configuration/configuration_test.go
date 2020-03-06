@@ -8,7 +8,7 @@ import (
 
 func TestCreateConfigFromFlagsOnly(t *testing.T) {
 	flags := Flags{
-		Domains:  []string{"www.google.com", "google.com"},
+		Domains:  Domains{"www.google.com", "google.com"},
 		DNS:      "8.8.8.8",
 		Silent:   false,
 		Interval: 300,
@@ -17,8 +17,8 @@ func TestCreateConfigFromFlagsOnly(t *testing.T) {
 	}
 	config := CreateConfig(flags)
 
-	assert.Len(t, config, 1)
-	defaultConfig := config["default"]
+	assert.Len(t, config.Monitors, 1)
+	defaultConfig := config.Monitors["default"]
 
 	assert.Equal(t, flags.Domains, defaultConfig.Domains)
 	assert.Equal(t, flags.DNS, defaultConfig.DNS)
@@ -38,7 +38,7 @@ func TestCreateConfig_AllChecksArePresent(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 	}
 	config := CreateConfig(flags)
-	assert.Len(t, config, 2)
+	assert.Len(t, config.Monitors, 2)
 }
 
 func TestCreateConfig_DomainsFromFileOverridesFlags(t *testing.T) {
@@ -46,7 +46,7 @@ func TestCreateConfig_DomainsFromFileOverridesFlags(t *testing.T) {
 		Domains:    []string{"example.com"},
 		ConfigFile: "../../test/config.yml",
 	}
-	config := CreateConfig(flags)["default"]
+	config := CreateConfig(flags).Monitors["default"]
 	assert.Contains(t, config.Domains, "google.com")
 	assert.Contains(t, config.Domains, "www.google.com")
 	assert.NotContains(t, config.Domains, "example.com")
@@ -57,7 +57,7 @@ func TestCreateConfig_ConfigFileOverridesDNSFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		DNS:        "8.8.8.8",
 	}
-	config := CreateConfig(flags)["amazon"]
+	config := CreateConfig(flags).Monitors["amazon"]
 	assert.Equal(t, "8.8.4.4", config.DNS)
 }
 
@@ -67,7 +67,7 @@ func TestCreateConfig_DNSFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		DNS:        "8.8.8.8",
 	}
-	config := CreateConfig(flags)["default"]
+	config := CreateConfig(flags).Monitors["default"]
 	assert.Equal(t, "8.8.8.8", config.DNS)
 }
 
@@ -76,7 +76,7 @@ func TestCreateConfig_ConfigFileOverridesIntervalFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		Interval:   300,
 	}
-	config := CreateConfig(flags)["amazon"]
+	config := CreateConfig(flags).Monitors["amazon"]
 	assert.Equal(t, 5, config.Interval)
 }
 
@@ -86,7 +86,7 @@ func TestCreateConfig_IntervalFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		Interval:   300,
 	}
-	config := CreateConfig(flags)["default"]
+	config := CreateConfig(flags).Monitors["default"]
 	assert.Equal(t, 300, config.Interval)
 }
 
@@ -95,7 +95,7 @@ func TestCreateConfig_ConfigFileOverridesMailFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		Mail:       false,
 	}
-	config := CreateConfig(flags)["amazon"]
+	config := CreateConfig(flags).Monitors["amazon"]
 	assert.Equal(t, true, config.Mail)
 }
 
@@ -105,7 +105,7 @@ func TestCreateConfig_MailFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		Mail:       false,
 	}
-	config := CreateConfig(flags)["default"]
+	config := CreateConfig(flags).Monitors["default"]
 	assert.Equal(t, false, config.Mail)
 }
 
@@ -114,7 +114,7 @@ func TestCreateConfig_ConfigFileOverridesSMSFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		SMS:        false,
 	}
-	config := CreateConfig(flags)["amazon"]
+	config := CreateConfig(flags).Monitors["amazon"]
 	assert.Equal(t, true, config.SMS)
 }
 
@@ -124,7 +124,7 @@ func TestCreateConfig_SMSFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		SMS:        false,
 	}
-	config := CreateConfig(flags)["default"]
+	config := CreateConfig(flags).Monitors["default"]
 	assert.Equal(t, false, config.SMS)
 }
 
@@ -133,7 +133,7 @@ func TestCreateConfig_ConfigFileOverridesSilentFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		Silent:     false,
 	}
-	config := CreateConfig(flags)["amazon"]
+	config := CreateConfig(flags).Monitors["amazon"]
 	assert.Equal(t, true, config.Silent)
 }
 
@@ -143,6 +143,6 @@ func TestCreateConfig_SilentFlag(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 		SMS:        false,
 	}
-	config := CreateConfig(flags)["default"]
+	config := CreateConfig(flags).Monitors["default"]
 	assert.Equal(t, false, config.Silent)
 }

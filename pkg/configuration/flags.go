@@ -34,14 +34,15 @@ func ParseFlags() Flags {
 }
 
 func createConfigFromFlags(flags Flags) Config {
-	config := make(Config)
-	config["default"] = Check{
+	config := NewConfig()
+	config.Monitors["default"] = Monitor{
 		Domains:  flags.Domains,
 		DNS:      flags.DNS,
-		Silent:   flags.Silent,
 		Interval: flags.Interval,
 		Mail:     flags.Mail,
 		SMS:      flags.SMS,
+		Silent:   flags.Silent,
+		Alerting: Alerting{},
 	}
 	return config
 }

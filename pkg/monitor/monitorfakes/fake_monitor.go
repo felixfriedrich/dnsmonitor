@@ -13,15 +13,15 @@ type FakeMonitor struct {
 	checkMutex       sync.RWMutex
 	checkArgsForCall []struct {
 	}
-	ConfigStub        func() configuration.Check
+	ConfigStub        func() configuration.Monitor
 	configMutex       sync.RWMutex
 	configArgsForCall []struct {
 	}
 	configReturns struct {
-		result1 configuration.Check
+		result1 configuration.Monitor
 	}
 	configReturnsOnCall map[int]struct {
-		result1 configuration.Check
+		result1 configuration.Monitor
 	}
 	DomainsStub        func() []*model.Domain
 	domainsMutex       sync.RWMutex
@@ -70,7 +70,7 @@ func (fake *FakeMonitor) CheckCalls(stub func()) {
 	fake.CheckStub = stub
 }
 
-func (fake *FakeMonitor) Config() configuration.Check {
+func (fake *FakeMonitor) Config() configuration.Monitor {
 	fake.configMutex.Lock()
 	ret, specificReturn := fake.configReturnsOnCall[len(fake.configArgsForCall)]
 	fake.configArgsForCall = append(fake.configArgsForCall, struct {
@@ -93,32 +93,32 @@ func (fake *FakeMonitor) ConfigCallCount() int {
 	return len(fake.configArgsForCall)
 }
 
-func (fake *FakeMonitor) ConfigCalls(stub func() configuration.Check) {
+func (fake *FakeMonitor) ConfigCalls(stub func() configuration.Monitor) {
 	fake.configMutex.Lock()
 	defer fake.configMutex.Unlock()
 	fake.ConfigStub = stub
 }
 
-func (fake *FakeMonitor) ConfigReturns(result1 configuration.Check) {
+func (fake *FakeMonitor) ConfigReturns(result1 configuration.Monitor) {
 	fake.configMutex.Lock()
 	defer fake.configMutex.Unlock()
 	fake.ConfigStub = nil
 	fake.configReturns = struct {
-		result1 configuration.Check
+		result1 configuration.Monitor
 	}{result1}
 }
 
-func (fake *FakeMonitor) ConfigReturnsOnCall(i int, result1 configuration.Check) {
+func (fake *FakeMonitor) ConfigReturnsOnCall(i int, result1 configuration.Monitor) {
 	fake.configMutex.Lock()
 	defer fake.configMutex.Unlock()
 	fake.ConfigStub = nil
 	if fake.configReturnsOnCall == nil {
 		fake.configReturnsOnCall = make(map[int]struct {
-			result1 configuration.Check
+			result1 configuration.Monitor
 		})
 	}
 	fake.configReturnsOnCall[i] = struct {
-		result1 configuration.Check
+		result1 configuration.Monitor
 	}{result1}
 }
 

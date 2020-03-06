@@ -5,14 +5,22 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// ConfigFile represents the yml structure expected in a configuration file
-type ConfigFile struct {
-	Monitors map[string]Monitor `yaml:"monitors"`
+type monitors map[string]Monitor
+
+// Config represents the yml structure expected in a configuration file
+type Config struct {
+	Monitors monitors `yaml:"monitors"`
+}
+
+// NewConfig created a new Config object and initialised the list of monitors
+func NewConfig() Config {
+	monitors := make(monitors)
+	return Config{Monitors: monitors}
 }
 
 // Monitor is part of the yml structure expected in a configuration file
 type Monitor struct {
-	Domains  []string `yaml:"domains"`
+	Domains  Domains  `yaml:"domains"`
 	DNS      string   `yaml:"dns"`
 	Interval int      `yaml:"interval"`
 	Mail     bool     `yaml:"mail"`
@@ -21,10 +29,12 @@ type Monitor struct {
 	Alerting Alerting `yaml:"alerting"`
 }
 
+// Alerting hold information for alerting
 type Alerting struct {
 	Mail MailAlerting `yaml:"mail"`
 }
 
+// MailAlerting holds information for alerting via mail
 type MailAlerting struct {
 	Host     string `yaml:"host"`
 	Port     int    `yaml:"port"`
@@ -34,8 +44,8 @@ type MailAlerting struct {
 	To       string `yaml:"to"`
 }
 
-func parseYml(data []byte) ConfigFile {
-	var config ConfigFile
+func parseYml(data []byte) Config {
+	var config Config
 	err := yaml.UnmarshalStrict(data, &config)
 	if err != nil {
 		log.Fatal(err)
@@ -43,17 +53,16 @@ func parseYml(data []byte) ConfigFile {
 	return config
 }
 
-func mergeFlags(configFile ConfigFile, flags Flags) Config {
-	config := make(Config)
-	for name, ymlFile := range configFile.Monitors {
-
-		config[name] = Check{
+func mergeFlags(config Config, flags Flags) Config {
+	for name, ymlFile := range config.Monitors {
+		config.Monitors[name] = Monitor{
 			Domains:  ymlFile.Domains,
 			DNS:      optional(ymlFile.DNS, flags.DNS).(string),
-			Silent:   optional(ymlFile.Silent, flags.Silent).(bool),
 			Interval: optional(ymlFile.Interval, flags.Interval).(int),
 			Mail:     optional(ymlFile.Mail, flags.Mail).(bool),
 			SMS:      optional(ymlFile.SMS, flags.SMS).(bool),
+			Silent:   optional(ymlFile.Silent, flags.Silent).(bool),
+			Alerting: Alerting{},
 		}
 	}
 	return config
