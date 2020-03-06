@@ -1,5 +1,10 @@
 package configuration
 
+/*
+This file only contains tests, which assure the config is read correctly. As in, information from the config file,
+command line flags and env variables are processed with the right priority.
+*/
+
 import (
 	"testing"
 

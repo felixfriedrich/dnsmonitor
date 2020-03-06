@@ -1,5 +1,7 @@
 package configuration
 
+// This file only contains tests, which are related to the yml structure of the config file
+
 import (
 	"io/ioutil"
 	"testing"
