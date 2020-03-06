@@ -1,5 +1,5 @@
 ---
-checks:
+monitors:
   default:
     domains:
     - google.com

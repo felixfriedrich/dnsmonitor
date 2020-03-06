@@ -7,11 +7,11 @@ import (
 
 // ConfigFile represents the yml structure expected in a configuration file
 type ConfigFile struct {
-	Checks map[string]Entry `yaml:"checks"`
+	Monitors map[string]Monitor `yaml:"monitors"`
 }
 
-// Entry is part of the yml structure expected in a configuration file
-type Entry struct {
+// Monitor is part of the yml structure expected in a configuration file
+type Monitor struct {
 	Domains  []string `yaml:"domains"`
 	DNS      string   `yaml:"dns"`
 	Interval int      `yaml:"interval"`
@@ -45,7 +45,7 @@ func parseYml(data []byte) ConfigFile {
 
 func mergeFlags(configFile ConfigFile, flags Flags) Config {
 	config := make(Config)
-	for name, ymlFile := range configFile.Checks {
+	for name, ymlFile := range configFile.Monitors {
 
 		config[name] = Check{
 			Domains:  ymlFile.Domains,
