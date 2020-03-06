@@ -97,11 +97,16 @@ func (m monitor) Observe() {
 }
 
 func (m monitor) Run(interval int, silent bool) {
+
+	// Tickers only execute their job after the interval time has passed once.
+	// As the user might expect otherwise, the initial check is performed once before the Ticker is started.
+	m.Check()
+	m.printOutput(silent)
+
 	ticker := time.NewTicker(time.Duration(interval) * time.Second)
 	for {
 		select {
 		case <-ticker.C:
-
 			m.Check()
 			m.printOutput(silent)
 		}
