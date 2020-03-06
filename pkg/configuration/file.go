@@ -32,11 +32,11 @@ func parseYml(data []byte) ConfigFile {
 	return config
 }
 
-func mergeFlags(configFile ConfigFile, flags Flags) map[string]Config {
-	configMap := make(map[string]Config)
+func mergeFlags(configFile ConfigFile, flags Flags) map[string]Check {
+	configMap := make(map[string]Check)
 	for name, config := range configFile.Checks {
 
-		configMap[name] = Config{
+		configMap[name] = Check{
 			Domains:  config.Names,
 			DNS:      optional(config.DNS, flags.DNS).(string),
 			Silent:   optional(config.Silent, flags.Silent).(bool),

@@ -33,9 +33,9 @@ func ParseFlags() Flags {
 	return f
 }
 
-func createConfigFromFlags(flags Flags) map[string]Config {
-	configMap := make(map[string]Config)
-	configMap["default"] = Config{
+func createConfigFromFlags(flags Flags) map[string]Check {
+	configMap := make(map[string]Check)
+	configMap["default"] = Check{
 		Domains:  flags.Domains,
 		DNS:      flags.DNS,
 		Silent:   flags.Silent,

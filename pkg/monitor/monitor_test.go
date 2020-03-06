@@ -10,7 +10,7 @@ import (
 )
 
 func TestCreateMonitor(t *testing.T) {
-	config := configuration.Config{
+	config := configuration.Check{
 		Domains: []string{"google.com", "www.google.com"},
 	}
 	dns := &dnsfakes.FakeInterface{}
@@ -23,7 +23,7 @@ func TestCreateMonitor(t *testing.T) {
 }
 
 func TestCheck(t *testing.T) {
-	config := configuration.Config{
+	config := configuration.Check{
 		Domains: []string{"www.google.com"},
 	}
 	dns := &dnsfakes.FakeInterface{}
@@ -41,7 +41,7 @@ func TestCheck(t *testing.T) {
 }
 
 func TestCreateMonitorWithAlerting(t *testing.T) {
-	config := configuration.Config{
+	config := configuration.Check{
 		Domains: []string{"google.com"},
 		Mail:    true,
 		SMS:     true,

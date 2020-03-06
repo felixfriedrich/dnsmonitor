@@ -19,16 +19,16 @@ import (
 //counterfeiter:generate . Monitor
 type Monitor interface {
 	Domains() []*model.Domain
-	Config() configuration.Config
+	Config() configuration.Check
 	Observe()
 	Check()
 	Run(interval int, silent bool)
 }
 
-// Monitor holds a Config and a Domain object from the store
+// Monitor holds a Check and a Domain object from the store
 type monitor struct {
 	domains  []*model.Domain
-	config   configuration.Config
+	config   configuration.Check
 	alerting alerting.API
 	dns      dns.Interface
 	mail     alerting.Mail
@@ -40,12 +40,12 @@ func (m monitor) Domains() []*model.Domain {
 	return m.domains
 }
 
-func (m monitor) Config() configuration.Config {
+func (m monitor) Config() configuration.Check {
 	return m.config
 }
 
 // CreateMonitor creates a Monitor fetching a domain from the store
-func CreateMonitor(config configuration.Config, mail alerting.Mail, alerting alerting.API, dns dns.Interface) (Monitor, error) {
+func CreateMonitor(config configuration.Check, mail alerting.Mail, alerting alerting.API, dns dns.Interface) (Monitor, error) {
 	domains := []*model.Domain{}
 	for _, d := range config.Domains {
 		d, err := store.Get(d)

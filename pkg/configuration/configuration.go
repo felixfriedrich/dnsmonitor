@@ -6,8 +6,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Config holds configuration.
-type Config struct {
+// Check holds information needed for one check performed on n domains.
+type Check struct {
 	Domains  Domains
 	DNS      string
 	Silent   bool
@@ -17,7 +17,7 @@ type Config struct {
 }
 
 // Create takes command line flags and converts them into a map of config objects also reading a config file, if specified
-func Create(flags Flags) map[string]Config {
+func Create(flags Flags) map[string]Check {
 	var configFile ConfigFile
 
 	if flags.ConfigFile != "" {
