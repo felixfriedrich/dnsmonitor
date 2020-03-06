@@ -7,11 +7,8 @@ import (
 
 // ConfigFile represents the yml structure expected in a configuration file
 type ConfigFile struct {
-	Checks Checks `yaml:"checks"`
+	Checks map[string]Entry `yaml:"checks"`
 }
-
-// Checks is part of the yml structure expected in a configuration file
-type Checks map[string]Entry
 
 // Entry is part of the yml structure expected in a configuration file
 type Entry struct {
