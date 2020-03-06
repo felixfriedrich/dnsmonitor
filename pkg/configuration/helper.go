@@ -3,7 +3,12 @@ package configuration
 func mergeFlags(config Config, flags Flags) Config {
 	for name, ymlFile := range config.Monitors {
 		config.Monitors[name] = Monitor{
-			Domains:  ymlFile.Domains, // Domains are not merged as the domain field is not merge in yml
+			/*
+				The main reason to merge the fields is, that the flag value serves as a default.
+				Even if the flag is not specified, the flag itself has a default value.
+				But that also means that any neutral value (e.g. false), will be overridden by the value of the flag.
+			*/
+			Domains:  merge(ymlFile.Domains, flags.Domains).(Domains),
 			DNS:      merge(ymlFile.DNS, flags.DNS).(string),
 			Interval: merge(ymlFile.Interval, flags.Interval).(int),
 			Mail:     merge(ymlFile.Mail, flags.Mail).(bool),
