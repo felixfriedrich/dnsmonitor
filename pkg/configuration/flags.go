@@ -33,20 +33,6 @@ func ParseFlags() Flags {
 	return f
 }
 
-func createConfigFromFlags(flags Flags) Config {
-	config := NewConfig()
-	config.Monitors["default"] = Monitor{
-		Domains:  flags.Domains,
-		DNS:      flags.DNS,
-		Interval: flags.Interval,
-		Mail:     flags.Mail,
-		SMS:      flags.SMS,
-		Silent:   flags.Silent,
-		Alerting: Alerting{},
-	}
-	return config
-}
-
 // String satisfies flag.Value (needed for flag parsing). See: https://golang.org/pkg/flag/#Value
 func (d *Domains) String() string {
 	r := "["

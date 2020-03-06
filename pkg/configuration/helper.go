@@ -1,6 +1,11 @@
 package configuration
 
 func mergeFlags(config Config, flags Flags) Config {
+
+	if _, exists := config.Monitors["default"]; !exists {
+		config.Monitors["default"] = Monitor{}
+	}
+
 	for name, ymlFile := range config.Monitors {
 		config.Monitors[name] = Monitor{
 			/*
