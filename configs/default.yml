@@ -4,4 +4,7 @@ checks:
     domains:
     - google.com
     - www.google.com
-
+  amazon:
+    domains:
+    - www.amazon.com
+    - aws.amazon.com
