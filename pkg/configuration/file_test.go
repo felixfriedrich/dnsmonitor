@@ -12,7 +12,7 @@ func TestReadConfig(t *testing.T) {
 	assert.NoError(t, err)
 	c := parseYml(data)
 	assert.NotNil(t, c)
-	assert.True(t, len(c.Monitors) > 1)
+	assert.Len(t, c.Monitors, 2)
 	amazon := c.Monitors["amazon"]
 	assert.Len(t, amazon.Domains, 2)
 	assert.Contains(t, amazon.Domains, "aws.amazon.com")
