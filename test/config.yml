@@ -13,3 +13,11 @@ checks:
     mail: True
     sms: True
     silent: True
+    alerting:
+      mail:
+        host: localhost
+        port: 25
+        username: root
+        password: ""
+        from: dnsmonitor@localhost
+        to: you@localhost

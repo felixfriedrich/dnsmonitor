@@ -19,6 +19,14 @@ func TestReadConfig(t *testing.T) {
 	assert.Contains(t, amazon.Domains, "www.amazon.com")
 }
 
+func TestReadAlertingMailConfig(t *testing.T) {
+	data, err := ioutil.ReadFile("../../test/config.yml")
+	assert.NoError(t, err)
+	c := parseYml(data)
+	amazon := c.Checks["amazon"]
+	assert.NotNil(t, amazon.Alerting.Mail)
+}
+
 func TestOptionalWithString(t *testing.T) {
 	assert.Equal(t, "Hello", optional("Hello", "World"))
 	assert.Equal(t, "World", optional("", "World"))

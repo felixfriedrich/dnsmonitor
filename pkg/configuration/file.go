@@ -21,6 +21,20 @@ type Entry struct {
 	Mail     bool     `yaml:"mail"`
 	SMS      bool     `yaml:"sms"`
 	Silent   bool     `yaml:"silent"`
+	Alerting Alerting `yaml:"alerting"`
+}
+
+type Alerting struct {
+	Mail MailAlerting `yaml:"mail"`
+}
+
+type MailAlerting struct {
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	From     string `yaml:"from"`
+	To       string `yaml:"to"`
 }
 
 func parseYml(data []byte) ConfigFile {
