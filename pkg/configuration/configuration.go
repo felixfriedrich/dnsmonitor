@@ -9,15 +9,15 @@ import (
 // CreateConfig takes command line flags, reads a config file (if specified) and returns a config.
 // Flags are merged into the information from the config file.
 func CreateConfig(flags Flags) Config {
-	configFile := NewConfig()
+	config := NewConfig()
 
 	if flags.ConfigFile != "" {
 		data, err := ioutil.ReadFile(flags.ConfigFile)
 		if err != nil {
 			log.Fatal(err)
 		}
-		configFile = parseYml(data)
+		config = parseYml(data)
 	}
 
-	return mergeFlags(configFile, flags)
+	return mergeFlags(config, flags)
 }
