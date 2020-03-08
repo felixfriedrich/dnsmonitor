@@ -33,14 +33,15 @@ func TestCreateConfigFromFlagsOnly(t *testing.T) {
 }
 
 func TestCreateConfig_DomainsFromFileOverridesFlags(t *testing.T) {
+	examplecom := "example.com"
 	flags := Flags{
-		Domains:    []string{"example.com"},
+		Domains:    []string{examplecom},
 		ConfigFile: "../../test/config.yml",
 	}
 	config := CreateConfig(flags).Monitors["default"]
 	assert.Contains(t, config.Domains, "google.com")
 	assert.Contains(t, config.Domains, "www.google.com")
-	assert.NotContains(t, config.Domains, "example.com")
+	assert.NotContains(t, config.Domains, examplecom)
 }
 
 func TestCreateConfig_ConfigFileOverridesDNSFlag(t *testing.T) {
@@ -54,12 +55,13 @@ func TestCreateConfig_ConfigFileOverridesDNSFlag(t *testing.T) {
 
 // This test assures the DNS flag is properly used, if there is nothing in the config file
 func TestCreateConfig_DNSFlag(t *testing.T) {
+	dnsServer := "8.8.8.8"
 	flags := Flags{
 		ConfigFile: "../../test/config.yml",
-		DNS:        "8.8.8.8",
+		DNS:        dnsServer,
 	}
 	config := CreateConfig(flags).Monitors["default"]
-	assert.Equal(t, "8.8.8.8", config.DNS)
+	assert.Equal(t, dnsServer, config.DNS)
 }
 
 func TestCreateConfig_ConfigFileOverridesIntervalFlag(t *testing.T) {
@@ -73,12 +75,13 @@ func TestCreateConfig_ConfigFileOverridesIntervalFlag(t *testing.T) {
 
 // This test assures the interval flag is properly used, if there is nothing in the config file
 func TestCreateConfig_IntervalFlag(t *testing.T) {
+	interval := 300
 	flags := Flags{
 		ConfigFile: "../../test/config.yml",
-		Interval:   300,
+		Interval:   interval,
 	}
 	config := CreateConfig(flags).Monitors["default"]
-	assert.Equal(t, 300, config.Interval)
+	assert.Equal(t, interval, config.Interval)
 }
 
 func TestCreateConfig_ConfigFileOverridesMailFlag(t *testing.T) {
