@@ -7,8 +7,9 @@ import (
 )
 
 func TestCreateDomain(t *testing.T) {
-	d := CreateDomain("www.google.com")
-	assert.Equal(t, "www.google.com", d.Name)
+	google := "www.google.com"
+	d := CreateDomain(google)
+	assert.Equal(t, google, d.Name)
 	assert.Equal(t, 0, len(d.Observations))
 }
 
