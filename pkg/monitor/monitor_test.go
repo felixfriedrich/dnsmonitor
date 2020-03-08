@@ -23,8 +23,9 @@ func TestCreateMonitor(t *testing.T) {
 }
 
 func TestCheck(t *testing.T) {
+	google := "www.google.com"
 	config := configuration.Monitor{
-		Domains: []string{"www.google.com"},
+		Domains: []string{google},
 	}
 	dns := &dnsfakes.FakeInterface{}
 	dns.QueryReturnsOnCall(0, []string{"1.2.3.4"}, nil)
@@ -37,7 +38,7 @@ func TestCheck(t *testing.T) {
 	assert.Equal(t, 1, dns.QueryCallCount())
 	domain, _ := dns.QueryArgsForCall(0)
 
-	assert.Equal(t, domain, "www.google.com")
+	assert.Equal(t, domain, google)
 }
 
 func TestCreateMonitorWithAlerting(t *testing.T) {
