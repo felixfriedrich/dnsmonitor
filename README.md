@@ -4,6 +4,7 @@ This application monitors domain(s) for changing DNS records and is able to aler
 
 * [![Build Status](https://github.com/felixfriedrich/dnsmonitor/workflows/check-commit/badge.svg)](https://github.com/felixfriedrich/dnsmonitor/actions)
 * [![Go Report Card](https://goreportcard.com/badge/github.com/felixfriedrich/dnsmonitor)](https://goreportcard.com/report/github.com/felixfriedrich/dnsmonitor)
+* [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=felixfriedrich_dnsmonitor&metric=alert_status)](https://sonarcloud.io/dashboard?id=felixfriedrich_dnsmonitor)
 * https://trello.com/b/PGkhfOQE/dnsmonitor
 
 
