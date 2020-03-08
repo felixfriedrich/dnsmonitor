@@ -20,7 +20,39 @@ const (
 
 func main() {
 	flags := configuration.ParseFlags()
+	sanityCheckFlags(flags)
 
+	for _, config := range configuration.CreateConfig(flags).Monitors {
+		monitor, err := monitor.CreateMonitor(config, createMailAlerting(config.Mail), createAlerting(config.SMS), dns.New())
+		if err != nil {
+			log.Error(err)
+		}
+		go monitor.Run(config.Interval, config.Silent)
+	}
+
+	select {} // Make this program not terminate in order to keep the go routines running
+}
+
+func createMailAlerting(mail bool) alerting.Mail {
+	if mail {
+		return alerting.NewMail()
+	}
+	return nil
+}
+
+func createAlerting(sms bool) alerting.API {
+	var alertingAPI alerting.API
+	var err error
+	if sms {
+		alertingAPI, err = alerting.New(alerting.MessageBird, alerting.SMS)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	return alertingAPI
+}
+
+func sanityCheckFlags(flags configuration.Flags) {
 	if flags.Version {
 		fmt.Printf("dnsmonitor v%s\n", version)
 		os.Exit(okExitCode)
@@ -38,29 +70,4 @@ func main() {
 		fmt.Println("Provide either -configfile OR -domain")
 		os.Exit(wrongCombinationOfFlagsExitCode)
 	}
-
-	for _, config := range configuration.CreateConfig(flags).Monitors {
-		var alertingAPI alerting.API
-		var err error
-		if config.SMS {
-			alertingAPI, err = alerting.New(alerting.MessageBird, alerting.SMS)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		var mail alerting.Mail
-		if config.Mail {
-			mail = alerting.NewMail()
-		}
-
-		m, err := monitor.CreateMonitor(config, mail, alertingAPI, dns.New())
-		if err != nil {
-			log.Error(err)
-		}
-
-		go m.Run(config.Interval, config.Silent)
-	}
-
-	select {} // Make this program not terminate in order to keep the go routines running
 }
