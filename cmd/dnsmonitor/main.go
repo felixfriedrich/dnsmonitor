@@ -20,7 +20,10 @@ const (
 
 func main() {
 	flags := configuration.ParseFlags()
-	sanityCheckFlags(flags)
+	ok, exitCode := sanityCheckFlags(flags)
+	if !ok {
+		os.Exit(exitCode)
+	}
 
 	for _, config := range configuration.CreateConfig(flags).Monitors {
 		monitor, err := monitor.CreateMonitor(config, createMailAlerting(config.Mail), createAlerting(config.SMS), dns.New())
@@ -52,22 +55,24 @@ func createAlerting(sms bool) alerting.API {
 	return alertingAPI
 }
 
-func sanityCheckFlags(flags configuration.Flags) {
+func sanityCheckFlags(flags configuration.Flags) (bool, int) {
 	if flags.Version {
 		fmt.Printf("dnsmonitor v%s\n", version)
-		os.Exit(okExitCode)
+		return false, okExitCode
 	}
 
 	if flags.ConfigFile != "" {
 		_, err := os.Stat(flags.ConfigFile)
 		if os.IsNotExist(err) {
 			fmt.Println("config file", flags.ConfigFile, "doesn't exist")
-			os.Exit(fileDoesntExistExitCode)
+			return false, fileDoesntExistExitCode
 		}
 	}
 
 	if flags.ConfigFile != "" && len(flags.Domains) > 0 {
 		fmt.Println("Provide either -configfile OR -domain")
-		os.Exit(wrongCombinationOfFlagsExitCode)
+		return false, wrongCombinationOfFlagsExitCode
 	}
+
+	return true, -1
 }
