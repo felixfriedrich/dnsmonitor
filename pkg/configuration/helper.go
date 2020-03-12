@@ -1,5 +1,10 @@
 package configuration
 
+const (
+	// EnvMailPrefix is used to prefix env vars
+	EnvMailPrefix = "dnsmonitor_mail"
+)
+
 func mergeFlags(config Config, flags Flags) Config {
 
 	if _, exists := config.Monitors["default"]; !exists {

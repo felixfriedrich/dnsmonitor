@@ -27,8 +27,7 @@ func newMailFromConfig(config configuration.MailAlerting) Mail {
 // NewMail returns a mail implementation satisfying the interface alerting.Mail
 func NewMail() Mail {
 	c := configuration.MailAlerting{}
-	prefix := "dnsmonitor_mail"
-	envconfig.Read(prefix, &c)
+	envconfig.Read(configuration.EnvMailPrefix, &c)
 	return newMailFromConfig(c)
 }
 
