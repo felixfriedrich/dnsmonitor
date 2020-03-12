@@ -19,5 +19,7 @@ func CreateConfig(flags Flags) Config {
 		config = parseYml(data)
 	}
 
-	return mergeFlags(config, flags)
+	config = mergeFlags(config, flags)
+	config, _ = mergeEnvVars(config)
+	return config
 }

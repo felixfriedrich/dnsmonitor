@@ -140,3 +140,12 @@ func TestCreateConfig_SilentFlag(t *testing.T) {
 	config := CreateConfig(flags).Monitors["default"]
 	assert.Equal(t, false, config.Silent)
 }
+
+func TestNewConfig_MailConfig(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		Mail:       true,
+	}
+	config := CreateConfig(flags).Monitors["amazon"]
+	assert.NotEqual(t, "", config.Alerting.Mail.To)
+}

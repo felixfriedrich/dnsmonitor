@@ -1,5 +1,11 @@
 package configuration
 
+import (
+	"errors"
+
+	"github.com/kelseyhightower/envconfig"
+)
+
 const (
 	// EnvMailPrefix is used to prefix env vars
 	EnvMailPrefix = "dnsmonitor_mail"
@@ -24,10 +30,24 @@ func mergeFlags(config Config, flags Flags) Config {
 			Mail:     merge(ymlFile.Mail, flags.Mail).(bool),
 			SMS:      merge(ymlFile.SMS, flags.SMS).(bool),
 			Silent:   merge(ymlFile.Silent, flags.Silent).(bool),
-			Alerting: Alerting{},
+			Alerting: ymlFile.Alerting, // Alerting isn't configurable via flags
 		}
 	}
 	return config
+}
+
+func mergeEnvVars(config Config) (Config, error) {
+	for name, ymlFile := range config.Monitors {
+		if ymlFile.Mail && ymlFile.Alerting.Mail.To == "" {
+			mailConfig := config.Monitors[name].Alerting.Mail
+			err := envconfig.Process(EnvMailPrefix, &mailConfig)
+			if err != nil {
+				return config, errors.New("alerting mail config could neither be loaded from config file nor from env vars")
+			}
+			config.Monitors[name].Alerting.Mail = mailConfig
+		}
+	}
+	return config, nil
 }
 
 func merge(value interface{}, defaultValue interface{}) interface{} {
