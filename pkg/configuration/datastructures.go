@@ -34,10 +34,10 @@ type Alerting struct {
 
 // MailAlerting holds information for alerting via mail
 type MailAlerting struct {
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	From     string `yaml:"from"`
-	To       string `yaml:"to"`
+	Host     string `yaml:"host" default:"127.0.0.1"`
+	Port     int    `yaml:"port" default:"25"`
+	Username string `yaml:"username" required:"true"`
+	Password string `yaml:"password" required:"true"`
+	From     string `yaml:"from" required:"true"`
+	To       string `yaml:"to" required:"true"`
 }

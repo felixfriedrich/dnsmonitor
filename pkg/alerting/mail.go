@@ -3,6 +3,7 @@ package alerting
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
 
 import (
+	"dnsmonitor/pkg/configuration"
 	"dnsmonitor/pkg/configuration/envconfig"
 	"net/smtp"
 	"strconv"
@@ -12,26 +13,26 @@ import (
 //counterfeiter:generate . Mail
 type Mail interface {
 	Send(diff string) error
-	Config() MailConfig
+	Config() configuration.MailAlerting
 }
 
 type mail struct {
-	config MailConfig
+	config configuration.MailAlerting
 }
 
-func newMailFromConfig(config MailConfig) Mail {
+func newMailFromConfig(config configuration.MailAlerting) Mail {
 	return &mail{config: config}
 }
 
 // NewMail returns a mail implementation satisfying the interface alerting.Mail
 func NewMail() Mail {
-	c := MailConfig{}
+	c := configuration.MailAlerting{}
 	prefix := "dnsmonitor_mail"
 	envconfig.Read(prefix, &c)
 	return newMailFromConfig(c)
 }
 
-func (m *mail) Config() MailConfig {
+func (m *mail) Config() configuration.MailAlerting {
 	return m.config
 }
 
@@ -57,14 +58,4 @@ func (m *mail) Send(diff string) error {
 		return err
 	}
 	return nil
-}
-
-// MailConfig defines environment variables to configure the mail server to use
-type MailConfig struct {
-	Host     string `default:"127.0.0.1"`
-	Port     int    `default:"25"`
-	Username string `required:"true"`
-	Password string `required:"true"`
-	From     string `required:"true"`
-	To       string `required:"true"`
 }

@@ -3,19 +3,20 @@ package alertingfakes
 
 import (
 	"dnsmonitor/pkg/alerting"
+	"dnsmonitor/pkg/configuration"
 	"sync"
 )
 
 type FakeMail struct {
-	ConfigStub        func() alerting.MailConfig
+	ConfigStub        func() configuration.MailAlerting
 	configMutex       sync.RWMutex
 	configArgsForCall []struct {
 	}
 	configReturns struct {
-		result1 alerting.MailConfig
+		result1 configuration.MailAlerting
 	}
 	configReturnsOnCall map[int]struct {
-		result1 alerting.MailConfig
+		result1 configuration.MailAlerting
 	}
 	SendStub        func(string) error
 	sendMutex       sync.RWMutex
@@ -32,7 +33,7 @@ type FakeMail struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeMail) Config() alerting.MailConfig {
+func (fake *FakeMail) Config() configuration.MailAlerting {
 	fake.configMutex.Lock()
 	ret, specificReturn := fake.configReturnsOnCall[len(fake.configArgsForCall)]
 	fake.configArgsForCall = append(fake.configArgsForCall, struct {
@@ -55,32 +56,32 @@ func (fake *FakeMail) ConfigCallCount() int {
 	return len(fake.configArgsForCall)
 }
 
-func (fake *FakeMail) ConfigCalls(stub func() alerting.MailConfig) {
+func (fake *FakeMail) ConfigCalls(stub func() configuration.MailAlerting) {
 	fake.configMutex.Lock()
 	defer fake.configMutex.Unlock()
 	fake.ConfigStub = stub
 }
 
-func (fake *FakeMail) ConfigReturns(result1 alerting.MailConfig) {
+func (fake *FakeMail) ConfigReturns(result1 configuration.MailAlerting) {
 	fake.configMutex.Lock()
 	defer fake.configMutex.Unlock()
 	fake.ConfigStub = nil
 	fake.configReturns = struct {
-		result1 alerting.MailConfig
+		result1 configuration.MailAlerting
 	}{result1}
 }
 
-func (fake *FakeMail) ConfigReturnsOnCall(i int, result1 alerting.MailConfig) {
+func (fake *FakeMail) ConfigReturnsOnCall(i int, result1 configuration.MailAlerting) {
 	fake.configMutex.Lock()
 	defer fake.configMutex.Unlock()
 	fake.ConfigStub = nil
 	if fake.configReturnsOnCall == nil {
 		fake.configReturnsOnCall = make(map[int]struct {
-			result1 alerting.MailConfig
+			result1 configuration.MailAlerting
 		})
 	}
 	fake.configReturnsOnCall[i] = struct {
-		result1 alerting.MailConfig
+		result1 configuration.MailAlerting
 	}{result1}
 }
 
