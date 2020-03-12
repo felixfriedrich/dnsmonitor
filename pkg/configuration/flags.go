@@ -1,10 +1,21 @@
 package configuration
 
 import (
-	"dnsmonitor/pkg/alerting"
 	"errors"
 	"flag"
 )
+
+const (
+	// None is used as default by the 'flags' package
+	None Vendor = 0
+	// MessageBird https://www.messagebird.com/en/
+	MessageBird Vendor = 1
+	// SMS77 https://app.sms77.io
+	SMS77 Vendor = 2
+)
+
+// Vendor identifies services for alerting
+type Vendor uint8
 
 // Flags contains values parsed from command line flags
 type Flags struct {
@@ -53,18 +64,18 @@ func (d *Domains) Set(value string) error {
 
 // VendorFlag contains a validated vendor
 type VendorFlag struct {
-	Vendor alerting.Vendor
+	Vendor Vendor
 }
 
 // TODO: What map ca be used to lookup keys and values? Use it for Set() and String()
 func (vf *VendorFlag) String() string {
-	if vf.Vendor == alerting.None {
+	if vf.Vendor == None {
 		return "none"
 	}
-	if vf.Vendor == alerting.MessageBird {
+	if vf.Vendor == MessageBird {
 		return "messagebird"
 	}
-	if vf.Vendor == alerting.SMS77 {
+	if vf.Vendor == SMS77 {
 		return "sms77"
 	}
 	panic("")
@@ -73,15 +84,15 @@ func (vf *VendorFlag) String() string {
 // Set satisfies flag.Value
 func (vf *VendorFlag) Set(f string) error {
 	if f == "none" {
-		vf.Vendor = alerting.None
+		vf.Vendor = None
 		return nil
 	}
 	if f == "messagebird" {
-		vf.Vendor = alerting.MessageBird
+		vf.Vendor = MessageBird
 		return nil
 	}
 	if f == "sms77" || f == "SMS77" {
-		vf.Vendor = alerting.SMS77
+		vf.Vendor = SMS77
 		return nil
 	}
 	return errors.New("vendor flag unknown")

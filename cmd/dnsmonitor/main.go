@@ -47,7 +47,7 @@ func createAlerting(sms bool) alerting.API {
 	var alertingAPI alerting.API
 	var err error
 	if sms {
-		alertingAPI, err = alerting.New(alerting.MessageBird, alerting.SMS)
+		alertingAPI, err = alerting.New(configuration.MessageBird, alerting.SMS)
 		if err != nil {
 			log.Fatal(err)
 		}

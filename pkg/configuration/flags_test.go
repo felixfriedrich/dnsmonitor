@@ -1,7 +1,6 @@
 package configuration
 
 import (
-	"dnsmonitor/pkg/alerting"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -16,6 +15,6 @@ func TestDomainFlag(t *testing.T) {
 func TestVendorFlag(t *testing.T) {
 	vf := VendorFlag{}
 	vf.Set("messagebird")
-	assert.Equal(t, alerting.MessageBird, vf.Vendor)
+	assert.Equal(t, MessageBird, vf.Vendor)
 	assert.Equal(t, "messagebird", vf.String())
 }
