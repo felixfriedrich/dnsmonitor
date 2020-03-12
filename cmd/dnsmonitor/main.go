@@ -26,7 +26,7 @@ func main() {
 	}
 
 	for _, config := range configuration.CreateConfig(flags).Monitors {
-		monitor, err := monitor.CreateMonitor(config, createMailAlerting(config.Mail), createAlerting(config.SMS), dns.New())
+		monitor, err := monitor.CreateMonitor(*config, createMailAlerting(config.Mail), createAlerting(config.SMS), dns.New())
 		if err != nil {
 			log.Error(err)
 		}

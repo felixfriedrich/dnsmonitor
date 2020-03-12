@@ -11,7 +11,7 @@ type Config struct {
 	Monitors monitors `yaml:"monitors"`
 }
 
-type monitors map[string]Monitor
+type monitors map[string]*Monitor
 
 // Monitor is part of the yml structure expected in a configuration file
 type Monitor struct {

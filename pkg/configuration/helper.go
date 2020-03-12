@@ -8,11 +8,11 @@ const (
 func mergeFlags(config Config, flags Flags) Config {
 
 	if _, exists := config.Monitors["default"]; !exists {
-		config.Monitors["default"] = Monitor{}
+		config.Monitors["default"] = &Monitor{}
 	}
 
 	for name, ymlFile := range config.Monitors {
-		config.Monitors[name] = Monitor{
+		config.Monitors[name] = &Monitor{
 			/*
 				The main reason to merge the fields is, that the flag value serves as a default.
 				Even if the flag is not specified, the flag itself has a default value.
