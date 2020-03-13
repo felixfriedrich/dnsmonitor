@@ -3,6 +3,7 @@ package main
 import (
 	"dnsmonitor/pkg/alerting"
 	"dnsmonitor/pkg/configuration"
+	"dnsmonitor/pkg/configuration/envconfig"
 	"flag"
 	"fmt"
 )
@@ -33,7 +34,9 @@ func main() {
 	}
 
 	if f.Mail {
-		mail := alerting.NewMail()
+		ma := configuration.MailAlerting{}
+		envconfig.Read(configuration.EnvMailPrefix, &ma)
+		mail := alerting.NewMailAlerting(ma)
 		fmt.Println("Sending mail via", mail.Config().Host)
 		err := mail.Send("Test")
 		if err != nil {

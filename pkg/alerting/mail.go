@@ -4,7 +4,6 @@ package alerting
 
 import (
 	"dnsmonitor/pkg/configuration"
-	"dnsmonitor/pkg/configuration/envconfig"
 	"net/smtp"
 	"strconv"
 )
@@ -20,15 +19,9 @@ type mail struct {
 	config configuration.MailAlerting
 }
 
-func newMailFromConfig(config configuration.MailAlerting) Mail {
-	return &mail{config: config}
-}
-
-// NewMail returns a mail implementation satisfying the interface alerting.Mail
-func NewMail() Mail {
-	c := configuration.MailAlerting{}
-	envconfig.Read(configuration.EnvMailPrefix, &c)
-	return newMailFromConfig(c)
+// NewMailAlerting returns a mail implementation satisfying the interface alerting.Mail
+func NewMailAlerting(mailAlerting configuration.MailAlerting) Mail {
+	return &mail{config: mailAlerting}
 }
 
 func (m *mail) Config() configuration.MailAlerting {
