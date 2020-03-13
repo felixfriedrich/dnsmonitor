@@ -7,15 +7,15 @@ import (
 
 const (
 	// None is used as default by the 'flags' package
-	None Vendor = 0
+	None Vendor = "" // This needs to be an empty string in order to match the default value from yml parsing
 	// MessageBird https://www.messagebird.com/en/
-	MessageBird Vendor = 1
+	MessageBird Vendor = "messagebird"
 	// SMS77 https://app.sms77.io
-	SMS77 Vendor = 2
+	SMS77 Vendor = "sms77"
 )
 
 // Vendor identifies services for alerting
-type Vendor uint8
+type Vendor string
 
 // Flags contains values parsed from command line flags
 type Flags struct {
@@ -69,33 +69,17 @@ type VendorFlag struct {
 	Vendor Vendor
 }
 
-// TODO: What map ca be used to lookup keys and values? Use it for Set() and String()
 func (vf *VendorFlag) String() string {
-	if vf.Vendor == None {
-		return "none"
-	}
-	if vf.Vendor == MessageBird {
-		return "messagebird"
-	}
-	if vf.Vendor == SMS77 {
-		return "sms77"
-	}
-	panic("")
+	return string(vf.Vendor)
 }
 
 // Set satisfies flag.Value
 func (vf *VendorFlag) Set(f string) error {
-	if f == "none" {
-		vf.Vendor = None
+	vendors := map[Vendor]bool{MessageBird: true, SMS77: true} // existing vendors can be disabled via this map
+	enabled, exists := vendors[Vendor(f)]
+	if exists && enabled {
+		vf.Vendor = Vendor(f)
 		return nil
 	}
-	if f == "messagebird" {
-		vf.Vendor = MessageBird
-		return nil
-	}
-	if f == "sms77" || f == "SMS77" {
-		vf.Vendor = SMS77
-		return nil
-	}
-	return errors.New("vendor flag unknown")
+	return errors.New("vendor doesn't exist")
 }
