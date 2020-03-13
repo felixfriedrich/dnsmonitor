@@ -50,7 +50,7 @@ func TestMergeEnvVars_NoMailConfigNoEnvVars(t *testing.T) {
 			To: "",
 		}},
 	}
-	config.Monitors["default"] = &monitor
+	config.Monitors[Default] = &monitor
 
 	_, err := mergeEnvVars(config)
 	assert.Error(t, err)
@@ -75,16 +75,16 @@ func TestMergeEnvVars_NoMailConfigButEnvVars(t *testing.T) {
 		Mail:     true,
 		Alerting: Alerting{Mail: MailAlerting{}},
 	}
-	config.Monitors["default"] = &monitor
+	config.Monitors[Default] = &monitor
 
 	config, err := mergeEnvVars(config)
 	assert.NoError(t, err)
-	assert.Equal(t, localhost, config.Monitors["default"].Alerting.Mail.Host)
-	assert.Equal(t, port25, config.Monitors["default"].Alerting.Mail.Port)
-	assert.Equal(t, root, config.Monitors["default"].Alerting.Mail.Username)
-	assert.Equal(t, password, config.Monitors["default"].Alerting.Mail.Password)
-	assert.Equal(t, from, config.Monitors["default"].Alerting.Mail.From)
-	assert.Equal(t, to, config.Monitors["default"].Alerting.Mail.To)
+	assert.Equal(t, localhost, config.Monitors[Default].Alerting.Mail.Host)
+	assert.Equal(t, port25, config.Monitors[Default].Alerting.Mail.Port)
+	assert.Equal(t, root, config.Monitors[Default].Alerting.Mail.Username)
+	assert.Equal(t, password, config.Monitors[Default].Alerting.Mail.Password)
+	assert.Equal(t, from, config.Monitors[Default].Alerting.Mail.From)
+	assert.Equal(t, to, config.Monitors[Default].Alerting.Mail.To)
 
 	os.Unsetenv("DNSMONITOR_MAIL_HOST")
 	os.Unsetenv("DNSMONITOR_MAIL_PORT")

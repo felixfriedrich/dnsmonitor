@@ -26,7 +26,7 @@ func TestCreateConfigFromFlagsOnly(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Len(t, config.Monitors, 1)
-	defaultConfig := config.Monitors["default"]
+	defaultConfig := config.Monitors[Default]
 
 	assert.Equal(t, flags.Domains, defaultConfig.Domains)
 	assert.Equal(t, flags.DNS, defaultConfig.DNS)
@@ -42,7 +42,7 @@ func TestCreateConfig_DomainsFromFileOverridesFlags(t *testing.T) {
 		ConfigFile: "../../test/config.yml",
 	}
 	c, _ := CreateConfig(flags)
-	config := c.Monitors["default"]
+	config := c.Monitors[Default]
 	assert.Contains(t, config.Domains, "google.com")
 	assert.Contains(t, config.Domains, "www.google.com")
 	assert.NotContains(t, config.Domains, examplecom)
@@ -66,7 +66,7 @@ func TestCreateConfig_DNSFlag(t *testing.T) {
 		DNS:        dnsServer,
 	}
 	c, _ := CreateConfig(flags)
-	config := c.Monitors["default"]
+	config := c.Monitors[Default]
 	assert.Equal(t, dnsServer, config.DNS)
 }
 
@@ -88,7 +88,7 @@ func TestCreateConfig_IntervalFlag(t *testing.T) {
 		Interval:   interval,
 	}
 	c, _ := CreateConfig(flags)
-	config := c.Monitors["default"]
+	config := c.Monitors[Default]
 	assert.Equal(t, interval, config.Interval)
 }
 
@@ -109,7 +109,7 @@ func TestCreateConfig_MailFlag(t *testing.T) {
 		Mail:       false,
 	}
 	c, _ := CreateConfig(flags)
-	config := c.Monitors["default"]
+	config := c.Monitors[Default]
 	assert.Equal(t, false, config.Mail)
 }
 
@@ -130,7 +130,7 @@ func TestCreateConfig_SMSFlag(t *testing.T) {
 		SMS:        false,
 	}
 	c, _ := CreateConfig(flags)
-	config := c.Monitors["default"]
+	config := c.Monitors[Default]
 	assert.Equal(t, false, config.SMS)
 }
 
@@ -151,7 +151,7 @@ func TestCreateConfig_SilentFlag(t *testing.T) {
 		SMS:        false,
 	}
 	c, _ := CreateConfig(flags)
-	config := c.Monitors["default"]
+	config := c.Monitors[Default]
 	assert.Equal(t, false, config.Silent)
 }
 

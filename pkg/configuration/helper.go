@@ -13,8 +13,8 @@ const (
 
 func mergeFlags(config Config, flags Flags) Config {
 
-	if _, exists := config.Monitors["default"]; !exists {
-		config.Monitors["default"] = &Monitor{}
+	if _, exists := config.Monitors[Default]; !exists {
+		config.Monitors[Default] = &Monitor{}
 	}
 
 	for name, ymlFile := range config.Monitors {

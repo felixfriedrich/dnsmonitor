@@ -6,6 +6,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+const (
+	// Default is the name of the default monitor in config files
+	Default = "default"
+)
+
 // CreateConfig takes command line flags, reads a config file (if specified) and returns a config.
 // Flags are merged into the information from the config file.
 func CreateConfig(flags Flags) (Config, error) {
