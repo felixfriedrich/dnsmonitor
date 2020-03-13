@@ -28,7 +28,7 @@ const (
 func New(vendor configuration.Vendor, t Type) (API, error) {
 	var alertingAPI API
 	if vendor == configuration.MessageBird && t == SMS {
-		c := messagebird.Config{}
+		c := configuration.MessageBirdConfig{}
 		prefix := "dnsmonitor_messagebird"
 		envconfig.Read(prefix, &c)
 		return messagebird.New(c), nil

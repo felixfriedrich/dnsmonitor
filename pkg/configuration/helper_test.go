@@ -54,6 +54,7 @@ func TestMergeEnvVars_NoMailConfigNoEnvVars(t *testing.T) {
 
 	_, err := mergeEnvVars(config)
 	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "DNSMONITOR_MAIL_USERNAME")
 }
 
 func TestMergeEnvVars_NoMailConfigButEnvVars(t *testing.T) {
@@ -92,4 +93,48 @@ func TestMergeEnvVars_NoMailConfigButEnvVars(t *testing.T) {
 	os.Unsetenv("DNSMONITOR_MAIL_PASSWORD")
 	os.Unsetenv("DNSMONITOR_MAIL_FROM")
 	os.Unsetenv("DNSMONITOR_MAIL_TO")
+}
+
+func TestMergeEnvVars_NoMessageBirdConfigNoEnvVars(t *testing.T) {
+	config := NewConfig()
+	monitor := Monitor{
+		SMS: true,
+		Alerting: Alerting{SMS: SMSAlerting{
+			Vendor: MessageBird,
+			MessageBird: MessageBirdConfig{
+				AccessKey: "",
+			},
+		}},
+	}
+	config.Monitors[Default] = &monitor
+
+	_, err := mergeEnvVars(config)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "DNSMONITOR_MESSAGEBIRD_ACCESSKEY")
+}
+
+func TestMergeEnvVars_NoMessageBirdConfigButEnvVars(t *testing.T) {
+	config := NewConfig()
+
+	os.Setenv("DNSMONITOR_MESSAGEBIRD_ACCESSKEY", "2xgWcAepPYdUGvhH7t1H")
+	os.Setenv("DNSMONITOR_MESSAGEBIRD_SENDER", "+49 30 835646496")
+	os.Setenv("DNSMONITOR_MESSAGEBIRD_RECIPIENTS", "+49 30 239768508")
+
+	monitor := Monitor{
+		SMS: true,
+		Alerting: Alerting{SMS: SMSAlerting{
+			Vendor: MessageBird,
+			MessageBird: MessageBirdConfig{
+				AccessKey: "",
+			},
+		}},
+	}
+	config.Monitors[Default] = &monitor
+
+	_, err := mergeEnvVars(config)
+	assert.NoError(t, err)
+
+	os.Unsetenv("DNSMONITOR_MESSAGEBIRD_ACCESSKEY")
+	os.Unsetenv("DNSMONITOR_MESSAGEBIRD_SENDER")
+	os.Unsetenv("DNSMONITOR_MESSAGEBIRD_RECIPIENTS")
 }

@@ -164,3 +164,16 @@ func TestNewConfig_MailConfig(t *testing.T) {
 	config := c.Monitors["amazon"]
 	assert.NotEqual(t, "", config.Alerting.Mail.To)
 }
+
+func TestNewConfig_MessageBirdConfig(t *testing.T) {
+	flags := Flags{
+		ConfigFile: "../../test/config.yml",
+		SMS:        true,
+	}
+	c, _ := CreateConfig(flags)
+	config := c.Monitors["amazon"]
+	assert.Equal(t, MessageBird, config.Alerting.SMS.Vendor)
+	assert.Equal(t, "2xgWcAepPYdUGvhH7t1H", config.Alerting.SMS.MessageBird.AccessKey)
+	assert.Equal(t, "+49 30 835646496", config.Alerting.SMS.MessageBird.Sender)
+	assert.Contains(t, config.Alerting.SMS.MessageBird.Recipients, "+49 30 239768508")
+}

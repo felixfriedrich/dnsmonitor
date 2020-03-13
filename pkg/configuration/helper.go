@@ -1,6 +1,7 @@
 package configuration
 
 import (
+	"bytes"
 	"errors"
 
 	"github.com/kelseyhightower/envconfig"
@@ -9,6 +10,8 @@ import (
 const (
 	// EnvMailPrefix is used to prefix env vars
 	EnvMailPrefix = "dnsmonitor_mail"
+	// EnvMessageBirdPrefix is used to prefix env vars
+	EnvMessageBirdPrefix = "dnsmonitor_messagebird"
 )
 
 func mergeFlags(config Config, flags Flags) Config {
@@ -36,18 +39,57 @@ func mergeFlags(config Config, flags Flags) Config {
 	return config
 }
 
+type condition func() bool
+
 func mergeEnvVars(config Config) (Config, error) {
+	var err error
+
 	for name, ymlFile := range config.Monitors {
-		if ymlFile.Mail && ymlFile.Alerting.Mail.To == "" {
-			mailConfig := config.Monitors[name].Alerting.Mail
-			err := envconfig.Process(EnvMailPrefix, &mailConfig)
-			if err != nil {
-				return config, errors.New("alerting mail config could neither be loaded from config file nor from env vars")
-			}
-			config.Monitors[name].Alerting.Mail = mailConfig
+
+		// Mail config
+		err = readEnv(
+			func() bool {
+				return ymlFile.Mail && ymlFile.Alerting.Mail.To == ""
+			},
+			EnvMailPrefix,
+			&config.Monitors[name].Alerting.Mail,
+			err,
+		)
+
+		// Messagebird config
+		err = readEnv(
+			func() bool {
+				return ymlFile.SMS && ymlFile.Alerting.SMS.Vendor == MessageBird && ymlFile.Alerting.SMS.MessageBird.AccessKey == ""
+			},
+			EnvMessageBirdPrefix,
+			&config.Monitors[name].Alerting.SMS.MessageBird,
+			err,
+		)
+
+		/*
+			Any call of readEnv will either set the error or pass it through. This way evaluating it once at the end of
+			this function is enough.
+		*/
+		if err != nil {
+			return config, err
 		}
 	}
 	return config, nil
+}
+
+func readEnv(condition condition, prefix string, configStruct interface{}, e error) error {
+	if condition() {
+		err := envconfig.Process(prefix, configStruct)
+		if err != nil {
+			usage := bytes.NewBufferString("")
+			envconfig.Usagef(prefix, configStruct, usage, envconfig.DefaultTableFormat)
+			message := "config could neither be loaded from config file nor from env vars"
+			message = message + "\n" + usage.String()
+			return errors.New(message)
+		}
+	}
+
+	return e
 }
 
 func merge(value interface{}, defaultValue interface{}) interface{} {

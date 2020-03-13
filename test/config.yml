@@ -21,3 +21,10 @@ monitors:
         password: ""
         from: dnsmonitor@localhost
         to: you@localhost
+      sms:
+        vendor: messagebird
+        messagebird:
+          accesskey: "2xgWcAepPYdUGvhH7t1H"
+          sender: "+49 30 835646496"
+          recipients:
+            - "+49 30 239768508"

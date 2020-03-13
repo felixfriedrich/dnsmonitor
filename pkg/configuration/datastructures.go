@@ -30,6 +30,7 @@ type Domains []string
 // Alerting hold information for alerting
 type Alerting struct {
 	Mail MailAlerting `yaml:"mail"`
+	SMS  SMSAlerting  `yaml:"sms"`
 }
 
 // MailAlerting holds information for alerting via mail
@@ -40,4 +41,17 @@ type MailAlerting struct {
 	Password string `yaml:"password" required:"true"`
 	From     string `yaml:"from" required:"true"`
 	To       string `yaml:"to" required:"true"`
+}
+
+// SMSAlerting holds information for alerting via Messagebird
+type SMSAlerting struct {
+	Vendor      Vendor            `yaml:"vendor"`
+	MessageBird MessageBirdConfig `yaml:"messagebird"`
+}
+
+// MessageBirdConfig for envconfig and yml files
+type MessageBirdConfig struct {
+	AccessKey  string   `yaml:"accesskey" required:"true"`
+	Sender     string   `yaml:"sender" required:"true"`
+	Recipients []string `yaml:"recipients" required:"true"`
 }
