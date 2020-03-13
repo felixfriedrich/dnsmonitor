@@ -16,6 +16,7 @@ const (
 	okExitCode                      = 0
 	fileDoesntExistExitCode         = 1
 	wrongCombinationOfFlagsExitCode = 2
+	configErrorExitCode             = 3
 )
 
 func main() {
@@ -25,7 +26,13 @@ func main() {
 		os.Exit(exitCode)
 	}
 
-	for _, config := range configuration.CreateConfig(flags).Monitors {
+	c, err := configuration.CreateConfig(flags)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(configErrorExitCode)
+	}
+
+	for _, config := range c.Monitors {
 		monitor, err := monitor.CreateMonitor(*config, createMailAlerting(config.Mail), createAlerting(config.SMS), dns.New())
 		if err != nil {
 			log.Error(err)

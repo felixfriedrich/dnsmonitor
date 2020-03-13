@@ -8,7 +8,7 @@ import (
 
 // CreateConfig takes command line flags, reads a config file (if specified) and returns a config.
 // Flags are merged into the information from the config file.
-func CreateConfig(flags Flags) Config {
+func CreateConfig(flags Flags) (Config, error) {
 	config := NewConfig()
 
 	if flags.ConfigFile != "" {
@@ -20,6 +20,5 @@ func CreateConfig(flags Flags) Config {
 	}
 
 	config = mergeFlags(config, flags)
-	config, _ = mergeEnvVars(config)
-	return config
+	return mergeEnvVars(config)
 }
