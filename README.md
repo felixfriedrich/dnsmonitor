@@ -40,6 +40,8 @@ Usage of ./bin/dnsmonitor:
     	silence output
   -sms
     	send SMS if DNS record changes
+  -vendor value
+      Alerting vendor, e.g. 'messagebird'.
   -version
     	print version
 ```

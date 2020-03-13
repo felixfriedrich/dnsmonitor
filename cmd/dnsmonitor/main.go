@@ -33,7 +33,7 @@ func main() {
 	}
 
 	for _, config := range c.Monitors {
-		monitor, err := monitor.CreateMonitor(*config, alerting.NewMailAlerting(config.Alerting.Mail), createAlerting(config.SMS), dns.New())
+		monitor, err := monitor.CreateMonitor(*config, alerting.NewMailAlerting(config.Alerting.Mail), createAlerting(config.SMS, flags.VendorFlag.Vendor), dns.New())
 		if err != nil {
 			log.Error(err)
 		}
@@ -43,11 +43,11 @@ func main() {
 	select {} // Make this program not terminate in order to keep the go routines running
 }
 
-func createAlerting(sms bool) alerting.API {
+func createAlerting(sms bool, vendor configuration.Vendor) alerting.API {
 	var alertingAPI alerting.API
 	var err error
 	if sms {
-		alertingAPI, err = alerting.New(configuration.MessageBird, alerting.SMS)
+		alertingAPI, err = alerting.New(vendor, alerting.SMS)
 		if err != nil {
 			log.Fatal(err)
 		}

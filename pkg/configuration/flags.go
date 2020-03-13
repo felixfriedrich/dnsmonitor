@@ -25,6 +25,7 @@ type Flags struct {
 	Interval   int
 	Mail       bool
 	SMS        bool
+	VendorFlag VendorFlag
 	Version    bool
 	ConfigFile string
 }
@@ -38,6 +39,7 @@ func ParseFlags() Flags {
 	flag.IntVar(&f.Interval, "interval", 300, "interval in seconds")
 	flag.BoolVar(&f.Mail, "mail", false, "send mail if DNS record changes")
 	flag.BoolVar(&f.SMS, "sms", false, "send SMS if DNS record changes")
+	flag.Var(&f.VendorFlag, "vendor", "Alerting vendor, e.g. 'messagebird'.")
 	flag.BoolVar(&f.Version, "version", false, "print version")
 	flag.StringVar(&f.ConfigFile, "configfile", "", "config file")
 	flag.Parse()
