@@ -34,7 +34,7 @@ func New(vendor configuration.Vendor, t Type) (API, error) {
 		return messagebird.New(c), nil
 	}
 	if vendor == configuration.SMS77 && t == SMS {
-		c := sms77.Config{}
+		c := configuration.SMS77Config{}
 		prefix := "dnsmonitor_sms77"
 		envconfig.Read(prefix, &c)
 		return sms77.New(c), nil

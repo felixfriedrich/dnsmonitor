@@ -28,3 +28,8 @@ monitors:
           sender: "+49 30 835646496"
           recipients:
             - "+49 30 239768508"
+        sms77:
+          apikey: "JDKn5bGx7ZO74iPzKPKt"
+          sender: "+49 30 835646496"
+          recipient: "+49 30 239768508"
+          debug: False

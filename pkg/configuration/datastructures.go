@@ -47,6 +47,7 @@ type MailAlerting struct {
 type SMSAlerting struct {
 	Vendor      Vendor            `yaml:"vendor"`
 	MessageBird MessageBirdConfig `yaml:"messagebird"`
+	SMS77       SMS77Config       `yaml:"sms77"`
 }
 
 // MessageBirdConfig for envconfig and yml files
@@ -54,4 +55,12 @@ type MessageBirdConfig struct {
 	AccessKey  string   `yaml:"accesskey" required:"true"`
 	Sender     string   `yaml:"sender" required:"true"`
 	Recipients []string `yaml:"recipients" required:"true"`
+}
+
+// SMS77Config for envconfig and yml files
+type SMS77Config struct {
+	APIKey    string `required:"true" yaml:"apikey"`
+	Sender    string `required:"true" yaml:"sender"`
+	Recipient string `required:"true" yaml:"recipient"`
+	Debug     bool   `required:"false" default:"false" yaml:"debug"`
 }

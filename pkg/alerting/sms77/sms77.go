@@ -3,6 +3,7 @@ package sms77
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
 
 import (
+	"dnsmonitor/pkg/configuration"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -17,7 +18,7 @@ import (
 // SMS77 holds an HTTP client and some config information
 type SMS77 struct {
 	Client HTTPClient
-	Config Config
+	Config configuration.SMS77Config
 }
 
 // Override sets a new http.Client into the SMS77 struct (used for testing)
@@ -32,16 +33,8 @@ type HTTPClient interface {
 }
 
 // New created a SMS77 object from a config
-func New(config Config) *SMS77 {
+func New(config configuration.SMS77Config) *SMS77 {
 	return &SMS77{Client: &http.Client{}, Config: config}
-}
-
-// Config for envconfig
-type Config struct {
-	APIKey    string `required:"true"`
-	Sender    string `required:"true"`
-	Recipient string `required:"true"`
-	Debug     bool   `required:"false" default:"false"`
 }
 
 // SendSMS satisfies the alerting.API interface

@@ -3,6 +3,7 @@ package sms77_test
 import (
 	"dnsmonitor/pkg/alerting/sms77"
 	"dnsmonitor/pkg/alerting/sms77/sms77fakes"
+	"dnsmonitor/pkg/configuration"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestSMS77_SendSMS(t *testing.T) {
-	api := sms77.New(sms77.Config{
+	api := sms77.New(configuration.SMS77Config{
 		APIKey:    "1234",
 		Sender:    "01234567890",
 		Recipient: "0987654321",
@@ -52,7 +53,7 @@ func TestSMS77_SendSMS(t *testing.T) {
 }
 
 func TestSMS77_SendSMS_Non200Response(t *testing.T) {
-	api := sms77.New(sms77.Config{})
+	api := sms77.New(configuration.SMS77Config{})
 	fakeHttpClient := sms77fakes.FakeHTTPClient{}
 	fakeHttpClient.DoReturnsOnCall(0, &http.Response{
 		StatusCode: 404,
@@ -65,7 +66,7 @@ func TestSMS77_SendSMS_Non200Response(t *testing.T) {
 }
 
 func TestSMS77_SendSMS_SendFailed(t *testing.T) {
-	api := sms77.New(sms77.Config{})
+	api := sms77.New(configuration.SMS77Config{})
 	fakeHttpClient := sms77fakes.FakeHTTPClient{}
 	fakeHttpClient.DoReturnsOnCall(0, &http.Response{
 		StatusCode: 200,

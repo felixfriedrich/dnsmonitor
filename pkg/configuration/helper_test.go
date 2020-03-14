@@ -138,3 +138,76 @@ func TestMergeEnvVars_NoMessageBirdConfigButEnvVars(t *testing.T) {
 	os.Unsetenv("DNSMONITOR_MESSAGEBIRD_SENDER")
 	os.Unsetenv("DNSMONITOR_MESSAGEBIRD_RECIPIENTS")
 }
+
+func TestMergeEnvVars_NoSMS77ConfigNoEnvVars(t *testing.T) {
+	config := NewConfig()
+	monitor := Monitor{
+		SMS: true,
+		Alerting: Alerting{SMS: SMSAlerting{
+			Vendor: SMS77,
+			SMS77: SMS77Config{
+				APIKey: "",
+			},
+		}},
+	}
+	config.Monitors[Default] = &monitor
+
+	_, err := mergeEnvVars(config)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "DNSMONITOR_SMS77_APIKEY")
+}
+
+func TestMergeEnvVars_NoSMS77ConfigButEnvVars(t *testing.T) {
+	config := NewConfig()
+
+	APIKey := "2xgWcAepPYdUGvhH7t1H"
+	sender := "+49 30 835646496"
+	recipient := "+49 30 239768508"
+	debug := false
+	os.Setenv("DNSMONITOR_SMS77_APIKEY", APIKey)
+	os.Setenv("DNSMONITOR_SMS77_SENDER", sender)
+	os.Setenv("DNSMONITOR_SMS77_RECIPIENT", recipient)
+	os.Setenv("DNSMONITOR_SMS77_DEBUG", strconv.FormatBool(debug))
+
+	monitor := Monitor{
+		SMS: true,
+		Alerting: Alerting{SMS: SMSAlerting{
+			Vendor: SMS77,
+			SMS77: SMS77Config{
+				APIKey: "",
+			},
+		}},
+	}
+	config.Monitors[Default] = &monitor
+
+	config, err := mergeEnvVars(config)
+	assert.NoError(t, err)
+
+	assert.Equal(t, APIKey, config.Monitors[Default].Alerting.SMS.SMS77.APIKey)
+	assert.Equal(t, sender, config.Monitors[Default].Alerting.SMS.SMS77.Sender)
+	assert.Equal(t, recipient, config.Monitors[Default].Alerting.SMS.SMS77.Recipient)
+	assert.Equal(t, debug, config.Monitors[Default].Alerting.SMS.SMS77.Debug)
+
+	os.Unsetenv("DNSMONITOR_SMS77_APIKEY")
+	os.Unsetenv("DNSMONITOR_SMS77_SENDER")
+	os.Unsetenv("DNSMONITOR_SMS77_RECIPIENT")
+	os.Unsetenv("DNSMONITOR_SMS77_DEBUG")
+}
+
+func TestMergeEnvVars_SMSFlagButNoVendor(t *testing.T) {
+	config := NewConfig()
+	monitor := Monitor{
+		SMS: true,
+		Alerting: Alerting{SMS: SMSAlerting{
+			Vendor: SMS77,
+			SMS77: SMS77Config{
+				APIKey: "",
+			},
+		}},
+	}
+	config.Monitors[Default] = &monitor
+
+	_, err := mergeEnvVars(config)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "DNSMONITOR_SMS77_APIKEY")
+}

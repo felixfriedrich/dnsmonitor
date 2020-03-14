@@ -12,6 +12,8 @@ const (
 	EnvMailPrefix = "dnsmonitor_mail"
 	// EnvMessageBirdPrefix is used to prefix env vars
 	EnvMessageBirdPrefix = "dnsmonitor_messagebird"
+	// EnvSMS77Prefix is used to prefix env vars
+	EnvSMS77Prefix = "dnsmonitor_sms77"
 )
 
 func mergeFlags(config Config, flags Flags) Config {
@@ -63,6 +65,16 @@ func mergeEnvVars(config Config) (Config, error) {
 			},
 			EnvMessageBirdPrefix,
 			&config.Monitors[name].Alerting.SMS.MessageBird,
+			err,
+		)
+
+		// SMS77
+		err = readEnv(
+			func() bool {
+				return ymlFile.SMS && ymlFile.Alerting.SMS.Vendor == SMS77 && ymlFile.Alerting.SMS.SMS77.APIKey == ""
+			},
+			EnvSMS77Prefix,
+			&config.Monitors[name].Alerting.SMS.SMS77,
 			err,
 		)
 
