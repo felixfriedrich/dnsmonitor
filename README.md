@@ -48,7 +48,6 @@ Usage of ./bin/dnsmonitor:
 
 ## More information
 * [Alerting](../../wiki/Alerting)
-* [IntegrationTests](../../wiki/IntegrationTests)
 
 ## Links
 * For generating mocks: https://github.com/maxbrunsfeld/counterfeiter
