@@ -36,11 +36,6 @@ func (r Record) Equal(rr Record) bool {
 	return cmp.Equal(r.GetAnswers(), rr.GetAnswers())
 }
 
-// Time returns the timestamp of Record r
-func (r *Record) Time() time.Time {
-	return r.time
-}
-
 // GetAnswers return the answers like they have been observed
 func (r *Record) GetAnswers() []string {
 	return append(r.cnames, r.ips...)
