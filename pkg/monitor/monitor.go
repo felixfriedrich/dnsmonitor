@@ -32,7 +32,6 @@ type monitor struct {
 	alerting alerting.API
 	dns      dns.Interface
 	mail     alerting.Mail
-	ticker   *time.Ticker
 }
 
 // Domains returns a list of pointers to the Domains
