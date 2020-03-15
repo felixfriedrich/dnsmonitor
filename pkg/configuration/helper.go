@@ -30,7 +30,7 @@ func mergeFlags(config Config, flags Flags) Config {
 			Mail:     merge(ymlFile.Mail, flags.Mail).(bool),
 			SMS:      merge(ymlFile.SMS, flags.SMS).(bool),
 			Silent:   merge(ymlFile.Silent, flags.Silent).(bool),
-			Alerting: ymlFile.Alerting, // Alerting isn't configurable via flags
+			Alerting: merge(ymlFile.Alerting, flags.VendorFlag.Vendor).(Alerting),
 		}
 	}
 	return config
@@ -55,17 +55,30 @@ func merge(value interface{}, defaultValue interface{}) interface{} {
 	if ok && s != "" {
 		return value
 	}
+
 	i, ok := value.(int)
 	if ok && i != 0 {
 		return value
 	}
+
 	b, ok := value.(bool)
 	if ok && b != false {
 		return value
 	}
+
 	domains, ok := value.(Domains)
 	if ok && len(domains) > 0 {
 		return value
 	}
+
+	alerting, ok := value.(Alerting)
+	if ok && alerting.SMS.Vendor != None {
+		return alerting
+	} // using else here instead didn't work. The return statement at the end became unreachable code.
+	if ok && alerting.SMS.Vendor == None {
+		alerting.SMS.Vendor = defaultValue.(Vendor)
+		return alerting
+	}
+
 	return defaultValue
 }

@@ -28,6 +28,20 @@ func TestMergeWithDomainList(t *testing.T) {
 	assert.Equal(t, Domains{"www.google.com"}, merge(Domains{}, Domains{"www.google.com"}).(Domains))
 }
 
+func TestMergeVendorFlagIntoAlerting(t *testing.T) {
+	a := Alerting{}
+	v := MessageBird
+	assert.Equal(t, MessageBird, merge(a, v).(Alerting).SMS.Vendor)
+}
+
+func TestMergeVendorFromConfigFileOverridesFlag(t *testing.T) {
+	a := Alerting{
+		SMS: SMSAlerting{Vendor: MessageBird},
+	}
+	v := SMS77
+	assert.Equal(t, MessageBird, merge(a, v).(Alerting).SMS.Vendor)
+}
+
 func TestMergeEnvVars_NoMailConfigNoEnvVars(t *testing.T) {
 	config := NewConfig()
 	monitor := Monitor{

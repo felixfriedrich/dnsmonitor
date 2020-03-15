@@ -13,12 +13,14 @@ import (
 
 func TestCreateConfigFromFlagsOnly(t *testing.T) {
 	flags := Flags{
-		Domains:  Domains{"www.google.com", "google.com"},
-		DNS:      "8.8.8.8",
-		Silent:   false,
-		Interval: 300,
-		Mail:     false,
-		Version:  false,
+		Domains:    Domains{"www.google.com", "google.com"},
+		DNS:        "8.8.8.8",
+		Silent:     false,
+		Interval:   300,
+		Mail:       false,
+		SMS:        false,
+		Version:    false,
+		VendorFlag: VendorFlag{None},
 	}
 	config := CreateConfig(flags)
 
