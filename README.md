@@ -33,7 +33,7 @@ Usage of ./bin/dnsmonitor:
   -domain value
     	domain to check. Can be used multiple times.
   -interval int
-    	interval in seconds (default 1)
+      interval in seconds (default 300)
   -mail
     	send mail if DNS record changes
   -silent
