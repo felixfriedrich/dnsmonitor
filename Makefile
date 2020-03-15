@@ -55,3 +55,5 @@ code-check:
 imports:
 	find . -name "*.go" -exec goimports -w {} \;
 
+unused:
+	staticcheck -unused.whole-program ./...
