@@ -27,23 +27,23 @@ $ make build && ./bin/dnsmonitor -domain www.google.com
 ```
 Usage of ./bin/dnsmonitor:
   -configfile string
-    	config file
+      config file
   -dns string
-    	DNS server (default "8.8.8.8")
+      DNS server (default "8.8.8.8")
   -domain value
-    	domain to check. Can be used multiple times.
+      domain to check. Can be used multiple times.
   -interval int
       interval in seconds (default 300)
   -mail
-    	send mail if DNS record changes
+      send mail if DNS record changes
   -silent
-    	silence output
+      silence output
   -sms
-    	send SMS if DNS record changes
+      send SMS if DNS record changes
   -vendor value
       Alerting vendor, e.g. 'messagebird'.
   -version
-    	print version
+      print version
 ```
 
 ## More information
