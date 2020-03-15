@@ -4,8 +4,6 @@ import (
 	"dnsmonitor/pkg/alerting/messagebird"
 	"dnsmonitor/pkg/alerting/sms77"
 	"dnsmonitor/pkg/configuration"
-	"dnsmonitor/pkg/configuration/envconfig"
-	"errors"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
@@ -16,28 +14,17 @@ type API interface {
 	SendSMS(text string) error
 }
 
-// Type of message to send
-type Type uint8
-
-const (
-	// SMS ...
-	SMS Type = 0
-)
-
 // New returns a new alerting API using a specific implementation
-func New(vendor configuration.Vendor, t Type) (API, error) {
+func New(config *configuration.Monitor) API {
 	var alertingAPI API
-	if vendor == configuration.MessageBird && t == SMS {
-		c := configuration.MessageBirdConfig{}
-		prefix := "dnsmonitor_messagebird"
-		envconfig.Read(prefix, &c)
-		return messagebird.New(c), nil
+
+	if config.SMS && config.Alerting.SMS.Vendor == configuration.MessageBird {
+		return messagebird.New(config.Alerting.SMS.MessageBird)
 	}
-	if vendor == configuration.SMS77 && t == SMS {
-		c := configuration.SMS77Config{}
-		prefix := "dnsmonitor_sms77"
-		envconfig.Read(prefix, &c)
-		return sms77.New(c), nil
+
+	if config.SMS && config.Alerting.SMS.Vendor == configuration.SMS77 {
+		return sms77.New(config.Alerting.SMS.SMS77)
 	}
-	return alertingAPI, errors.New("vendor/type combination isn't supported")
+
+	return alertingAPI
 }
