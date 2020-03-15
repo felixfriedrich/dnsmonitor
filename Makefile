@@ -13,9 +13,11 @@ update:
 	go get -u -t ./...
 
 tidy:
-	go mod tidy && go generate ./...
-	# go mod tidy removes counterfeiter from dependencies
-	# go generate adds it again
+	go mod tidy
+	# go mod tidy removed the following packages
+	# They need to be reinstalled
+	go get honnef.co/go/tools/cmd/staticcheck
+	go get github.com/maxbrunsfeld/counterfeiter/v6
 
 clean:
 	go clean -testcache
