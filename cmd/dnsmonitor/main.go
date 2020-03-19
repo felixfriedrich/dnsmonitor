@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	version                         = "0.4.2"
+	version                         = "0.5"
 	okExitCode                      = 0
 	fileDoesntExistExitCode         = 1
 	wrongCombinationOfFlagsExitCode = 2
