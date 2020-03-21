@@ -12,7 +12,6 @@ import (
 )
 
 const (
-	version                         = "0.5"
 	okExitCode                      = 0
 	fileDoesntExistExitCode         = 1
 	wrongCombinationOfFlagsExitCode = 2
@@ -46,7 +45,7 @@ func main() {
 
 func sanityCheckFlags(flags configuration.Flags) (bool, int) {
 	if flags.Version {
-		fmt.Printf("dnsmonitor v%s\n", version)
+		fmt.Printf("dnsmonitor v%s\n", configuration.Version)
 		return false, okExitCode
 	}
 
