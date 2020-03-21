@@ -31,14 +31,3 @@ jobs:
         export PATH=$PATH:$(go env GOPATH)/bin
         go get -u golang.org/x/lint/golint
         make lint
-
-  sonarCloudTrigger:
-    name: sonarcloud.io
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
