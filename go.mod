@@ -9,11 +9,12 @@ require (
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.2.3 // indirect
 	github.com/messagebird/go-rest-api v5.3.0+incompatible
 	github.com/miekg/dns v1.1.29
-	github.com/sirupsen/logrus v1.4.2
+	github.com/sirupsen/logrus v1.5.0
+	github.com/stretchr/objx v0.1.1 // indirect
 	github.com/stretchr/testify v1.5.1
-	golang.org/x/crypto v0.0.0-20200320181102-891825fb96df // indirect
-	golang.org/x/net v0.0.0-20200320220750-118fecf932d8 // indirect
-	golang.org/x/sys v0.0.0-20200320181252-af34d8274f85 // indirect
+	golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59 // indirect
+	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e // indirect
+	golang.org/x/sys v0.0.0-20200327173247-9dae0f8f5775 // indirect
 	gopkg.in/yaml.v2 v2.2.8
 	honnef.co/go/tools v0.0.1-2020.1.3 // indirect
 )
