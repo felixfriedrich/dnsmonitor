@@ -10,10 +10,11 @@ require (
 	github.com/miekg/dns v1.1.29
 	github.com/sirupsen/logrus v1.6.0
 	github.com/stretchr/objx v0.1.1 // indirect
-	github.com/stretchr/testify v1.5.1
+	github.com/stretchr/testify v1.6.0
 	golang.org/x/crypto v0.0.0-20200510223506-06a226fb4e37 // indirect
-	golang.org/x/net v0.0.0-20200513185701-a91f0712d120 // indirect
-	golang.org/x/sys v0.0.0-20200515095857-1151b9dac4a9 // indirect
+	golang.org/x/net v0.0.0-20200528225125-3c3fba18258b // indirect
+	golang.org/x/sys v0.0.0-20200523222454-059865788121 // indirect
 	gopkg.in/yaml.v2 v2.3.0
+	gopkg.in/yaml.v3 v3.0.0-20200506231410-2ff61e1afc86 // indirect
 	honnef.co/go/tools v0.0.1-2020.1.3 // indirect
 )
