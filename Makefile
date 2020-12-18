@@ -1,4 +1,6 @@
-all: clean fmt lint code-check imports build generate tests tidy update
+.PHONY: test
+
+all: clean fmt lint code-check imports build generate test tidy update
 	echo ":-)"
 
 build:
@@ -23,11 +25,13 @@ clean:
 	go clean -testcache
 	rm -f test.out
 	rm -f ./bin/*
+	rm -rf ./build/bin
+	#docker rmi -f dnsmonitor
 
 generate:
 	find . -name "*fakes" -exec rm -rf -- {} + && go generate ./...
 
-tests:
+test:
 	go test -cover ./...
 
 test-report:
