@@ -1,4 +1,4 @@
-.PHONY: test
+.PHONY: test build
 
 all: clean fmt lint code-check imports build generate test tidy update
 	echo ":-)"
