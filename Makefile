@@ -64,4 +64,7 @@ unused:
 
 docker:
 	env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o ./build/dnsmonitor ./cmd/dnsmonitor/main.go
-	docker build -t dnsmonitor:latest ./build
+	docker build -t dnsmonitor:latest -t docker.pkg.github.com/felixfriedrich/dnsmonitor/dnsmonitor-linux-amd64:latest ./build
+
+docker-push:
+	docker push docker.pkg.github.com/felixfriedrich/dnsmonitor/dnsmonitor-linux-amd64
