@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-set -x
+# set -x
 
 source "$(dirname "${BASH_SOURCE[0]}")/.common.sh"
 
