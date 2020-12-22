@@ -66,4 +66,4 @@ docker:
 	./build/docker-build.sh
 
 docker-push:
-	docker push docker.pkg.github.com/felixfriedrich/dnsmonitor/dnsmonitor-linux-amd64
+	./build/docker-push.sh
