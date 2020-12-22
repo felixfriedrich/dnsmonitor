@@ -6,7 +6,7 @@ if [ "$(uname -m)" == "x86_64" ]; then
   GOARCH="amd64"
 fi
 
-NAME="dnsmonitor-${GOARCH}"
+export NAME="dnsmonitor-${GOARCH}"
 REGISTRIES=(
             "ghcr.io/felixfriedrich/"
             )
