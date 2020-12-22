@@ -6,8 +6,19 @@ source "$(dirname "${BASH_SOURCE[0]}")/.common.sh"
 
 env CGO_ENABLED=0 go build -a -installsuffix cgo -o ./build/dnsmonitor ./cmd/dnsmonitor/main.go
 
-docker build \
-  -t dnsmonitor${GOOS}-${GOARCH}:latest \
-  -t docker.pkg.github.com/felixfriedrich/dnsmonitor/dnsmonitor-${GOOS}-${GOARCH}:latest \
-  -t ghcr.io/felixfriedrich/dnsmonitor-${GOOS}-${GOARCH} \
-  ./build
+DOCKER_BUILD_COMMAND="docker build"
+DOCKER_BUILD_COMMAND="${DOCKER_BUILD_COMMAND} -t ${NAME}"
+
+# Tags for registries
+for REGISTRY in "${REGISTRIES[@]}"; do
+    DOCKER_BUILD_COMMAND="${DOCKER_BUILD_COMMAND} -t ${REGISTRY}${NAME}:latest"
+done
+
+DOCKER_BUILD_COMMAND="$DOCKER_BUILD_COMMAND ./build"
+
+eval "${DOCKER_BUILD_COMMAND}"
+
+echo
+echo "docker images"
+echo "-------------"
+docker images | grep dnsmonitor

@@ -4,5 +4,12 @@ if [ "$(uname -p)" == "x86_64" ]; then
   GOARCH="amd64"
 fi
 
-export $GOOS
-export $GOARCH
+NAME="dnsmonitor-${GOOS}-${GOARCH}"
+REGISTRIES=(
+            "docker.pkg.github.com/felixfriedrich/dnsmonitor/"
+            "ghcr.io/felixfriedrich/"
+            )
+
+export GOOS
+export GOARCH
+export REGISTRIES
