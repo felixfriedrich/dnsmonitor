@@ -1,10 +1,10 @@
-GOOS=$(uname | tr '[:upper:]' '[:lower:]')
+GOOS="linux"
 
 if [ "$(uname -m)" == "x86_64" ]; then
   GOARCH="amd64"
 fi
 
-NAME="dnsmonitor-${GOOS}-${GOARCH}"
+NAME="dnsmonitor-${GOARCH}"
 REGISTRIES=(
             "docker.pkg.github.com/felixfriedrich/dnsmonitor/"
             "ghcr.io/felixfriedrich/"
