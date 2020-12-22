@@ -7,4 +7,6 @@ source "$(dirname "${BASH_SOURCE[0]}")/.common.sh"
 for REGISTRY in "${REGISTRIES[@]}"; do
     PUSH_COMMAND="docker push ${REGISTRY}${NAME}:latest"
     eval "${PUSH_COMMAND}"
+    PUSH_COMMAND="docker push ${REGISTRY}${NAME}:${VERSION}"
+    eval "${PUSH_COMMAND}"
 done
