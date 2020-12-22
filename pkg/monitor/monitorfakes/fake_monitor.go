@@ -51,9 +51,10 @@ func (fake *FakeMonitor) Check() {
 	fake.checkMutex.Lock()
 	fake.checkArgsForCall = append(fake.checkArgsForCall, struct {
 	}{})
+	stub := fake.CheckStub
 	fake.recordInvocation("Check", []interface{}{})
 	fake.checkMutex.Unlock()
-	if fake.CheckStub != nil {
+	if stub != nil {
 		fake.CheckStub()
 	}
 }
@@ -75,15 +76,16 @@ func (fake *FakeMonitor) Config() configuration.Monitor {
 	ret, specificReturn := fake.configReturnsOnCall[len(fake.configArgsForCall)]
 	fake.configArgsForCall = append(fake.configArgsForCall, struct {
 	}{})
+	stub := fake.ConfigStub
+	fakeReturns := fake.configReturns
 	fake.recordInvocation("Config", []interface{}{})
 	fake.configMutex.Unlock()
-	if fake.ConfigStub != nil {
-		return fake.ConfigStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.configReturns
 	return fakeReturns.result1
 }
 
@@ -127,15 +129,16 @@ func (fake *FakeMonitor) Domains() []*model.Domain {
 	ret, specificReturn := fake.domainsReturnsOnCall[len(fake.domainsArgsForCall)]
 	fake.domainsArgsForCall = append(fake.domainsArgsForCall, struct {
 	}{})
+	stub := fake.DomainsStub
+	fakeReturns := fake.domainsReturns
 	fake.recordInvocation("Domains", []interface{}{})
 	fake.domainsMutex.Unlock()
-	if fake.DomainsStub != nil {
-		return fake.DomainsStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.domainsReturns
 	return fakeReturns.result1
 }
 
@@ -178,9 +181,10 @@ func (fake *FakeMonitor) Observe() {
 	fake.observeMutex.Lock()
 	fake.observeArgsForCall = append(fake.observeArgsForCall, struct {
 	}{})
+	stub := fake.ObserveStub
 	fake.recordInvocation("Observe", []interface{}{})
 	fake.observeMutex.Unlock()
-	if fake.ObserveStub != nil {
+	if stub != nil {
 		fake.ObserveStub()
 	}
 }
@@ -203,9 +207,10 @@ func (fake *FakeMonitor) Run(arg1 int, arg2 bool) {
 		arg1 int
 		arg2 bool
 	}{arg1, arg2})
+	stub := fake.RunStub
 	fake.recordInvocation("Run", []interface{}{arg1, arg2})
 	fake.runMutex.Unlock()
-	if fake.RunStub != nil {
+	if stub != nil {
 		fake.RunStub(arg1, arg2)
 	}
 }

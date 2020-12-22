@@ -32,15 +32,16 @@ func (fake *FakeInterface) Query(arg1 string, arg2 string) ([]string, error) {
 		arg1 string
 		arg2 string
 	}{arg1, arg2})
+	stub := fake.QueryStub
+	fakeReturns := fake.queryReturns
 	fake.recordInvocation("Query", []interface{}{arg1, arg2})
 	fake.queryMutex.Unlock()
-	if fake.QueryStub != nil {
-		return fake.QueryStub(arg1, arg2)
+	if stub != nil {
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.queryReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 

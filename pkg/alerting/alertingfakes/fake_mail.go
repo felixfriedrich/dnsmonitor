@@ -38,15 +38,16 @@ func (fake *FakeMail) Config() configuration.MailAlerting {
 	ret, specificReturn := fake.configReturnsOnCall[len(fake.configArgsForCall)]
 	fake.configArgsForCall = append(fake.configArgsForCall, struct {
 	}{})
+	stub := fake.ConfigStub
+	fakeReturns := fake.configReturns
 	fake.recordInvocation("Config", []interface{}{})
 	fake.configMutex.Unlock()
-	if fake.ConfigStub != nil {
-		return fake.ConfigStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.configReturns
 	return fakeReturns.result1
 }
 
@@ -91,15 +92,16 @@ func (fake *FakeMail) Send(arg1 string) error {
 	fake.sendArgsForCall = append(fake.sendArgsForCall, struct {
 		arg1 string
 	}{arg1})
+	stub := fake.SendStub
+	fakeReturns := fake.sendReturns
 	fake.recordInvocation("Send", []interface{}{arg1})
 	fake.sendMutex.Unlock()
-	if fake.SendStub != nil {
-		return fake.SendStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.sendReturns
 	return fakeReturns.result1
 }
 

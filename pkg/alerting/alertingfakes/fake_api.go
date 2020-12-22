@@ -28,15 +28,16 @@ func (fake *FakeAPI) SendSMS(arg1 string) error {
 	fake.sendSMSArgsForCall = append(fake.sendSMSArgsForCall, struct {
 		arg1 string
 	}{arg1})
+	stub := fake.SendSMSStub
+	fakeReturns := fake.sendSMSReturns
 	fake.recordInvocation("SendSMS", []interface{}{arg1})
 	fake.sendSMSMutex.Unlock()
-	if fake.SendSMSStub != nil {
-		return fake.SendSMSStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.sendSMSReturns
 	return fakeReturns.result1
 }
 
