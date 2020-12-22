@@ -40,6 +40,9 @@ func main() {
 		go m.Run(config.Interval, config.Silent)
 	}
 
+	if !flags.Silent {
+		fmt.Println("dnsmonitor running")
+	}
 	select {} // Make this program not terminate in order to keep the go routines running
 }
 
