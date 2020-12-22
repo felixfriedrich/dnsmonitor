@@ -10,20 +10,39 @@ This application monitors domain(s) for changing DNS records and is able to aler
 
 ## Usage
 
-### Config file
+### Docker
 
 ```
-$ make build && ./bin/dnsmonitor -configfile configs/default.yml
+$ docker pull ghcr.io/felixfriedrich/dnsmonitor-amd64:latest
+$ docker run ghcr.io/felixfriedrich/dnsmonitor-amd64
+```
+
+See https://github.com/users/felixfriedrich/packages/container/package/dnsmonitor-amd64
+
+
+### Build locally
+
+```
+$ make build && ./bin/dnsmonitor
+```
+
+
+### Use with config file
+
+```
+$ ./bin/dnsmonitor -configfile configs/default.yml
 ```
 
 See [ConfigFile](../../wiki/ConfigFile) more information on config files.
 
 
-### Command line flags
+### Use with command line flags
 ```
-$ make build && ./bin/dnsmonitor -domain www.google.com
+$ ./bin/dnsmonitor -domain www.google.com
+$ docker run ghcr.io/felixfriedrich/dnsmonitor-amd64 dnsmonitor -domain www.google.com
 ```
 
+#### All flags
 ```
 Usage of ./bin/dnsmonitor:
   -configfile string
