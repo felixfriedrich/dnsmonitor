@@ -1,6 +1,6 @@
 GOOS=$(uname | tr '[:upper:]' '[:lower:]')
 
-if [ "$(uname -p)" == "x86_64" ]; then
+if [ "$(uname -m)" == "x86_64" ]; then
   GOARCH="amd64"
 fi
 
