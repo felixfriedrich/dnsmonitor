@@ -6,7 +6,6 @@ fi
 
 NAME="dnsmonitor-${GOARCH}"
 REGISTRIES=(
-            "docker.pkg.github.com/felixfriedrich/dnsmonitor/"
             "ghcr.io/felixfriedrich/"
             )
 
