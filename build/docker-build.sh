@@ -2,7 +2,7 @@
 set -e
 set -x
 
-source $(dirname ${BASH_SOURCE})/.common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/.common.sh"
 
 env CGO_ENABLED=0 go build -a -installsuffix cgo -o ./build/dnsmonitor ./cmd/dnsmonitor/main.go
 
