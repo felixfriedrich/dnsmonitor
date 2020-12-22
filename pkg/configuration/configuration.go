@@ -7,8 +7,6 @@ import (
 )
 
 const (
-	// Version is the version of this program
-	Version = "0.5"
 	// Default is the name of the default monitor in config files
 	Default = "default"
 	// EnvMailPrefix is used to prefix env vars

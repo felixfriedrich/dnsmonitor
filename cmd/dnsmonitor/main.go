@@ -11,6 +11,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var (
+	version string
+)
+
 const (
 	okExitCode                      = 0
 	fileDoesntExistExitCode         = 1
@@ -48,7 +52,7 @@ func main() {
 
 func sanityCheckFlags(flags configuration.Flags) (bool, int) {
 	if flags.Version {
-		fmt.Printf("dnsmonitor v%s\n", configuration.Version)
+		fmt.Printf("dnsmonitor v%s\n", version)
 		return false, okExitCode
 	}
 

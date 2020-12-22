@@ -4,7 +4,7 @@ all: clean fmt lint code-check imports build generate test tidy update
 	echo ":-)"
 
 build:
-	go build -o bin/dnsmonitor cmd/dnsmonitor/main.go
+	go build -ldflags "-X main.version=$(shell cat VERSION)" -o bin/dnsmonitor cmd/dnsmonitor/main.go
 
 release: all
 	env GOOS=linux GOARCH=amd64 go build -o bin/dnsmonitor-linux-amd64 cmd/dnsmonitor/main.go
