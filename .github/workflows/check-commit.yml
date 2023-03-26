@@ -25,6 +25,6 @@ jobs:
     - name: Run tests
       run: make test
     - name: Check formatting
-      run: test -z $(go fmt ./...)
+      run: "test -z $(go fmt ./...) 2>/dev/null || (echo 'ERROR: Formatting is not correct. Run go fmt ./...'; exit 1)"
     - name: Run linter
       run: make lint
