@@ -9,6 +9,7 @@ import (
 )
 
 // Mail interface for mocking
+//
 //counterfeiter:generate . Mail
 type Mail interface {
 	Send(diff string) error

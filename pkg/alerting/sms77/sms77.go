@@ -27,6 +27,7 @@ func (s *SMS77) Override(httpClient HTTPClient) {
 }
 
 // HTTPClient encapsulates the http library for testing/mocking
+//
 //counterfeiter:generate . HTTPClient
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)

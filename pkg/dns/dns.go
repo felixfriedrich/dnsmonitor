@@ -10,6 +10,7 @@ import (
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
 
 // Interface abtracts the upstream library away, mainly for mocking
+//
 //counterfeiter:generate . Interface
 type Interface interface {
 	Query(domain string, dnsServer string) ([]string, error)

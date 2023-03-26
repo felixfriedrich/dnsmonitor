@@ -16,6 +16,7 @@ import (
 
 // Monitor is an interface, which is used to enforce the use of CreateMonitor as the struct monitor can not be created
 // differently, because it's private. It's also used to generate mocks.
+//
 //counterfeiter:generate . Monitor
 type Monitor interface {
 	Domains() []*model.Domain
