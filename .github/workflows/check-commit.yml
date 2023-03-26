@@ -27,7 +27,4 @@ jobs:
     - name: Check formatting
       run: test -z $(go fmt ./...)
     - name: Run linter
-      run: |
-        export PATH=$PATH:$(go env GOPATH)/bin
-        go get -u golang.org/x/lint/golint
-        make lint
+      run: make lint

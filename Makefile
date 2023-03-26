@@ -51,7 +51,7 @@ run-config-file: build
 	./bin/dnsmonitor -configfile configs/default.yml
 
 lint:
-	golint -set_exit_status ./...
+	go vet ./...
 
 code-check:
 	ineffassign .
